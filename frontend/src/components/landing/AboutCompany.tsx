@@ -27,9 +27,9 @@ export default async function AboutCompany() {
           {settings.about_media_url ? (
             <div className="absolute inset-0">
               {settings.about_media_url.endsWith('.mp4') ? (
-                <video src={`${process.env.NEXT_PUBLIC_API_URL}${settings.about_media_url}`} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+                <video src={`${settings.about_media_url?.startsWith('http') ? settings.about_media_url : process.env.NEXT_PUBLIC_API_URL + settings.about_media_url}`} autoPlay loop muted playsInline className="w-full h-full object-cover" />
               ) : (
-                <img src={`${process.env.NEXT_PUBLIC_API_URL}${settings.about_media_url}`} alt="About Background" className="w-full h-full object-cover" />
+                <img src={`${settings.about_media_url?.startsWith('http') ? settings.about_media_url : process.env.NEXT_PUBLIC_API_URL + settings.about_media_url}`} alt="About Background" className="w-full h-full object-cover" />
               )}
             </div>
           ) : (

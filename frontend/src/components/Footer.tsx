@@ -18,7 +18,7 @@ export default async function Footer() {
             <div className="flex items-center space-x-3 mb-6">
               <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center p-1 overflow-hidden">
                 {settings.site_logo_url ? (
-                  <img src={`${process.env.NEXT_PUBLIC_API_URL}${settings.site_logo_url}`} alt="MEEWA Logo" className="w-full h-full object-contain" />
+                  <img src={`${settings.site_logo_url?.startsWith('http') ? settings.site_logo_url : process.env.NEXT_PUBLIC_API_URL + settings.site_logo_url}`} alt="MEEWA Logo" className="w-full h-full object-contain" />
                 ) : (
                   <div className="text-meewa-red flex flex-col items-center justify-center h-full">
                     <span className="text-[10px] font-bold tracking-widest">MEEWA</span>

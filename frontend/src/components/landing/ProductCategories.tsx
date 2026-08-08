@@ -40,7 +40,7 @@ export default async function ProductCategories() {
             <Link href={`/categories#category-${cat.name.replace(/\s+/g, '-')}`} key={idx} className="relative h-80 rounded-xl overflow-hidden group shadow-sm bg-gray-100 block">
               <div 
                 className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                style={{ backgroundImage: `url(`${process.env.NEXT_PUBLIC_API_URL}${cat.cover_image}`)` }}
+                style={{ backgroundImage: `url('${cat.cover_image?.startsWith('http') ? cat.cover_image : process.env.NEXT_PUBLIC_API_URL + (cat.cover_image || '')}')` }}
               ></div>
               
               {/* Bottom Dark Label */}

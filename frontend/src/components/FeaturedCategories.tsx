@@ -62,7 +62,7 @@ export default function FeaturedCategories() {
                 <div className="w-full h-48 bg-gray-200 overflow-hidden group-hover:opacity-75">
                   {category.cover_image ? (
                     <img
-                      src={`${process.env.NEXT_PUBLIC_API_URL}${category.cover_image}`}
+                      src={`${category.cover_image?.startsWith('http') ? category.cover_image : process.env.NEXT_PUBLIC_API_URL + category.cover_image}`}
                       alt={category.name}
                       className="w-full h-full object-center object-cover"
                     />

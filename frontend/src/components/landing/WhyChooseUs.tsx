@@ -70,7 +70,7 @@ export default async function WhyChooseUs() {
 
               <div className="relative z-10">
                 <div className="w-16 h-16 bg-red-50 text-meewa-red rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 group-hover:bg-meewa-red group-hover:text-white transition-all duration-500 overflow-hidden p-3">
-                  <img src={feature.icon.startsWith('/') ? `${process.env.NEXT_PUBLIC_API_URL}${feature.icon}` : feature.icon} alt={feature.title} className="w-full h-full object-contain filter transition-all duration-500 group-hover:brightness-0 group-hover:invert" />
+                  <img src={feature.icon.startsWith('/') ? `${feature.icon?.startsWith('http') ? feature.icon : process.env.NEXT_PUBLIC_API_URL + feature.icon}` : feature.icon} alt={feature.title} className="w-full h-full object-contain filter transition-all duration-500 group-hover:brightness-0 group-hover:invert" />
                 </div>
                 
                 <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-meewa-red transition-colors duration-300">{feature.title}</h3>

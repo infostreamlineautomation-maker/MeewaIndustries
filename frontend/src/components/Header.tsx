@@ -69,7 +69,7 @@ export default function Header() {
       .then(res => res.json())
       .then(data => {
         if (data.site_logo_url) {
-          setLogoUrl(`${process.env.NEXT_PUBLIC_API_URL}${data.site_logo_url}`);
+          setLogoUrl(`${data.site_logo_url?.startsWith('http') ? data.site_logo_url : process.env.NEXT_PUBLIC_API_URL + data.site_logo_url}`);
         }
         if (data.header_links && Array.isArray(data.header_links)) {
           const links = data.header_links;

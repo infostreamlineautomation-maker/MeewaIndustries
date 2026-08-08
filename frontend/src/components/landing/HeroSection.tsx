@@ -9,7 +9,7 @@ export default async function HeroSection() {
   } catch(e) {}
 
   const bannerUrl = settings.hero_image_url 
-    ? `${process.env.NEXT_PUBLIC_API_URL}${settings.hero_image_url}` 
+    ? `${settings.hero_image_url?.startsWith('http') ? settings.hero_image_url : process.env.NEXT_PUBLIC_API_URL + settings.hero_image_url}` 
     : "/images/Flow.svg";
 
   return (

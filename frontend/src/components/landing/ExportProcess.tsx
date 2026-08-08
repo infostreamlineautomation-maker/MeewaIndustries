@@ -56,7 +56,7 @@ export default async function ExportProcess() {
           {settings.export_process_media_url ? (
             settings.export_process_media_url.endsWith('.mp4') ? (
               <video 
-                src={`${process.env.NEXT_PUBLIC_API_URL}${settings.export_process_media_url}`}
+                src={`${settings.export_process_media_url?.startsWith('http') ? settings.export_process_media_url : process.env.NEXT_PUBLIC_API_URL + settings.export_process_media_url}`}
                 autoPlay 
                 loop 
                 muted 
@@ -65,7 +65,7 @@ export default async function ExportProcess() {
               />
             ) : (
               <img 
-                src={`${process.env.NEXT_PUBLIC_API_URL}${settings.export_process_media_url}`}
+                src={`${settings.export_process_media_url?.startsWith('http') ? settings.export_process_media_url : process.env.NEXT_PUBLIC_API_URL + settings.export_process_media_url}`}
                 alt="Export Process" 
                 className="absolute inset-0 w-full h-full object-cover"
               />

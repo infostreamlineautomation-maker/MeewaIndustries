@@ -48,7 +48,7 @@ export default async function CategoriesPage() {
       {/* 1. Hero Section (Image Behind Header) */}
       <section className="relative w-full h-[500px] md:h-[600px] bg-gray-900">
         {settings.categories_hero_image_url ? (
-          <img src={`${process.env.NEXT_PUBLIC_API_URL}${settings.categories_hero_image_url}`} alt="Product Categories Hero" className="w-full h-full object-cover opacity-90" />
+          <img src={`${settings.categories_hero_image_url?.startsWith('http') ? settings.categories_hero_image_url : process.env.NEXT_PUBLIC_API_URL + settings.categories_hero_image_url}`} alt="Product Categories Hero" className="w-full h-full object-cover opacity-90" />
         ) : (
           <div className="w-full h-full bg-gray-300"></div>
         )}
@@ -71,7 +71,7 @@ export default async function CategoriesPage() {
                   <Link href={`/products/${prod.slug || '#'}`} key={prod.id} className="flex flex-col group cursor-pointer">
                     <div className="w-full aspect-[4/5] bg-gray-100 rounded-3xl overflow-hidden mb-4 shadow-sm group-hover:shadow-lg transition-shadow border border-gray-200">
                       {prod.cover_image ? (
-                        <img src={`${process.env.NEXT_PUBLIC_API_URL}${prod.cover_image}`} alt={prod.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <img src={`${prod.cover_image?.startsWith('http') ? prod.cover_image : process.env.NEXT_PUBLIC_API_URL + prod.cover_image}`} alt={prod.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       ) : (
                         <div className="w-full h-full bg-gray-200"></div>
                       )}
@@ -98,7 +98,7 @@ export default async function CategoriesPage() {
             <div key={idx} className="flex flex-col items-center w-28 md:w-36">
               <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4 shadow-sm">
                 {feat.icon_url ? (
-                  <img src={`${process.env.NEXT_PUBLIC_API_URL}${feat.icon_url}`} alt={feat.title} className="w-8 h-8 object-contain" />
+                  <img src={`${feat.icon_url?.startsWith('http') ? feat.icon_url : process.env.NEXT_PUBLIC_API_URL + feat.icon_url}`} alt={feat.title} className="w-8 h-8 object-contain" />
                 ) : (
                   <div className="w-8 h-8 rounded-full bg-meewa-red flex items-center justify-center">
                     <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
@@ -119,7 +119,7 @@ export default async function CategoriesPage() {
           {bannerImages.map((banner: any, idx: number) => (
             <div key={idx} className="w-full aspect-[16/9] bg-gray-100 rounded-3xl overflow-hidden shadow-md">
               {banner.image_url ? (
-                <img src={`${process.env.NEXT_PUBLIC_API_URL}${banner.image_url}`} alt="Custom Banner" className="w-full h-full object-cover" />
+                <img src={`${banner.image_url?.startsWith('http') ? banner.image_url : process.env.NEXT_PUBLIC_API_URL + banner.image_url}`} alt="Custom Banner" className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full bg-gray-200"></div>
               )}

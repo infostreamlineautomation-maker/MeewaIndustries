@@ -42,14 +42,14 @@ export default async function IndustriesWeServe() {
             <div className="space-y-4 h-full flex flex-col">
               <div className="bg-gray-200 rounded-lg h-2/5 w-full relative overflow-hidden shadow-sm">
                 {settings.industries_image_1 ? (
-                  <img src={`${process.env.NEXT_PUBLIC_API_URL}${settings.industries_image_1}`} alt="Restaurant" className="w-full h-full object-cover" />
+                  <img src={`${settings.industries_image_1?.startsWith('http') ? settings.industries_image_1 : process.env.NEXT_PUBLIC_API_URL + settings.industries_image_1}`} alt="Restaurant" className="w-full h-full object-cover" />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">Restaurant Image</div>
                 )}
               </div>
               <div className="bg-gray-300 rounded-lg h-3/5 w-full relative overflow-hidden shadow-sm">
                 {settings.industries_image_2 ? (
-                  <img src={`${process.env.NEXT_PUBLIC_API_URL}${settings.industries_image_2}`} alt="Supermarket" className="w-full h-full object-cover" />
+                  <img src={`${settings.industries_image_2?.startsWith('http') ? settings.industries_image_2 : process.env.NEXT_PUBLIC_API_URL + settings.industries_image_2}`} alt="Supermarket" className="w-full h-full object-cover" />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center text-gray-500 text-sm">Supermarket Image</div>
                 )}
@@ -58,14 +58,14 @@ export default async function IndustriesWeServe() {
             <div className="space-y-4 h-full flex flex-col pt-8">
               <div className="bg-gray-300 rounded-lg h-1/2 w-full relative overflow-hidden shadow-sm">
                 {settings.industries_image_3 ? (
-                  <img src={`${process.env.NEXT_PUBLIC_API_URL}${settings.industries_image_3}`} alt="Hotel" className="w-full h-full object-cover" />
+                  <img src={`${settings.industries_image_3?.startsWith('http') ? settings.industries_image_3 : process.env.NEXT_PUBLIC_API_URL + settings.industries_image_3}`} alt="Hotel" className="w-full h-full object-cover" />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center text-gray-500 text-sm">Hotel Image</div>
                 )}
               </div>
               <div className="bg-gray-200 rounded-lg h-1/2 w-full relative overflow-hidden shadow-sm">
                 {settings.industries_image_4 ? (
-                  <img src={`${process.env.NEXT_PUBLIC_API_URL}${settings.industries_image_4}`} alt="Coffee Chain" className="w-full h-full object-cover" />
+                  <img src={`${settings.industries_image_4?.startsWith('http') ? settings.industries_image_4 : process.env.NEXT_PUBLIC_API_URL + settings.industries_image_4}`} alt="Coffee Chain" className="w-full h-full object-cover" />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">Coffee Chain Image</div>
                 )}

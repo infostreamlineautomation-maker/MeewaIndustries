@@ -43,7 +43,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
   const marqueeWords = marqueeText.split(' ').filter(Boolean);
   const bannerImages = Array.isArray(product?.banner_images) ? product.banner_images : [];
 
-  const heroImage = product?.hero_animated_image ? `${process.env.NEXT_PUBLIC_API_URL}${product.hero_animated_image}` : null;
+  const heroImage = product?.hero_animated_image ? `${product.hero_animated_image?.startsWith('http') ? product.hero_animated_image : process.env.NEXT_PUBLIC_API_URL + product.hero_animated_image}` : null;
 
   return (
     <div className="bg-white min-h-screen text-gray-900">
@@ -223,7 +223,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
             {bannerImages.map((bannerUrl: string, idx: number) => (
               <div key={idx} className="w-full rounded-3xl overflow-hidden shadow-sm border border-gray-100">
-                <img src={`${process.env.NEXT_PUBLIC_API_URL}${bannerUrl}`} alt="Product Banner" className="w-full h-auto object-cover" />
+                <img src={`${bannerUrl?.startsWith('http') ? bannerUrl : process.env.NEXT_PUBLIC_API_URL + bannerUrl}`} alt="Product Banner" className="w-full h-auto object-cover" />
               </div>
             ))}
           </div>
@@ -242,7 +242,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                   <div className="w-full aspect-[4/5] bg-white rounded-3xl overflow-hidden mb-6 shadow-sm group-hover:shadow-xl transition-all duration-300 border border-gray-200 p-6 flex items-center justify-center">
                     {relProduct.cover_image ? (
                       <img 
-                        src={`${process.env.NEXT_PUBLIC_API_URL}${relProduct.cover_image}`} 
+                        src={`${relProduct.cover_image?.startsWith('http') ? relProduct.cover_image : process.env.NEXT_PUBLIC_API_URL + relProduct.cover_image}`} 
                         alt={relProduct.name} 
                         className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" 
                       />

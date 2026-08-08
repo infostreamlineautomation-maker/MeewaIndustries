@@ -69,7 +69,7 @@ export default function CategoriesTabs({ categories }: { categories: any[] }) {
               >
                 <div className="w-full aspect-[4/3] bg-gray-100 rounded-t-xl overflow-hidden relative border border-gray-200 border-b-0">
                   {cat.cover_image ? (
-                    <img src={`${process.env.NEXT_PUBLIC_API_URL}${cat.cover_image}`} alt={cat.name} className="w-full h-full object-cover" />
+                    <img src={`${cat.cover_image?.startsWith('http') ? cat.cover_image : process.env.NEXT_PUBLIC_API_URL + cat.cover_image}`} alt={cat.name} className="w-full h-full object-cover" />
                   ) : (
                     <div className="w-full h-full bg-gray-200"></div>
                   )}

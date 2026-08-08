@@ -60,9 +60,9 @@ export default async function AboutPage() {
             <div className="h-[500px] rounded-3xl overflow-hidden relative shadow-lg">
               {settings.about_hero_media ? (
                 settings.about_hero_media.endsWith('.mp4') ? (
-                  <video src={`${process.env.NEXT_PUBLIC_API_URL}${settings.about_hero_media}`} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+                  <video src={`${settings.about_hero_media?.startsWith('http') ? settings.about_hero_media : process.env.NEXT_PUBLIC_API_URL + settings.about_hero_media}`} autoPlay loop muted playsInline className="w-full h-full object-cover" />
                 ) : (
-                  <img src={`${process.env.NEXT_PUBLIC_API_URL}${settings.about_hero_media}`} alt="Hero" className="w-full h-full object-cover" />
+                  <img src={`${settings.about_hero_media?.startsWith('http') ? settings.about_hero_media : process.env.NEXT_PUBLIC_API_URL + settings.about_hero_media}`} alt="Hero" className="w-full h-full object-cover" />
                 )
               ) : (
                 <div className="w-full h-full bg-gray-200"></div>
@@ -111,7 +111,7 @@ export default async function AboutPage() {
             <div className="border border-gray-200 p-10 rounded-3xl bg-white">
               {settings.about_vision_icon ? (
                 <div className="w-12 h-12 bg-meewa-red rounded-lg mb-6 shadow-sm flex items-center justify-center p-2.5">
-                  <img src={settings.about_vision_icon.startsWith('/') ? `${process.env.NEXT_PUBLIC_API_URL}${settings.about_vision_icon}` : settings.about_vision_icon} alt="Vision Icon" className="w-full h-full object-contain" />
+                  <img src={settings.about_vision_icon.startsWith('/') ? `${settings.about_vision_icon?.startsWith('http') ? settings.about_vision_icon : process.env.NEXT_PUBLIC_API_URL + settings.about_vision_icon}` : settings.about_vision_icon} alt="Vision Icon" className="w-full h-full object-contain" />
                 </div>
               ) : (
                 <div className="w-12 h-12 bg-meewa-red rounded-lg mb-6 shadow-sm"></div>
@@ -126,7 +126,7 @@ export default async function AboutPage() {
             <div className="border border-gray-200 p-10 rounded-3xl bg-white">
               {settings.about_mission_icon ? (
                 <div className="w-12 h-12 bg-meewa-red rounded-lg mb-6 shadow-sm flex items-center justify-center p-2.5">
-                  <img src={settings.about_mission_icon.startsWith('/') ? `${process.env.NEXT_PUBLIC_API_URL}${settings.about_mission_icon}` : settings.about_mission_icon} alt="Mission Icon" className="w-full h-full object-contain" />
+                  <img src={settings.about_mission_icon.startsWith('/') ? `${settings.about_mission_icon?.startsWith('http') ? settings.about_mission_icon : process.env.NEXT_PUBLIC_API_URL + settings.about_mission_icon}` : settings.about_mission_icon} alt="Mission Icon" className="w-full h-full object-contain" />
                 </div>
               ) : (
                 <div className="w-12 h-12 bg-meewa-red rounded-lg mb-6 shadow-sm"></div>
@@ -153,7 +153,7 @@ export default async function AboutPage() {
             <div className="flex w-fit animate-marquee hover:[animation-play-state:paused] whitespace-nowrap space-x-10 px-5">
               {[...clients, ...clients, ...clients].map((client: any, idx: number) => (
                 <div key={`cw-${idx}`} className="w-48 h-32 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center p-6 shrink-0">
-                  <img src={`${process.env.NEXT_PUBLIC_API_URL}${client.logo_url}`} className="max-w-full max-h-full object-contain transition-all duration-300" alt="Client Logo" />
+                  <img src={`${client.logo_url?.startsWith('http') ? client.logo_url : process.env.NEXT_PUBLIC_API_URL + client.logo_url}`} className="max-w-full max-h-full object-contain transition-all duration-300" alt="Client Logo" />
                 </div>
               ))}
             </div>
@@ -163,7 +163,7 @@ export default async function AboutPage() {
               <div className="flex w-fit animate-marquee-reverse hover:[animation-play-state:paused] whitespace-nowrap space-x-10 px-5">
                 {[...clients, ...clients, ...clients].reverse().map((client: any, idx: number) => (
                   <div key={`acw-${idx}`} className="w-48 h-32 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center p-6 shrink-0">
-                    <img src={`${process.env.NEXT_PUBLIC_API_URL}${client.logo_url}`} className="max-w-full max-h-full object-contain transition-all duration-300" alt="Client Logo" />
+                    <img src={`${client.logo_url?.startsWith('http') ? client.logo_url : process.env.NEXT_PUBLIC_API_URL + client.logo_url}`} className="max-w-full max-h-full object-contain transition-all duration-300" alt="Client Logo" />
                   </div>
                 ))}
               </div>
@@ -178,7 +178,7 @@ export default async function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="h-[600px] rounded-3xl overflow-hidden shadow-xl bg-gray-900 relative group">
               {settings.about_how_we_work_media ? (
-                <img src={`${process.env.NEXT_PUBLIC_API_URL}${settings.about_how_we_work_media}`} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="How We Work" />
+                <img src={`${settings.about_how_we_work_media?.startsWith('http') ? settings.about_how_we_work_media : process.env.NEXT_PUBLIC_API_URL + settings.about_how_we_work_media}`} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="How We Work" />
               ) : (
                 <div className="w-full h-full bg-gray-200"></div>
               )}
@@ -214,7 +214,7 @@ export default async function AboutPage() {
               <div key={idx} className="border border-gray-200 rounded-3xl p-8 hover:shadow-lg transition-shadow bg-white">
                 {feature.icon ? (
                   <div className="w-12 h-12 bg-meewa-red rounded-xl mb-6 shadow-sm flex items-center justify-center p-2.5">
-                    <img src={feature.icon.startsWith('/') ? `${process.env.NEXT_PUBLIC_API_URL}${feature.icon}` : feature.icon} alt={feature.title} className="w-full h-full object-contain" />
+                    <img src={feature.icon.startsWith('/') ? `${feature.icon?.startsWith('http') ? feature.icon : process.env.NEXT_PUBLIC_API_URL + feature.icon}` : feature.icon} alt={feature.title} className="w-full h-full object-contain" />
                   </div>
                 ) : (
                   <div className="w-12 h-12 bg-meewa-red rounded-xl mb-6 shadow-sm"></div>
