@@ -16,6 +16,8 @@ load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 from database import engine, get_db
 import models, schemas
 from routers import enquiries, settings, admin_auth, admin_categories, admin_products, admin_dashboard, admin_audit, admin_settings
+from utils.dependencies import verify_admin
+from fastapi import Depends
 
 # Initialize tables automatically for local dev (can be disabled when using alembic strictly)
 # models.Base.metadata.create_all(bind=engine)
@@ -48,13 +50,16 @@ app.mount("/uploads", StaticFiles(directory=LOCAL_UPLOAD_DIR), name="uploads")
 app.include_router(enquiries.router)
 app.include_router(settings.router)
 
-# Include Admin Routers
+# Include Admin Routers (Auth is unprotected)
 app.include_router(admin_auth.router, prefix="/admin")
-app.include_router(admin_categories.router, prefix="/admin")
-app.include_router(admin_products.router, prefix="/admin")
-app.include_router(admin_dashboard.router, prefix="/admin")
-app.include_router(admin_audit.router, prefix="/admin")
-app.include_router(admin_settings.router, prefix="/admin")
+
+# Protected Admin Routers
+protected_deps = [Depends(verify_admin)]
+app.include_router(admin_categories.router, prefix="/admin", dependencies=protected_deps)
+app.include_router(admin_products.router, prefix="/admin", dependencies=protected_deps)
+app.include_router(admin_dashboard.router, prefix="/admin", dependencies=protected_deps)
+app.include_router(admin_audit.router, prefix="/admin", dependencies=protected_deps)
+app.include_router(admin_settings.router, prefix="/admin", dependencies=protected_deps)
 
 
 @app.get("/")
