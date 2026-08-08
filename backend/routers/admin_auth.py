@@ -39,8 +39,7 @@ def login(req: LoginRequest, response: Response, db: Session = Depends(get_db)):
         max_age=60 * 24 * 7 * 60, # 7 days in seconds
         secure=True # Required for cross-site cookies in production
     )
-    
-    return {"message": "Logged in successfully"}
+    return {"message": "Logged in successfully", "token": token}
 
 @router.post("/logout")
 def logout(response: Response):

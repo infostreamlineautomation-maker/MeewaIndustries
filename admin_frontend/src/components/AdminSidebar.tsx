@@ -32,6 +32,9 @@ export default function AdminSidebar() {
 
   const handleLogout = async () => {
     await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/auth/logout`, { method: "POST" });
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('admin_token');
+    }
     window.location.href = "/login";
   };
 

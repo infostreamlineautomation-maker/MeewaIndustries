@@ -21,11 +21,15 @@ export default function LoginPage() {
         body: JSON.stringify({ username, password })
       });
 
+      const data = await res.json();
       if (res.ok) {
+        // Save token for cross-domain auth
+        if (data.token) {
+          localStorage.setItem('admin_token', data.token);
+        }
         // Redirect to dashboard on success
         window.location.href = "/";
       } else {
-        const data = await res.json();
         setError(data.detail || "Login failed");
       }
     } catch (err) {
