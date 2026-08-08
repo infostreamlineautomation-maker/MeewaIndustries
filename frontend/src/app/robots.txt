@@ -1,0 +1,15 @@
+User-Agent: *
+Allow: /
+Disallow: /admin
+
+# Allow AI bots explicitly for GEO
+User-Agent: GPTBot
+Allow: /
+User-Agent: ClaudeBot
+Allow: /
+User-Agent: PerplexityBot
+Allow: /
+User-Agent: Google-Extended
+Allow: /
+
+Sitemap: https://meewaindustries.com/sitemap.xml
