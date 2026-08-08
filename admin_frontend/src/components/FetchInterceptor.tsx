@@ -11,7 +11,8 @@ export default function FetchInterceptor() {
       }
       
       // If fetching from our backend API, always include credentials for cookies
-      if (typeof resource === 'string' && resource.includes('localhost:8001')) {
+      const apiUrl = process.env.NEXT_PUBLIC_ADMIN_API_URL || 'localhost:8001';
+      if (typeof resource === 'string' && (resource.includes(apiUrl) || resource.includes('localhost:8001'))) {
         config.credentials = 'include';
       }
       
