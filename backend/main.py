@@ -15,7 +15,7 @@ load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 # Relative imports
 from database import engine, get_db
 import models, schemas
-from routers import enquiries, settings
+from routers import enquiries, settings, admin_auth, admin_categories, admin_products, admin_dashboard, admin_audit, admin_settings
 
 # Initialize tables automatically for local dev (can be disabled when using alembic strictly)
 # models.Base.metadata.create_all(bind=engine)
@@ -25,8 +25,10 @@ app = FastAPI(title="MEEWA B2B API")
 import os
 
 # Parse CORS origins from .env
-cors_origins_str = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:3001,http://127.0.0.1:3000,http://127.0.0.1:3001,http://192.168.29.172:3000,http://192.168.29.172:3001")
-origins = [origin.strip() for origin in cors_origins_str.split(",") if origin.strip()]
+cors_origins_str = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000")
+admin_cors_origins_str = os.getenv("ADMIN_CORS_ORIGINS", "http://localhost:3001,http://127.0.0.1:3001")
+all_origins_str = cors_origins_str + "," + admin_cors_origins_str
+origins = [origin.strip() for origin in all_origins_str.split(",") if origin.strip()]
 
 app.add_middleware(
     CORSMiddleware,
@@ -45,6 +47,15 @@ app.mount("/uploads", StaticFiles(directory=LOCAL_UPLOAD_DIR), name="uploads")
 # Include routers
 app.include_router(enquiries.router)
 app.include_router(settings.router)
+
+# Include Admin Routers
+app.include_router(admin_auth.router, prefix="/admin")
+app.include_router(admin_categories.router, prefix="/admin")
+app.include_router(admin_products.router, prefix="/admin")
+app.include_router(admin_dashboard.router, prefix="/admin")
+app.include_router(admin_audit.router, prefix="/admin")
+app.include_router(admin_settings.router, prefix="/admin")
+
 
 @app.get("/")
 def read_root():
