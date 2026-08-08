@@ -17,6 +17,7 @@ from database import engine, get_db
 import models, schemas
 from routers import enquiries, settings, admin_auth, admin_categories, admin_products, admin_dashboard, admin_audit, admin_settings
 from utils.dependencies import verify_admin
+# pyrefly: ignore [missing-import]
 from fastapi import Depends
 
 # Initialize tables automatically for local dev (can be disabled when using alembic strictly)
