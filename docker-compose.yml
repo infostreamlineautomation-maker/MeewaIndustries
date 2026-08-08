@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root123 # In production, inject via env vars
+      POSTGRES_DB: meewa
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - meewa_net
+
+  minio:
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: secretpassword # In production, inject via env vars
+    volumes:
+      - minio_data:/data
+    networks:
+      - meewa_net
+
+  backend_api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    depends_on:
+      - db
+      - minio
+    environment:
+      DATABASE_URL: "postgresql+psycopg://postgres:root123@db:5432/meewa"
+      STORAGE_PROVIDER: minio
+      MINIO_URL: http://minio:9000
+      MINIO_ACCESS_KEY: admin
+      MINIO_SECRET_KEY: secretpassword
+    networks:
+      - meewa_net
+
+  admin_api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: uvicorn admin_main:app --host 0.0.0.0 --port 8001
+    depends_on:
+      - db
+      - minio
+    environment:
+      DATABASE_URL: "postgresql+psycopg://postgres:root123@db:5432/meewa"
+      STORAGE_PROVIDER: minio
+      MINIO_URL: http://minio:9000
+      MINIO_ACCESS_KEY: admin
+      MINIO_SECRET_KEY: secretpassword
+    networks:
+      - meewa_net
+
+  frontend_web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    depends_on:
+      - backend_api
+    networks:
+      - meewa_net
+
+  admin_web:
+    build:
+      context: ./admin_frontend
+      dockerfile: Dockerfile
+    depends_on:
+      - admin_api
+    networks:
+      - meewa_net
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - frontend_web
+      - admin_web
+      - backend_api
+      - admin_api
+      - minio
+    networks:
+      - meewa_net
+
+volumes:
+  postgres_data:
+  minio_data:
+
+networks:
+  meewa_net:

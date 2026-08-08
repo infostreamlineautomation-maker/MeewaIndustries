@@ -1,0 +1,36 @@
+# Environment variables
+.env
+.env.local
+.env.*
+
+# Python / Backend
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/meewa.db
+backend/uploads/
+.pytest_cache/
+
+# Node.js / Frontends
+node_modules/
+.next/
+out/
+build/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Large Media / Data
+Meewa\ Data/
+*.mp4
+*.mov
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
