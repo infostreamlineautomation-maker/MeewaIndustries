@@ -12,11 +12,11 @@ router = APIRouter(
     tags=["admin_categories"],
 )
 
-@router.get("/", response_model=list[CategoryResponse])
+@router.get("", response_model=list[CategoryResponse])
 def list_categories(db: Session = Depends(get_db)):
     return db.query(Category).all()
 
-@router.post("/", response_model=CategoryResponse)
+@router.post("", response_model=CategoryResponse)
 def create_category(category: CategoryCreate, request: Request, db: Session = Depends(get_db)):
     db_cat = Category(**category.model_dump())
     db.add(db_cat)

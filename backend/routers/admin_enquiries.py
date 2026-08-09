@@ -13,7 +13,7 @@ router = APIRouter(
     tags=["admin_enquiries"]
 )
 
-@router.get("/", response_model=List[schemas.EnquiryResponse])
+@router.get("", response_model=List[schemas.EnquiryResponse])
 def get_enquiries(db: Session = Depends(get_db)):
     return db.query(models.Enquiry).order_by(models.Enquiry.created_at.desc()).all()
 

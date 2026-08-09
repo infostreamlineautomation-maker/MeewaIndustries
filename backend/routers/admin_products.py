@@ -12,11 +12,11 @@ router = APIRouter(
     tags=["admin_products"],
 )
 
-@router.get("/", response_model=list[ProductResponse])
+@router.get("", response_model=list[ProductResponse])
 def list_products(db: Session = Depends(get_db)):
     return db.query(Product).all()
 
-@router.post("/", response_model=ProductResponse)
+@router.post("", response_model=ProductResponse)
 def create_product(product: ProductCreate, request: Request, db: Session = Depends(get_db)):
     db_prod = Product(**product.model_dump())
     db.add(db_prod)

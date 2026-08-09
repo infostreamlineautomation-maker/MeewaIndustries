@@ -10,6 +10,6 @@ router = APIRouter(
     tags=["admin_audit"]
 )
 
-@router.get("/")
+@router.get("")
 def get_audit_logs(db: Session = Depends(get_db)):
     return db.query(models.AuditLog).order_by(models.AuditLog.created_at.desc()).all()

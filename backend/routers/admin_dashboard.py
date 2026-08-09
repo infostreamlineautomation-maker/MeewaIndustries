@@ -13,7 +13,7 @@ router = APIRouter(
     tags=["admin_dashboard"]
 )
 
-@router.get("/")
+@router.get("")
 def get_dashboard_stats(db: Session = Depends(get_db)):
     total_products = db.query(models.Product).count()
     active_categories = db.query(models.Category).count()
