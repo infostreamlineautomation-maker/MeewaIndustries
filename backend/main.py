@@ -31,7 +31,7 @@ import os
 cors_origins_str = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000")
 admin_cors_origins_str = os.getenv("ADMIN_CORS_ORIGINS", "http://localhost:3001,http://127.0.0.1:3001")
 all_origins_str = cors_origins_str + "," + admin_cors_origins_str
-origins = [origin.strip() for origin in all_origins_str.split(",") if origin.strip()]
+origins = [origin.strip().rstrip('/') for origin in all_origins_str.split(",") if origin.strip()]
 
 app.add_middleware(
     CORSMiddleware,
