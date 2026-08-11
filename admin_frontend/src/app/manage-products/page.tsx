@@ -2,49 +2,6 @@
 
 import { useState, useEffect } from "react";
 
-function TagInput({ label, value, onChange, placeholder }: { label: React.ReactNode, value: string[], onChange: (val: string[]) => void, placeholder?: string }) {
-  const [inputValue, setInputValue] = useState("");
-
-  const handleAdd = (e?: React.FormEvent) => {
-    e?.preventDefault();
-    if (inputValue.trim()) {
-      if (!value.includes(inputValue.trim())) {
-        onChange([...value, inputValue.trim()]);
-      }
-      setInputValue("");
-    }
-  };
-
-  const handleRemove = (tagToRemove: string) => {
-    onChange(value.filter(tag => tag !== tagToRemove));
-  };
-
-  return (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-      <div className="flex flex-wrap gap-2 mb-2">
-        {value.map((tag, idx) => (
-          <span key={idx} className="bg-gray-100 border border-gray-200 text-gray-800 px-2 py-1 rounded text-sm flex items-center gap-1">
-            {tag}
-            <button type="button" onClick={() => handleRemove(tag)} className="text-gray-400 hover:text-red-500 font-bold ml-1">&times;</button>
-          </span>
-        ))}
-      </div>
-      <div className="flex gap-2">
-        <input 
-          type="text" 
-          value={inputValue} 
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAdd(); } }}
-          placeholder={placeholder} 
-          className="flex-1 border p-2 rounded text-gray-900" 
-        />
-        <button type="button" onClick={handleAdd} className="bg-meewa-red text-white px-3 py-2 rounded hover:bg-red-700 font-bold">+</button>
-      </div>
-    </div>
-  );
-}
-
 interface Category {
   id: number;
   name: string;
@@ -357,41 +314,10 @@ export default function ManageProductsPage() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1" title="A longer description shown prominently at the top of the product page beneath the title.">Hero Description <span className="text-gray-400 cursor-help font-normal ml-1">ⓘ</span></label>
-            <textarea name="hero_description" value={currentProduct.hero_description || ""} onChange={handleInputChange} rows={4} className="w-full border p-2 rounded text-gray-900" placeholder="e.g. Discover our premium line of sustainable packaging..." />
+            <textarea name="hero_description" value={currentProduct.hero_description || ""} onChange={handleInputChange} rows={4} className="w-full border p-2 rounded text-gray-900" placeholder="Discover premium quality of customizable cups" />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1" title="Minimum Order Quantity displayed on the product page.">MOQ <span className="text-gray-400 cursor-help font-normal ml-1">ⓘ</span></label>
-              <input type="text" name="moq" value={currentProduct.moq || ""} onChange={handleInputChange} placeholder="e.g. 50,000 pcs" className="w-full border p-2 rounded text-gray-900" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1" title="Starting price displayed to customers (e.g. '$0.05 / pc').">Price From <span className="text-gray-400 cursor-help font-normal ml-1">ⓘ</span></label>
-              <input type="text" name="price_from" value={currentProduct.price_from || ""} onChange={handleInputChange} placeholder="e.g. $0.05 / pc" className="w-full border p-2 rounded text-gray-900" />
-            </div>
-          </div>
 
-          <div className="border-t border-gray-200 pt-4 mt-4">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Product Variations</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <TagInput 
-                  label={<span title="List of colors or materials (e.g. 'White, Kraft').">Available Colors/Materials <span className="text-gray-400 cursor-help font-normal ml-1">ⓘ</span></span>}
-                  value={currentProduct.specs?.available_colors || []}
-                  onChange={(val) => setCurrentProduct({ ...currentProduct, specs: { ...currentProduct.specs, available_colors: val } })}
-                  placeholder="e.g. White"
-                />
-              </div>
-              <div>
-                <TagInput 
-                  label={<span title="List of sizes (e.g. '50 ml, 20 oz').">Available Sizes <span className="text-gray-400 cursor-help font-normal ml-1">ⓘ</span></span>}
-                  value={currentProduct.specs?.available_sizes || []}
-                  onChange={(val) => setCurrentProduct({ ...currentProduct, specs: { ...currentProduct.specs, available_sizes: val } })}
-                  placeholder="e.g. 50 ml"
-                />
-              </div>
-            </div>
-          </div>
 
           <div className="border-t pt-4 mt-4">
             <h3 className="text-lg font-medium text-gray-900 mb-4">Product Detail Page (PDP) Settings</h3>
@@ -412,33 +338,28 @@ export default function ManageProductsPage() {
               </div>
             </div>
 
-            <div className="border-t pt-4 mt-4 grid grid-cols-2 gap-4">
+            <div className="border-t pt-4 mt-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Section 1 Banner Image (Parallax Background)</label>
                 <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'section1_image')} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"/>
                 {currentProduct.section1_image && <img src={`${currentProduct.section1_image?.startsWith('http') ? currentProduct.section1_image : process.env.NEXT_PUBLIC_ADMIN_API_URL + currentProduct.section1_image}`} alt="Preview" className="h-16 mt-2 object-contain rounded-md" />}
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Section 2 Image</label>
-                <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'section2_image')} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"/>
-                {currentProduct.section2_image && <img src={`${currentProduct.section2_image?.startsWith('http') ? currentProduct.section2_image : process.env.NEXT_PUBLIC_ADMIN_API_URL + currentProduct.section2_image}`} alt="Preview" className="h-16 mt-2 object-contain rounded-md" />}
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4 mt-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Banner Title</label>
-                <input type="text" name="banner_title" value={currentProduct.banner_title || ""} onChange={handleInputChange} placeholder="e.g. Get your customized coffee cup" className="w-full border p-2 rounded text-gray-900" />
+                <input type="text" name="banner_title" value={currentProduct.banner_title || ""} onChange={handleInputChange} placeholder="Get your customized coffee cup" className="w-full border p-2 rounded text-gray-900" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Banner Subtitle (Paragraph)</label>
-                <textarea name="banner_subtitle" value={currentProduct.banner_subtitle || ""} onChange={handleInputChange} rows={3} placeholder="e.g. Hot, cold, frozen or fresh..." className="w-full border p-2 rounded text-gray-900" />
+                <textarea name="banner_subtitle" value={currentProduct.banner_subtitle || ""} onChange={handleInputChange} rows={3} placeholder={currentProduct.short_description || "Hot, cold, frozen or fresh, our food service packaging works to keep every meal presentable and intact."} className="w-full border p-2 rounded text-gray-900" />
               </div>
             </div>
 
             <div className="mt-4">
               <label className="block text-sm font-medium text-gray-700 mb-1" title="The scrolling text banner shown across the product page. Space separate the words.">Marquee Text (Ticker tape) <span className="text-gray-400 cursor-help font-normal ml-1">ⓘ</span></label>
-              <input type="text" name="marquee_text" value={currentProduct.marquee_text || ""} onChange={handleInputChange} placeholder="e.g. Restaurants Hotels Cafés Bakeries Caterers" className="w-full border p-2 rounded text-gray-900" />
+              <input type="text" name="marquee_text" value={currentProduct.marquee_text || ""} onChange={handleInputChange} placeholder="Restaurants Hotels Cafés Bakeries Caterers Retail Stores Supermarkets Global Importers" className="w-full border p-2 rounded text-gray-900" />
             </div>
 
             <div className="mt-4">

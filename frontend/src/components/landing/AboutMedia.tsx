@@ -23,7 +23,7 @@ export default function AboutMedia({ mediaUrl }: { mediaUrl: string }) {
             />
             {/* Play Button Overlay */}
             <div 
-              className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+              className="absolute inset-0 flex items-center justify-center cursor-pointer group"
               onClick={() => setIsFullScreen(true)}
             >
               <div className="bg-meewa-red text-white rounded-full p-4 transform transition-transform hover:scale-110">

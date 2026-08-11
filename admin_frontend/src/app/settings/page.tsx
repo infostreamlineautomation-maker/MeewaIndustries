@@ -67,15 +67,15 @@ export default function SettingsPage() {
     ])
     .then(([settingsData, auditData]) => {
       setSettings({
-        site_title: settingsData.site_title || "MEEWA",
-        meta_description: settingsData.meta_description || "Premium Quality Export For Global Markets. Manufacturer and supplier of high quality paper cups, bagasse tableware, and packaging.",
-        contact_email: settingsData.contact_email || "info@meewaindustries.com",
+        site_title: settingsData.site_title || "",
+        meta_description: settingsData.meta_description || "",
+        contact_email: settingsData.contact_email || "",
         notification_emails: settingsData.notification_emails || "",
         site_logo_url: settingsData.site_logo_url || "",
         mobile_logo_url: settingsData.mobile_logo_url || "",
         hamburger_logo_url: settingsData.hamburger_logo_url || "",
-        header_text: settingsData.header_text || "Free shipping on bulk orders!",
-        footer_text: settingsData.footer_text || `© ${new Date().getFullYear()} Meewa. All Rights Reserved.`,
+        header_text: settingsData.header_text || "",
+        footer_text: settingsData.footer_text || "",
         smtp_host: settingsData.smtp_host || "",
         smtp_port: settingsData.smtp_port || "587",
         smtp_user: settingsData.smtp_user || "",
@@ -95,13 +95,13 @@ export default function SettingsPage() {
           {label: "Instagram", href: "#"},
           {label: "YouTube", href: "#"}
         ],
-        footer_title: settingsData.footer_title || "Packaging the Future with Sustainable Food Packaging Solutions",
-        footer_subtitle: settingsData.footer_subtitle || "Trusted by importers, wholesalers, distributors, and food service businesses worldwide for premium paper packaging, custom manufacturing, and eco-friendly solutions.",
+        footer_title: settingsData.footer_title || "",
+        footer_subtitle: settingsData.footer_subtitle || "",
         footer_logo_url: settingsData.footer_logo_url || "",
-        footer_phone: settingsData.footer_phone || "773-365-1240",
-        footer_email: settingsData.footer_email || "office@anantagraphics.com",
-        footer_address: settingsData.footer_address || "1425 N McLean Blvd. Elgin, IL",
-        terms_content: settingsData.terms_content || "These are the terms and conditions for using our website.",
+        footer_phone: settingsData.footer_phone || "",
+        footer_email: settingsData.footer_email || "",
+        footer_address: settingsData.footer_address || "",
+        terms_content: settingsData.terms_content || "",
         sitemap_content: settingsData.sitemap_content || "Sitemap coming soon.",
         cookies_content: settingsData.cookies_content || "This website uses cookies to ensure you get the best experience.",
         privacy_content: settingsData.privacy_content || "Privacy policy content goes here."
@@ -266,7 +266,7 @@ export default function SettingsPage() {
               name="header_text"
               value={settings.header_text}
               onChange={handleChange}
-              placeholder="e.g. Free shipping on bulk orders!"
+              placeholder="Free shipping on bulk orders!"
               className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red focus:ring-meewa-red" 
             />
           </div>
@@ -278,7 +278,7 @@ export default function SettingsPage() {
               value={settings.footer_text}
               onChange={handleChange}
               rows={2} 
-              placeholder="e.g. © 2026 MEEWA Industries. All rights reserved."
+              placeholder={`© ${new Date().getFullYear()} Meewa. All Rights Reserved.`}
               className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red focus:ring-meewa-red"
             ></textarea>
           </div>
@@ -322,6 +322,7 @@ export default function SettingsPage() {
                   name="footer_title"
                   value={settings.footer_title}
                   onChange={handleChange}
+                  placeholder="Packaging the Future with Sustainable Food Packaging Solutions"
                   className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red focus:ring-meewa-red" 
                 />
               </div>
@@ -332,6 +333,7 @@ export default function SettingsPage() {
                   value={settings.footer_subtitle}
                   onChange={handleChange}
                   rows={2} 
+                  placeholder="Trusted by importers, wholesalers, distributors, and food service businesses worldwide for premium paper packaging, custom manufacturing, and eco-friendly solutions."
                   className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red focus:ring-meewa-red"
                 ></textarea>
               </div>
@@ -344,6 +346,7 @@ export default function SettingsPage() {
                     name="footer_phone"
                     value={settings.footer_phone}
                     onChange={handleChange}
+                    placeholder="773-365-1240"
                     className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red focus:ring-meewa-red" 
                   />
                 </div>
@@ -354,6 +357,7 @@ export default function SettingsPage() {
                     name="footer_email"
                     value={settings.footer_email}
                     onChange={handleChange}
+                    placeholder="office@anantagraphics.com"
                     className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red focus:ring-meewa-red" 
                   />
                 </div>
@@ -364,6 +368,7 @@ export default function SettingsPage() {
                     name="footer_address"
                     value={settings.footer_address}
                     onChange={handleChange}
+                    placeholder="1425 N McLean Blvd. Elgin, IL"
                     className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red focus:ring-meewa-red" 
                   />
                 </div>
@@ -383,6 +388,7 @@ export default function SettingsPage() {
               name="site_title"
               value={settings.site_title}
               onChange={handleChange}
+              placeholder="MEEWA"
               className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red focus:ring-meewa-red" 
             />
           </div>
@@ -394,6 +400,7 @@ export default function SettingsPage() {
               value={settings.meta_description}
               onChange={handleChange}
               rows={3} 
+              placeholder="Premium Quality Export For Global Markets. Manufacturer and supplier of high quality paper cups, bagasse tableware, and packaging."
               className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red focus:ring-meewa-red"
             ></textarea>
           </div>

@@ -39,9 +39,9 @@ export default function CategoriesPageManagement() {
         setDbProducts(activeProds);
         setSettings({
           categories_hero_image_url: data.categories_hero_image_url || "",
-          categories_why_title: data.categories_why_title || "Why Our Products?",
-          categories_why_subtitle: data.categories_why_subtitle || "Built for Quality, Designed for Performance",
-          categories_custom_banner_title: data.categories_custom_banner_title || "Custom Packaging Banner",
+          categories_why_title: data.categories_why_title || "",
+          categories_why_subtitle: data.categories_why_subtitle || "",
+          categories_custom_banner_title: data.categories_custom_banner_title || "",
         });
 
         const defaultCategories = [
@@ -285,11 +285,11 @@ export default function CategoriesPageManagement() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-              <input type="text" name="categories_why_title" value={settings.categories_why_title} onChange={handleChange} className="w-full border-gray-300 rounded-md p-2 border" />
+              <input type="text" name="categories_why_title" value={settings.categories_why_title} onChange={handleChange} placeholder="Why Our Products?" className="w-full border-gray-300 rounded-md p-2 border" />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Subtitle</label>
-              <input type="text" name="categories_why_subtitle" value={settings.categories_why_subtitle} onChange={handleChange} className="w-full border-gray-300 rounded-md p-2 border" />
+              <input type="text" name="categories_why_subtitle" value={settings.categories_why_subtitle} onChange={handleChange} placeholder="Built for Quality, Designed for Performance" className="w-full border-gray-300 rounded-md p-2 border" />
             </div>
           </div>
 
@@ -322,7 +322,7 @@ export default function CategoriesPageManagement() {
           <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">Custom Packaging Banner</h2>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Banner Title</label>
-            <input type="text" name="categories_custom_banner_title" value={settings.categories_custom_banner_title} onChange={handleChange} className="w-full border-gray-300 rounded-md p-2 border" />
+            <input type="text" name="categories_custom_banner_title" value={settings.categories_custom_banner_title} onChange={handleChange} placeholder="Custom Packaging Banner" className="w-full border-gray-300 rounded-md p-2 border" />
           </div>
           
           <div className="flex flex-wrap gap-4 mb-4 mt-4">

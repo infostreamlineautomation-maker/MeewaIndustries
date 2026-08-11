@@ -101,7 +101,7 @@ export default function ContactSettingsPage() {
                 name="contact_title"
                 value={settings.contact_title || ""}
                 onChange={handleChange}
-                placeholder="e.g. Contact Us"
+                placeholder="Contact Us"
                 className="w-full border border-gray-300 rounded-lg p-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-meewa-red focus:border-meewa-red"
               />
             </div>
@@ -112,7 +112,7 @@ export default function ContactSettingsPage() {
                 value={settings.contact_subtitle || ""}
                 onChange={handleChange}
                 rows={2}
-                placeholder="e.g. Any question or remarks? Just write us a message!"
+                placeholder="Any question or remarks? Just write us a message!"
                 className="w-full border border-gray-300 rounded-lg p-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-meewa-red focus:border-meewa-red"
               />
             </div>

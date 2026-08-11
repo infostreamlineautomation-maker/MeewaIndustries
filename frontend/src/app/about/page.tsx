@@ -48,58 +48,56 @@ export default async function AboutPage() {
       {/* 1. Hero Section */}
       <section className="pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="max-w-xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
+            
+            {/* Left Column */}
+            <div className="flex flex-col justify-center max-w-xl">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight tracking-tight mb-6">
                 {settings.about_hero_title || "Stories built to feel precise, cinematic, and commercially sharp."}
               </h1>
-              <p className="text-xl text-gray-600 leading-relaxed">
-                {settings.about_hero_subtitle || "Leading exporter of high-quality packaging materials for businesses worldwide."}
+              <p className="text-lg md:text-xl text-gray-600 leading-relaxed mb-10">
+                {settings.about_hero_subtitle || "Leading exporter of high-quality packaging materials for businesses worldwide. Delivering innovative, sustainable, and customized packaging solutions with trusted quality."}
               </p>
+
+              {/* Embedded Stats Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {stats.map((stat: any, idx: number) => (
+                  <div 
+                    key={idx} 
+                    className="border border-gray-200 rounded-lg p-4 bg-white hover:border-meewa-red/30 transition-colors"
+                  >
+                    {/* Small icon placeholder */}
+                    <div className="mb-2 text-meewa-red">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    </div>
+                    <h3 className="text-base font-bold text-gray-900 mb-1">{stat.title}</h3>
+                    <p className="text-xs text-gray-500 leading-snug">{stat.subtitle}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="h-[300px] md:h-[500px] rounded-3xl overflow-hidden relative shadow-lg">
+
+            {/* Right Column (Video) */}
+            <div className="h-[400px] lg:h-auto min-h-[500px] rounded-xl overflow-hidden relative shadow-lg">
               {settings.about_hero_media ? (
                 settings.about_hero_media.endsWith('.mp4') ? (
-                  <video src={`${settings.about_hero_media?.startsWith('http') ? settings.about_hero_media : process.env.NEXT_PUBLIC_API_URL + settings.about_hero_media}`} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+                  <video src={`${settings.about_hero_media?.startsWith('http') ? settings.about_hero_media : process.env.NEXT_PUBLIC_API_URL + settings.about_hero_media}`} autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover" />
                 ) : (
-                  <img src={`${settings.about_hero_media?.startsWith('http') ? settings.about_hero_media : process.env.NEXT_PUBLIC_API_URL + settings.about_hero_media}`} alt="Hero" className="w-full h-full object-cover" />
+                  <img src={`${settings.about_hero_media?.startsWith('http') ? settings.about_hero_media : process.env.NEXT_PUBLIC_API_URL + settings.about_hero_media}`} alt="Hero" className="absolute inset-0 w-full h-full object-cover" />
                 )
               ) : (
-                <div className="w-full h-full bg-gray-200"></div>
+                <div className="absolute inset-0 bg-gray-200"></div>
               )}
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* 2. Stats Grid */}
-      <section className="py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {stats.map((stat: any, idx: number) => (
-              <div 
-                key={idx} 
-                className="group relative border border-gray-100 p-6 md:p-10 rounded-2xl bg-white hover:border-transparent hover:shadow-[0_20px_50px_-12px_rgba(206,32,39,0.15)] transition-all duration-500 overflow-hidden transform hover:-translate-y-2"
-              >
-                {/* Background gradient on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                
-                {/* Decorative background element */}
-                <div className="absolute -top-10 -right-10 w-40 h-40 bg-meewa-red/5 rounded-full blur-2xl group-hover:bg-meewa-red/20 transition-all duration-700 pointer-events-none"></div>
-
-                <div className="relative z-10">
-                  <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 group-hover:text-meewa-red transition-colors duration-500 tracking-tight">{stat.title}</h3>
-                  
-                  {/* Expanding divider line */}
-                  <div className="w-12 h-1 bg-meewa-red mb-5 rounded-full group-hover:w-24 transition-all duration-500 ease-out opacity-70 group-hover:opacity-100"></div>
-                  
-                  <p className="text-gray-600 font-medium leading-relaxed group-hover:text-gray-900 transition-colors duration-500">{stat.subtitle}</p>
-                </div>
-                
-                {/* Bottom colored border strip */}
-                <div className="absolute bottom-0 left-0 w-0 h-1.5 bg-meewa-red group-hover:w-full transition-all duration-700 ease-in-out"></div>
+              {/* Text Overlay on Video */}
+              <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+                <div className="text-white/80 text-sm font-medium mb-1">Studio to delivery</div>
+                <h3 className="text-white text-xl md:text-2xl font-bold leading-tight">
+                  Design, production and print aligned end to end.
+                </h3>
               </div>
-            ))}
+            </div>
+
           </div>
         </div>
       </section>
@@ -173,31 +171,39 @@ export default async function AboutPage() {
       )}
 
       {/* 5. How We Work */}
-      <section className="py-24">
+      <section className="pt-24 pb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="h-[300px] md:h-[600px] rounded-3xl overflow-hidden shadow-xl bg-gray-900 relative group">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
+            {/* Left: Video */}
+            <div className="h-[400px] lg:h-auto min-h-[500px] rounded-xl overflow-hidden shadow-lg bg-gray-900 relative group">
               {settings.about_how_we_work_media ? (
-                <img src={`${settings.about_how_we_work_media?.startsWith('http') ? settings.about_how_we_work_media : process.env.NEXT_PUBLIC_API_URL + settings.about_how_we_work_media}`} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="How We Work" />
+                <img src={`${settings.about_how_we_work_media?.startsWith('http') ? settings.about_how_we_work_media : process.env.NEXT_PUBLIC_API_URL + settings.about_how_we_work_media}`} className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="How We Work" />
               ) : (
-                <div className="w-full h-full bg-gray-200"></div>
+                <div className="absolute inset-0 bg-gray-200"></div>
               )}
+              {/* Text Overlay on Video */}
+              <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+                <div className="text-white/80 text-sm font-medium mb-1">Print Excellence</div>
+                <h3 className="text-white text-xl md:text-2xl font-bold leading-tight">
+                  Crafted visuals, flawless finishes and production quality built for modern brands.
+                </h3>
+              </div>
             </div>
             
-            <div>
-              <h4 className="text-meewa-red font-bold text-lg mb-4">How we work</h4>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+            {/* Right: Text + Grid */}
+            <div className="flex flex-col justify-center">
+              <h4 className="text-meewa-red font-bold text-sm mb-3">How we work</h4>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
                 {settings.about_how_we_work_title || "Production-minded design for every brand touch point."}
               </h2>
-              <p className="text-xl text-gray-600 mb-12 leading-relaxed">
+              <p className="text-lg text-gray-600 mb-10 leading-relaxed">
                 {settings.about_how_we_work_desc || "We combine brand strategy, AI assisted production, web experiences and high quality print solutions so every campaign feels considered from first idea to final delivery."}
               </p>
               
-              <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4 mt-auto">
                 {howWeWorkList.map((item: any, idx: number) => (
-                  <div key={idx} className="flex justify-between items-center border border-gray-200 rounded-2xl p-6 hover:shadow-md transition-shadow bg-white">
-                    <span className="text-xl font-bold text-gray-900">{item.title}</span>
-                    <span className="text-gray-400 font-medium">({item.subtitle})</span>
+                  <div key={idx} className="border border-gray-200 rounded-lg p-4 bg-white flex items-center justify-start hover:border-meewa-red/30 transition-colors">
+                    <span className="text-sm md:text-base font-medium text-gray-900">{item.title}</span>
                   </div>
                 ))}
               </div>
@@ -207,20 +213,23 @@ export default async function AboutPage() {
       </section>
 
       {/* 6. Capabilities Grid (Features) */}
-      <section className="py-16">
+      <section className="pb-24 pt-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature: any, idx: number) => (
-              <div key={idx} className="border border-gray-200 rounded-3xl p-8 hover:shadow-lg transition-shadow bg-white">
+              <div key={idx} className="border border-gray-200 rounded-xl p-6 bg-white hover:shadow-md transition-shadow">
                 {feature.icon ? (
-                  <div className="w-12 h-12 bg-meewa-red rounded-xl mb-6 shadow-sm flex items-center justify-center p-2.5">
+                  <div className="w-10 h-10 bg-meewa-red rounded-lg mb-4 shadow-sm flex items-center justify-center p-2">
                     <img src={feature.icon.startsWith('/') ? `${feature.icon?.startsWith('http') ? feature.icon : process.env.NEXT_PUBLIC_API_URL + feature.icon}` : feature.icon} alt={feature.title} className="w-full h-full object-contain" />
                   </div>
                 ) : (
-                  <div className="w-12 h-12 bg-meewa-red rounded-xl mb-6 shadow-sm"></div>
+                  <div className="w-10 h-10 bg-meewa-red rounded-lg mb-4 shadow-sm flex items-center justify-center">
+                    {/* Fallback Icon */}
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                  </div>
                 )}
-                <h3 className="text-xl font-bold text-gray-900 mb-4">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed text-sm">
+                <h3 className="text-base font-bold text-gray-900 mb-2">{feature.title}</h3>
+                <p className="text-gray-500 leading-relaxed text-xs">
                   {feature.description}
                 </p>
               </div>

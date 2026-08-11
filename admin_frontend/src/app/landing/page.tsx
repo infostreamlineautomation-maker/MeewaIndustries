@@ -46,14 +46,14 @@ export default function LandingPageManagement() {
       .then(([data, productsData]) => {
         setProducts(productsData || []);
         setSettings({
-          hero_title: data.hero_title || "Premium Paper Packaging",
-          hero_subtitle: data.hero_subtitle || "Sustainable, high-quality disposable food packaging solutions.",
-          hero_tagline: data.hero_tagline || "Premium Paper Packaging. Sustainable, high-quality disposable food packaging solutions.",
+          hero_title: data.hero_title || "",
+          hero_subtitle: data.hero_subtitle || "",
+          hero_tagline: data.hero_tagline || "",
           hero_image_url: data.hero_image_url || "",
-          about_title: data.about_title || "About Company",
-          about_subtitle: data.about_subtitle || "Your Trusted Disposable Food Packaging Export Partner",
+          about_title: data.about_title || "",
+          about_subtitle: data.about_subtitle || "",
           about_media_url: data.about_media_url || "",
-          about_center_text: data.about_center_text || "GLOBAL SUPPLY CHAIN NETWORK",
+          about_center_text: data.about_center_text || "",
           industries_image_1: data.industries_image_1 || "",
           industries_image_2: data.industries_image_2 || "",
           industries_image_3: data.industries_image_3 || "",
@@ -62,10 +62,10 @@ export default function LandingPageManagement() {
           contact_email: data.contact_email || "",
           contact_address: data.contact_address || "",
           contact_whatsapp: data.contact_whatsapp || "",
-          industries_title: data.industries_title || "Industries We Serve",
-          industries_subtitle: data.industries_subtitle || "Food Packaging Solutions\nfor Every Industry",
-          export_title: data.export_title || "Export Process",
-          export_subtitle: data.export_subtitle || "We make international sourcing easy with a transparent export process.",
+          industries_title: data.industries_title || "",
+          industries_subtitle: data.industries_subtitle || "",
+          export_title: data.export_title || "",
+          export_subtitle: data.export_subtitle || "",
           export_process_media_url: data.export_process_media_url || "",
           landing_featured_products: data.landing_featured_products || [],
         });
@@ -291,7 +291,7 @@ export default function LandingPageManagement() {
                 name="hero_title"
                 value={settings.hero_title}
                 onChange={handleChange}
-                placeholder="e.g. Welcome to MEEWA Industries"
+                placeholder="Premium Paper Packaging"
                 className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
               />
             </div>
@@ -303,7 +303,7 @@ export default function LandingPageManagement() {
                 value={settings.hero_subtitle}
                 onChange={handleChange}
                 rows={3}
-                placeholder="e.g. The best platform for B2B wholesale."
+                placeholder="Sustainable, high-quality disposable food packaging solutions."
                 className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red"
               ></textarea>
             </div>
@@ -315,7 +315,7 @@ export default function LandingPageManagement() {
                 value={settings.hero_tagline}
                 onChange={handleChange}
                 rows={2} 
-                placeholder="e.g. Premium Paper Packaging. Sustainable, high-quality disposable food packaging solutions."
+                placeholder="Premium Paper Packaging. Sustainable, high-quality disposable food packaging solutions."
                 className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red"
               ></textarea>
             </div>
@@ -427,7 +427,7 @@ export default function LandingPageManagement() {
                   name="industries_subtitle"
                   value={settings.industries_subtitle}
                   onChange={handleChange}
-                  placeholder="e.g. We Serve:"
+                  placeholder="Industries We Serve"
                   className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
                 />
               </div>
@@ -501,7 +501,7 @@ export default function LandingPageManagement() {
                   name="export_title"
                   value={settings.export_title}
                   onChange={handleChange}
-                  placeholder="e.g. Export Process"
+                  placeholder="Export Process"
                   className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
                 />
               </div>
@@ -512,7 +512,7 @@ export default function LandingPageManagement() {
                   name="export_subtitle"
                   value={settings.export_subtitle}
                   onChange={handleChange}
-                  placeholder="e.g. We make international sourcing easy with a transparent export process."
+                  placeholder="We make international sourcing easy with a transparent export process."
                   className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
                 />
               </div>
@@ -654,7 +654,7 @@ export default function LandingPageManagement() {
                 name="about_title"
                 value={settings.about_title}
                 onChange={handleChange}
-                placeholder="e.g. About Company"
+                placeholder="About Company"
                 className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
               />
             </div>
@@ -666,7 +666,7 @@ export default function LandingPageManagement() {
                 value={settings.about_subtitle}
                 onChange={handleChange}
                 rows={2}
-                placeholder="e.g. Your Trusted Disposable Food Packaging Export Partner"
+                placeholder="Your Trusted Disposable Food Packaging Export Partner"
                 className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red"
               ></textarea>
             </div>
@@ -678,7 +678,7 @@ export default function LandingPageManagement() {
                 name="about_center_text"
                 value={settings.about_center_text}
                 onChange={handleChange}
-                placeholder="e.g. GLOBAL SUPPLY CHAIN NETWORK"
+                placeholder="GLOBAL SUPPLY CHAIN NETWORK"
                 className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
               />
             </div>

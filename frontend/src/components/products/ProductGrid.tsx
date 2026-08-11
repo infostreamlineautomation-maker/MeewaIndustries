@@ -22,7 +22,8 @@ export default function ProductGrid({ products }: { products: any[] }) {
     <section className="pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
       <h2 className="text-4xl md:text-5xl font-bold text-meewa-red text-center mb-16 pt-10">Our Products</h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 min-h-[800px]">
+      <div className="relative">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12 min-h-[800px]">
         {currentProducts.map((prod: any) => (
           <Link href={`/products/${prod.slug || '#'}`} key={prod.id} className="flex flex-col group cursor-pointer">
             <div className="w-full aspect-[4/5] bg-gray-100 rounded-3xl overflow-hidden mb-4 shadow-sm group-hover:shadow-lg transition-shadow border border-gray-200 relative">
@@ -37,26 +38,30 @@ export default function ProductGrid({ products }: { products: any[] }) {
         ))}
       </div>
 
-      {/* Floating Pagination Arrows */}
-      {totalPages > 1 && (
-        <>
-          <button 
-            onClick={handlePrevPage}
-            className="fixed left-4 top-1/2 -translate-y-1/2 z-50 bg-white shadow-xl border border-gray-100 rounded-full w-14 h-14 flex items-center justify-center text-gray-500 hover:text-meewa-red hover:scale-110 transition-all opacity-80 hover:opacity-100 hidden md:flex"
-            aria-label="Previous Page"
-          >
-            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7"></path></svg>
-          </button>
-          
-          <button 
-            onClick={handleNextPage}
-            className="fixed right-4 top-1/2 -translate-y-1/2 z-50 bg-white shadow-xl border border-gray-100 rounded-full w-14 h-14 flex items-center justify-center text-gray-500 hover:text-meewa-red hover:scale-110 transition-all opacity-80 hover:opacity-100 hidden md:flex"
-            aria-label="Next Page"
-          >
-            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7"></path></svg>
-          </button>
+          {/* Floating Pagination Arrows */}
+          {totalPages > 1 && (
+            <>
+              <button 
+                onClick={handlePrevPage}
+                className="absolute -left-4 md:-left-12 lg:-left-20 xl:-left-24 top-1/2 -translate-y-1/2 z-10 bg-white shadow-xl border border-gray-100 rounded-full w-14 h-14 flex items-center justify-center text-gray-500 hover:text-meewa-red hover:scale-110 transition-all opacity-80 hover:opacity-100 hidden md:flex"
+                aria-label="Previous Page"
+              >
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7"></path></svg>
+              </button>
+              
+              <button 
+                onClick={handleNextPage}
+                className="absolute -right-4 md:-right-12 lg:-right-20 xl:-right-24 top-1/2 -translate-y-1/2 z-10 bg-white shadow-xl border border-gray-100 rounded-full w-14 h-14 flex items-center justify-center text-gray-500 hover:text-meewa-red hover:scale-110 transition-all opacity-80 hover:opacity-100 hidden md:flex"
+                aria-label="Next Page"
+              >
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7"></path></svg>
+              </button>
+            </>
+          )}
+      </div>
 
-          {/* Mobile Pagination (Below grid) */}
+      {/* Mobile Pagination (Below grid) */}
+      {totalPages > 1 && (
           <div className="flex justify-center items-center mt-12 gap-4 md:hidden">
             <button 
               onClick={handlePrevPage}
@@ -72,8 +77,8 @@ export default function ProductGrid({ products }: { products: any[] }) {
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
             </button>
           </div>
-        </>
       )}
     </section>
   );
 }
+

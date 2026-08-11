@@ -7,6 +7,15 @@ import { useState, useEffect } from "react";
 export default function AdminSidebar() {
   const pathname = usePathname();
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({
+    page_settings: true,
+    db_settings: true,
+    global_settings: true,
+  });
+
+  const toggleMenu = (menu: string) => {
+    setOpenMenus((prev) => ({ ...prev, [menu]: !prev[menu] }));
+  };
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings`)
@@ -28,6 +37,13 @@ export default function AdminSidebar() {
       isActive(path) 
         ? "bg-meewa-red text-white shadow-md" 
         : "text-gray-600 hover:bg-red-50 hover:text-meewa-red"
+    }`;
+
+  const navDropdownItemClass = (path: string) => 
+    `block px-4 py-2 mt-1 rounded-lg text-sm font-medium transition-all duration-200 ${
+      isActive(path) 
+        ? "bg-red-50 text-meewa-red font-bold" 
+        : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
     }`;
 
   const handleLogout = async () => {
@@ -55,37 +71,56 @@ export default function AdminSidebar() {
         <Link href="/" className={navItemClass("/")}>
           Dashboard
         </Link>
-        <Link href="/landing" className={navItemClass("/landing")}>
-          Landing Page
-        </Link>
-        <Link href="/about" className={navItemClass("/about")}>
-          About Us Page
-        </Link>
-        <div className="px-4 py-2 pt-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Database CRUD</div>
-        <Link href="/manage-categories" className={navItemClass("/manage-categories")}>
-          Manage Categories
-        </Link>
-        <Link href="/manage-products" className={navItemClass("/manage-products")}>
-          Manage Products
-        </Link>
-        <div className="px-4 py-2 pt-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Page Settings</div>
-        <Link href="/categories" className={navItemClass("/categories")}>
-          Products Page
-        </Link>
         <Link href="/enquiries" className={navItemClass("/enquiries")}>
           Enquiries
         </Link>
-        <Link href="/contact" className={navItemClass("/contact")}>
-          Contact Us
-        </Link>
-        <Link href="/settings" className={navItemClass("/settings")}>
-          Global Settings
-        </Link>
-        <Link href="/profile" className={navItemClass("/profile")}>
-          My Profile
-        </Link>
+
+        {/* Page Settings Dropdown */}
+        <div>
+          <button onClick={() => toggleMenu("page_settings")} className="w-full flex items-center justify-between px-4 py-3 rounded-lg font-medium text-gray-700 hover:bg-gray-100 transition-colors">
+            <span>Page Settings</span>
+            <span className="text-xs text-gray-400">{openMenus.page_settings ? "▲" : "▼"}</span>
+          </button>
+          {openMenus.page_settings && (
+            <div className="pl-4 border-l-2 border-gray-100 ml-4 mt-1 space-y-1">
+              <Link href="/landing" className={navDropdownItemClass("/landing")}>Landing Page</Link>
+              <Link href="/about" className={navDropdownItemClass("/about")}>About Us Page</Link>
+              <Link href="/categories" className={navDropdownItemClass("/categories")}>Products Page</Link>
+              <Link href="/contact" className={navDropdownItemClass("/contact")}>Contact Us</Link>
+            </div>
+          )}
+        </div>
+
+        {/* DB Settings Dropdown */}
+        <div>
+          <button onClick={() => toggleMenu("db_settings")} className="w-full flex items-center justify-between px-4 py-3 rounded-lg font-medium text-gray-700 hover:bg-gray-100 transition-colors">
+            <span>DB Settings</span>
+            <span className="text-xs text-gray-400">{openMenus.db_settings ? "▲" : "▼"}</span>
+          </button>
+          {openMenus.db_settings && (
+            <div className="pl-4 border-l-2 border-gray-100 ml-4 mt-1 space-y-1">
+              <Link href="/manage-categories" className={navDropdownItemClass("/manage-categories")}>Manage Categories</Link>
+              <Link href="/manage-products" className={navDropdownItemClass("/manage-products")}>Manage Products</Link>
+            </div>
+          )}
+        </div>
+
+        {/* Global Settings Dropdown */}
+        <div>
+          <button onClick={() => toggleMenu("global_settings")} className="w-full flex items-center justify-between px-4 py-3 rounded-lg font-medium text-gray-700 hover:bg-gray-100 transition-colors">
+            <span>Global Settings</span>
+            <span className="text-xs text-gray-400">{openMenus.global_settings ? "▲" : "▼"}</span>
+          </button>
+          {openMenus.global_settings && (
+            <div className="pl-4 border-l-2 border-gray-100 ml-4 mt-1 space-y-1">
+              <Link href="/settings" className={navDropdownItemClass("/settings")}>Global Settings</Link>
+              <Link href="/profile" className={navDropdownItemClass("/profile")}>Admin Profile</Link>
+            </div>
+          )}
+        </div>
+
         <Link href="/audit-logs" className={navItemClass("/audit-logs")}>
-          Audit Logs
+          Log Audit
         </Link>
       </nav>
 

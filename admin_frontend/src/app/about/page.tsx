@@ -33,19 +33,19 @@ export default function AboutPageManagement() {
       .then(res => res.json())
       .then(data => {
         setSettings({
-          about_hero_title: data.about_hero_title || "Stories built to feel precise, cinematic, and commercially sharp.",
-          about_hero_subtitle: data.about_hero_subtitle || "Leading exporter of high-quality packaging materials for businesses worldwide.",
+          about_hero_title: data.about_hero_title || "",
+          about_hero_subtitle: data.about_hero_subtitle || "",
           about_hero_media: data.about_hero_media || "",
-          about_vision_title: data.about_vision_title || "Our Vision",
-          about_vision_subtitle: data.about_vision_subtitle || "See beyond the brief",
-          about_vision_desc: data.about_vision_desc || "To become a global leader in sustainable packaging solutions through innovation, quality, and customer-focused manufacturing.\n\nWe aim to empower businesses worldwide with eco-friendly, high-performance packaging materials that drive growth and environmental responsibility.",
+          about_vision_title: data.about_vision_title || "",
+          about_vision_subtitle: data.about_vision_subtitle || "",
+          about_vision_desc: data.about_vision_desc || "",
           about_vision_icon: data.about_vision_icon || "",
-          about_mission_title: data.about_mission_title || "Our Mission",
-          about_mission_subtitle: data.about_mission_subtitle || "Deliver with precision",
-          about_mission_desc: data.about_mission_desc || "To deliver high-quality packaging materials and custom manufacturing solutions that help businesses grow.\n\nWe are committed to innovation, ethical practices, sustainable packaging, and exceptional customer satisfaction to build long-term partnerships worldwide.",
+          about_mission_title: data.about_mission_title || "",
+          about_mission_subtitle: data.about_mission_subtitle || "",
+          about_mission_desc: data.about_mission_desc || "",
           about_mission_icon: data.about_mission_icon || "",
-          about_how_we_work_title: data.about_how_we_work_title || "Production-minded design for every brand touch point.",
-          about_how_we_work_desc: data.about_how_we_work_desc || "We combine brand strategy, AI assisted production, web experiences and high quality print solutions so every campaign feels considered from first idea to final delivery.",
+          about_how_we_work_title: data.about_how_we_work_title || "",
+          about_how_we_work_desc: data.about_how_we_work_desc || "",
           about_how_we_work_media: data.about_how_we_work_media || "",
         });
 
@@ -261,11 +261,11 @@ export default function AboutPageManagement() {
           <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">Hero Section</h2>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Hero Title</label>
-            <textarea name="about_hero_title" value={settings.about_hero_title} onChange={handleChange} rows={2} className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red"></textarea>
+            <textarea name="about_hero_title" value={settings.about_hero_title} onChange={handleChange} rows={2} placeholder="Stories built to feel precise, cinematic, and commercially sharp." className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red"></textarea>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Hero Subtitle</label>
-            <textarea name="about_hero_subtitle" value={settings.about_hero_subtitle} onChange={handleChange} rows={2} className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red"></textarea>
+            <textarea name="about_hero_subtitle" value={settings.about_hero_subtitle} onChange={handleChange} rows={2} placeholder="Leading exporter of high-quality packaging materials for businesses worldwide." className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red"></textarea>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Hero Image/Video</label>
@@ -326,15 +326,15 @@ export default function AboutPageManagement() {
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">Subtitle (e.g. See beyond the brief)</label>
-                <input type="text" name="about_vision_subtitle" value={settings.about_vision_subtitle} onChange={handleChange} className="w-full border-gray-300 rounded-md p-2 border" />
+                <input type="text" name="about_vision_subtitle" value={settings.about_vision_subtitle} onChange={handleChange} placeholder="See beyond the brief" className="w-full border-gray-300 rounded-md p-2 border" />
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">Title (e.g. Our Vision)</label>
-                <input type="text" name="about_vision_title" value={settings.about_vision_title} onChange={handleChange} className="w-full border-gray-300 rounded-md p-2 border" />
+                <input type="text" name="about_vision_title" value={settings.about_vision_title} onChange={handleChange} placeholder="Our Vision" className="w-full border-gray-300 rounded-md p-2 border" />
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">Description</label>
-                <textarea name="about_vision_desc" value={settings.about_vision_desc} onChange={handleChange} rows={4} className="w-full border-gray-300 rounded-md p-2 border"></textarea>
+                <textarea name="about_vision_desc" value={settings.about_vision_desc} onChange={handleChange} rows={4} placeholder="To become a global leader in sustainable packaging solutions..." className="w-full border-gray-300 rounded-md p-2 border"></textarea>
               </div>
             </div>
             
@@ -355,15 +355,15 @@ export default function AboutPageManagement() {
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">Subtitle (e.g. Deliver with precision)</label>
-                <input type="text" name="about_mission_subtitle" value={settings.about_mission_subtitle} onChange={handleChange} className="w-full border-gray-300 rounded-md p-2 border" />
+                <input type="text" name="about_mission_subtitle" value={settings.about_mission_subtitle} onChange={handleChange} placeholder="Deliver with precision" className="w-full border-gray-300 rounded-md p-2 border" />
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">Title (e.g. Our Mission)</label>
-                <input type="text" name="about_mission_title" value={settings.about_mission_title} onChange={handleChange} className="w-full border-gray-300 rounded-md p-2 border" />
+                <input type="text" name="about_mission_title" value={settings.about_mission_title} onChange={handleChange} placeholder="Our Mission" className="w-full border-gray-300 rounded-md p-2 border" />
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">Description</label>
-                <textarea name="about_mission_desc" value={settings.about_mission_desc} onChange={handleChange} rows={4} className="w-full border-gray-300 rounded-md p-2 border"></textarea>
+                <textarea name="about_mission_desc" value={settings.about_mission_desc} onChange={handleChange} rows={4} placeholder="To deliver high-quality packaging materials..." className="w-full border-gray-300 rounded-md p-2 border"></textarea>
               </div>
             </div>
           </div>
@@ -394,11 +394,11 @@ export default function AboutPageManagement() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-            <textarea name="about_how_we_work_title" value={settings.about_how_we_work_title} onChange={handleChange} rows={2} className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red"></textarea>
+            <textarea name="about_how_we_work_title" value={settings.about_how_we_work_title} onChange={handleChange} rows={2} placeholder="Production-minded design for every brand touch point." className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red"></textarea>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <textarea name="about_how_we_work_desc" value={settings.about_how_we_work_desc} onChange={handleChange} rows={3} className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red"></textarea>
+            <textarea name="about_how_we_work_desc" value={settings.about_how_we_work_desc} onChange={handleChange} rows={3} placeholder="We combine brand strategy, AI assisted production, web experiences and high quality print solutions so every campaign feels considered from first idea to final delivery." className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red"></textarea>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Media</label>

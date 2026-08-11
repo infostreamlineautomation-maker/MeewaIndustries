@@ -48,8 +48,6 @@ export default function AnimatedTagline({ text }: { text: string }) {
           {word}
         </motion.span>
       ))}
-      {/* Animated Underline Effect */}
-      <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-white transition-all duration-300 ease-out group-hover:w-full"></span>
     </motion.h2>
   );
 }
