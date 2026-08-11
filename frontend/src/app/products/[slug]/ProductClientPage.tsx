@@ -93,7 +93,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
           />
 
           {/* Section 0: Title (Behind Banner) */}
-          <div className="w-full h-auto pb-12 md:pb-0 md:h-[200vh]">
+          <div className="w-full h-auto pb-12 md:pb-0 md:h-[calc(200vh-20rem)]">
             <div className="md:sticky top-0 pt-32 md:pt-56 px-6 md:px-24 lg:px-32 md:h-screen flex flex-col justify-start z-10">
               <h1 className="text-5xl md:text-8xl lg:text-9xl font-black text-black leading-[1.1] tracking-tighter mb-6 mt-16 md:mt-0">
                 {product?.name || "Food Service"}
@@ -112,7 +112,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
           </div>
 
           {/* Banner Image Container */}
-          <div id="banner-container" className="relative w-full overflow-hidden shadow-2xl bg-black z-20 md:-mt-[calc(100vh+8rem)]">
+          <div id="banner-container" className="relative w-full overflow-hidden shadow-2xl bg-black z-20 md:-mt-[calc(100vh-12rem)]">
             {product?.section1_image ? (
               <img src={`${product.section1_image?.startsWith('http') ? product.section1_image : process.env.NEXT_PUBLIC_API_URL + product.section1_image}`} alt="Banner" className="absolute inset-0 w-full h-full object-cover" />
             ) : (
@@ -154,7 +154,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
           </div>
 
           {/* Section 0.5: Discover Text (Absolute, ON TOP of Banner, Pure White, Clipped) */}
-          <div className="absolute top-0 left-0 w-full h-[200vh] pointer-events-none z-50 hidden md:block">
+          <div className="absolute top-0 left-0 w-full h-[calc(200vh-20rem)] pointer-events-none z-50 hidden md:block">
             <div className="w-full h-full" style={{ clipPath: "inset(calc(100vh - 8rem) 0 0 0)" }}>
               <div className="sticky top-0 pt-48 md:pt-56 px-6 md:px-24 lg:px-32 h-screen flex flex-col justify-start">
                 <h1 className="text-5xl md:text-8xl lg:text-9xl font-black leading-[1.1] tracking-tighter mb-6 opacity-0">
