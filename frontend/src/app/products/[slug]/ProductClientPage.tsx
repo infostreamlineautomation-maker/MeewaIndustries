@@ -83,7 +83,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
         </div>
 
         {/* Scrolling Content Sections */}
-        <div className="relative -mt-[100vh]">
+        <div className="relative md:-mt-[100vh]">
           
           {/* Invisible Trigger for Section 0 */}
           <motion.div 
@@ -93,17 +93,17 @@ export default function ProductClientPage({ product, relatedProducts, settings }
           />
 
           {/* Section 0: Title (Behind Banner) */}
-          <div className="h-[150vh] w-full">
-            <div className="sticky top-0 pt-48 md:pt-56 px-6 md:px-24 lg:px-32 h-screen flex flex-col justify-start z-10">
-              <h1 className="text-5xl md:text-8xl lg:text-9xl font-black text-black leading-[1.1] tracking-tighter mb-6">
+          <div className="w-full h-auto pb-12 md:pb-0 md:h-[200vh]">
+            <div className="md:sticky top-0 pt-32 md:pt-56 px-6 md:px-24 lg:px-32 md:h-screen flex flex-col justify-start z-10">
+              <h1 className="text-5xl md:text-8xl lg:text-9xl font-black text-black leading-[1.1] tracking-tighter mb-6 mt-16 md:mt-0">
                 {product?.name || "Food Service"}
               </h1>
               <h2 className="text-xl md:text-2xl font-extrabold text-black leading-tight max-w-sm">
                 {product?.hero_description || "Discover premium quality of customizable cups"}
               </h2>
-              
-              {/* Mobile Static Image */}
-              <div className="block md:hidden mt-10 w-full max-w-[250px] mx-auto pointer-events-none">
+
+              {/* Mobile Static Image (Top) */}
+              <div className="block md:hidden mt-8 w-full max-w-[250px] mx-auto pointer-events-none">
                 {heroImage && (
                   <img src={heroImage} alt="Product" className="w-full h-auto drop-shadow-2xl mix-blend-multiply" />
                 )}
@@ -112,7 +112,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
           </div>
 
           {/* Banner Image Container */}
-          <div id="banner-container" className="relative w-full -mt-[calc(50vh+5rem)] md:-mt-[calc(50vh+8rem)] overflow-hidden shadow-2xl bg-black z-20">
+          <div id="banner-container" className="relative w-full overflow-hidden shadow-2xl bg-black z-20 md:-mt-[calc(100vh+8rem)]">
             {product?.section1_image ? (
               <img src={`${product.section1_image?.startsWith('http') ? product.section1_image : process.env.NEXT_PUBLIC_API_URL + product.section1_image}`} alt="Banner" className="absolute inset-0 w-full h-full object-cover" />
             ) : (
@@ -154,8 +154,8 @@ export default function ProductClientPage({ product, relatedProducts, settings }
           </div>
 
           {/* Section 0.5: Discover Text (Absolute, ON TOP of Banner, Pure White, Clipped) */}
-          <div className="absolute top-0 left-0 w-full h-[150vh] pointer-events-none z-50">
-            <div className="w-full h-full block md:hidden" style={{ clipPath: "inset(calc(100vh - 5rem) 0 0 0)" }}>
+          <div className="absolute top-0 left-0 w-full h-[200vh] pointer-events-none z-50 hidden md:block">
+            <div className="w-full h-full" style={{ clipPath: "inset(calc(100vh - 8rem) 0 0 0)" }}>
               <div className="sticky top-0 pt-48 md:pt-56 px-6 md:px-24 lg:px-32 h-screen flex flex-col justify-start">
                 <h1 className="text-5xl md:text-8xl lg:text-9xl font-black leading-[1.1] tracking-tighter mb-6 opacity-0">
                   {product?.name || "Food Service"}
@@ -163,25 +163,17 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                 <h2 className="text-xl md:text-2xl font-extrabold leading-tight text-white max-w-sm drop-shadow-md">
                   {product?.hero_description || "Discover premium quality of customizable cups"}
                 </h2>
+              </div>
+            </div>
+          </div>
 
-                {/* Mobile Static Image (White Text Reveal Layer) */}
-                <div className="block md:hidden mt-10 w-full max-w-[250px] mx-auto pointer-events-none">
-                  {heroImage && (
-                    <img src={heroImage} alt="Product" className="w-full h-auto drop-shadow-2xl mix-blend-multiply brightness-0 invert" />
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="w-full h-full hidden md:block" style={{ clipPath: "inset(calc(100vh - 8rem) 0 0 0)" }}>
-              <div className="sticky top-0 pt-48 md:pt-56 px-6 md:px-24 lg:px-32 h-screen flex flex-col justify-start">
-                <h1 className="text-5xl md:text-8xl lg:text-9xl font-black leading-[1.1] tracking-tighter mb-6 opacity-0">
-                  {product?.name || "Food Service"}
-                </h1>
-                <h2 className="text-xl md:text-2xl font-extrabold leading-tight text-white max-w-sm drop-shadow-md">
-                  {product?.hero_description || "Discover premium quality of customizable cups"}
-                </h2>
-              </div>
-            </div>
+          {/* Mobile Static Image (Positioned at bottom of banner) */}
+          <div className="block md:hidden relative w-full h-0 z-30 flex justify-center pointer-events-none">
+             <div className="absolute top-0 -translate-y-1/2 w-48 h-48 drop-shadow-2xl">
+               {heroImage && (
+                  <img src={heroImage} alt="Product" className="w-full h-full object-contain mix-blend-multiply" />
+               )}
+             </div>
           </div>
 
           {/* Section 3: Dual Marquee Section */}

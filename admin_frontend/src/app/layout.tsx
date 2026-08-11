@@ -9,7 +9,7 @@ import AdminHeaderActions from "@/components/AdminHeaderActions";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MEEWA Admin Dashboard",
+  title: "Meewa Industries Admin Dashboard",
   description: "Internal portal for managing MEEWA Industries platform",
 };
 

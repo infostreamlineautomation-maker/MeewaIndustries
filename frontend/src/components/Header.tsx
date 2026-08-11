@@ -63,7 +63,11 @@ export default function Header() {
   const isProductDetailPage = pathname.match(/^\/products\/[^/]+$/);
 
   useEffect(() => {
-    // Removed scroll logic
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
@@ -94,10 +98,10 @@ export default function Header() {
 
   return (
     <>
-      <header className={`${isProductDetailPage ? 'absolute' : 'fixed'} w-full z-50 pt-8 top-0 left-0 transition-all duration-300`}>
+      <header className={`${isProductDetailPage ? 'fixed md:absolute' : 'fixed'} w-full z-50 pt-4 md:pt-8 top-0 left-0 transition-all duration-300 pointer-events-none`}>
         <div className="max-w-4xl mx-auto px-4 relative flex justify-center">
           {/* Desktop Pill Background / Mobile Transparent Header */}
-          <div className="bg-transparent md:bg-meewa-red rounded-none md:rounded-full flex items-center justify-between md:justify-center gap-4 md:gap-10 h-14 px-2 md:px-6 shadow-none md:shadow-xl md:shadow-red-500/20 w-full md:w-fit">
+          <div className="bg-transparent md:bg-meewa-red rounded-none md:rounded-full flex items-center justify-between md:justify-center gap-4 md:gap-10 h-14 px-2 md:px-6 shadow-none md:shadow-xl md:shadow-red-500/20 w-full md:w-fit pointer-events-auto">
             
             {/* Mobile Hamburger Button */}
             <button 
@@ -116,14 +120,12 @@ export default function Header() {
             {/* Mobile Horizontal Logo */}
             <Link 
               href="/" 
-              className={`md:hidden flex items-center h-full transition-opacity duration-200 ${isMobileMenuOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`} 
+              className={`md:hidden flex items-center h-full transition-all duration-300 ${(isMobileMenuOpen || isScrolled) ? 'opacity-0 pointer-events-none -translate-y-10' : 'opacity-100 translate-y-0'}`} 
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {(mobileLogoUrl || footerLogoUrl || logoUrl) ? (
                 <img src={(mobileLogoUrl || footerLogoUrl || logoUrl)!} alt="MEEWA Logo" className="h-7 object-contain" />
-              ) : (
-                <span className="text-xl font-bold tracking-widest leading-none text-meewa-red drop-shadow-md">MEEWA</span>
-              )}
+              ) : null}
             </Link>
 
             {/* Left Navigation (Desktop) */}
@@ -152,7 +154,7 @@ export default function Header() {
           </div>
 
           {/* Floating Circular Logo */}
-          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="hidden md:flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full w-20 h-20 md:w-24 md:h-24 flex-col items-center justify-center shadow-xl shadow-red-500/10 border-4 border-white overflow-hidden hover:scale-110 transition-transform duration-300 z-50">
+          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="hidden md:flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full w-20 h-20 md:w-24 md:h-24 flex-col items-center justify-center shadow-xl shadow-red-500/10 border-4 border-white overflow-hidden hover:scale-110 transition-transform duration-300 z-50 pointer-events-auto">
             {logoUrl ? (
               <img src={logoUrl} alt="MEEWA Logo" className="w-full h-full object-contain p-2" />
             ) : (
@@ -177,9 +179,7 @@ export default function Header() {
         <div className="mb-8">
           {(hamburgerLogoUrl || footerLogoUrl || logoUrl) ? (
             <img src={(hamburgerLogoUrl || footerLogoUrl || logoUrl)!} alt="MEEWA Logo" className="h-10 object-contain" />
-          ) : (
-            <span className="text-2xl font-bold tracking-widest leading-none text-white">MEEWA</span>
-          )}
+          ) : null}
         </div>
 
         {/* Close Button */}
