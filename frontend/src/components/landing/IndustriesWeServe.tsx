@@ -23,10 +23,10 @@ export default async function IndustriesWeServe() {
     ];
 
   return (
-    <section className="py-24 bg-meewa-light">
+    <section className="py-12 bg-meewa-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="mb-16">
+        <div className="mb-8">
           <h2 className="text-4xl font-bold text-meewa-red mb-4">
             {settings.industries_title || "Industries We Serve"}
           </h2>
@@ -38,16 +38,16 @@ export default async function IndustriesWeServe() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
           {/* Left Collage (CSS Grid approximation of the design's masonry) */}
-          <div className="grid grid-cols-2 gap-4 h-[450px] max-w-md lg:max-w-none mx-auto lg:mx-0">
-            <div className="flex flex-col gap-4 h-full">
-              <div className="bg-gray-200 rounded-lg flex-[2] w-full relative overflow-hidden shadow-sm">
+          <div className="grid grid-cols-2 gap-4 max-w-md lg:max-w-lg mx-auto lg:mx-0">
+            <div className="flex flex-col gap-4">
+              <div className="bg-gray-200 rounded-lg w-full aspect-[4/5] relative overflow-hidden shadow-sm">
                 {settings.industries_image_1 ? (
                   <img src={`${settings.industries_image_1?.startsWith('http') ? settings.industries_image_1 : process.env.NEXT_PUBLIC_API_URL + settings.industries_image_1}`} alt="Restaurant" className="w-full h-full object-cover" />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">Restaurant Image</div>
                 )}
               </div>
-              <div className="bg-gray-300 rounded-lg flex-[3] w-full relative overflow-hidden shadow-sm">
+              <div className="bg-gray-300 rounded-lg w-full aspect-[4/3] relative overflow-hidden shadow-sm">
                 {settings.industries_image_2 ? (
                   <img src={`${settings.industries_image_2?.startsWith('http') ? settings.industries_image_2 : process.env.NEXT_PUBLIC_API_URL + settings.industries_image_2}`} alt="Supermarket" className="w-full h-full object-cover" />
                 ) : (
@@ -55,15 +55,15 @@ export default async function IndustriesWeServe() {
                 )}
               </div>
             </div>
-            <div className="flex flex-col gap-4 h-full pt-8">
-              <div className="bg-gray-300 rounded-lg flex-1 w-full relative overflow-hidden shadow-sm">
+            <div className="flex flex-col gap-4 pt-8">
+              <div className="bg-gray-300 rounded-lg w-full aspect-square relative overflow-hidden shadow-sm">
                 {settings.industries_image_3 ? (
                   <img src={`${settings.industries_image_3?.startsWith('http') ? settings.industries_image_3 : process.env.NEXT_PUBLIC_API_URL + settings.industries_image_3}`} alt="Hotel" className="w-full h-full object-cover" />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center text-gray-500 text-sm">Hotel Image</div>
                 )}
               </div>
-              <div className="bg-gray-200 rounded-lg flex-1 w-full relative overflow-hidden shadow-sm">
+              <div className="bg-gray-200 rounded-lg w-full aspect-[4/5] relative overflow-hidden shadow-sm">
                 {settings.industries_image_4 ? (
                   <img src={`${settings.industries_image_4?.startsWith('http') ? settings.industries_image_4 : process.env.NEXT_PUBLIC_API_URL + settings.industries_image_4}`} alt="Coffee Chain" className="w-full h-full object-cover" />
                 ) : (
