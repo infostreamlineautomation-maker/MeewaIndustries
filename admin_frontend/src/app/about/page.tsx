@@ -272,9 +272,9 @@ export default function AboutPageManagement() {
             {settings.about_hero_media && (
               <div className="mb-4">
                 {settings.about_hero_media.endsWith('.mp4') ? (
-                  <video src={`${process.env.NEXT_PUBLIC_API_URL}${settings.about_hero_media}`} autoPlay loop muted className="h-40 rounded border object-cover" />
+                  <video src={(settings.about_hero_media)?.startsWith("http") ? (settings.about_hero_media) : `${process.env.NEXT_PUBLIC_API_URL}${settings.about_hero_media}`} autoPlay loop muted className="h-40 rounded border object-cover" />
                 ) : (
-                  <img src={`${process.env.NEXT_PUBLIC_API_URL}${settings.about_hero_media}`} className="h-40 rounded border object-cover" />
+                  <img src={(settings.about_hero_media)?.startsWith("http") ? (settings.about_hero_media) : `${process.env.NEXT_PUBLIC_API_URL}${settings.about_hero_media}`} className="h-40 rounded border object-cover" />
                 )}
               </div>
             )}
@@ -376,7 +376,7 @@ export default function AboutPageManagement() {
             {clients.map((client, idx) => (
               <div key={idx} className="relative border p-2 rounded bg-gray-50 flex items-center justify-center w-24 h-24">
                 <button type="button" onClick={() => removeClientLogo(idx)} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 text-xs flex items-center justify-center">✕</button>
-                <img src={`${process.env.NEXT_PUBLIC_API_URL}${client.logo_url}`} className="max-w-full max-h-full object-contain" />
+                <img src={(client.logo_url)?.startsWith("http") ? (client.logo_url) : `${process.env.NEXT_PUBLIC_API_URL}${client.logo_url}`} className="max-w-full max-h-full object-contain" />
               </div>
             ))}
           </div>
@@ -404,7 +404,7 @@ export default function AboutPageManagement() {
             <label className="block text-sm font-medium text-gray-700 mb-1">Media</label>
             {settings.about_how_we_work_media && (
               <div className="mb-4">
-                <img src={`${process.env.NEXT_PUBLIC_API_URL}${settings.about_how_we_work_media}`} className="h-40 rounded border object-cover" />
+                <img src={(settings.about_how_we_work_media)?.startsWith("http") ? (settings.about_how_we_work_media) : `${process.env.NEXT_PUBLIC_API_URL}${settings.about_how_we_work_media}`} className="h-40 rounded border object-cover" />
               </div>
             )}
             <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, "about_how_we_work_media")} className="block w-full text-sm text-gray-500 file:mr-4 file:bg-red-50 file:text-meewa-red" />

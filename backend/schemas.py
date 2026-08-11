@@ -37,8 +37,12 @@ class ProductBase(BaseModel):
     specs: Optional[Dict[str, Any]] = None
     cover_image: Optional[str] = None
     hero_animated_image: Optional[str] = None
+    section1_image: Optional[str] = None
+    section2_image: Optional[str] = None
     marquee_text: Optional[str] = None
     banner_images: Optional[list[str]] = None
+    banner_title: Optional[str] = None
+    banner_subtitle: Optional[str] = None
     status: Optional[str] = "active"
 
 class ProductCreate(ProductBase):
@@ -55,8 +59,12 @@ class ProductUpdate(BaseModel):
     specs: Optional[Dict[str, Any]] = None
     cover_image: Optional[str] = None
     hero_animated_image: Optional[str] = None
+    section1_image: Optional[str] = None
+    section2_image: Optional[str] = None
     marquee_text: Optional[str] = None
     banner_images: Optional[list[str]] = None
+    banner_title: Optional[str] = None
+    banner_subtitle: Optional[str] = None
     status: Optional[str] = None
 
 class ProductResponse(ProductBase):

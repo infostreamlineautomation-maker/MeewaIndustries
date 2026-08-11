@@ -6,11 +6,13 @@ echo This will start both the FastAPI backend and Next.js frontend.
 echo Press Ctrl+C in this terminal to gracefully shut down both servers.
 echo.
 
-:: Check if python virtual environment exists
-if not exist "backend\venv\Scripts\activate.bat" (
-    echo [INFO] Python virtual environment not found. Creating one now...
+:: Check if python virtual environment and dependencies exist
+if not exist "backend\venv\Scripts\uvicorn.exe" (
+    echo [INFO] Python virtual environment or dependencies missing. Setting up now...
     cd backend
-    py -m venv venv
+    if not exist "venv\Scripts\activate.bat" (
+        py -m venv venv
+    )
     call venv\Scripts\activate.bat
     echo [INFO] Installing requirements...
     python -m pip install -r requirements.txt

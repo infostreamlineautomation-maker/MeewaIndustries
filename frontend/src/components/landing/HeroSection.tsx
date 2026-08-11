@@ -1,6 +1,8 @@
 import { fetchServerSettings } from '@/lib/fetchSettings';
 import Image from 'next/image';
 
+import AnimatedTagline from './AnimatedTagline';
+
 export default async function HeroSection() {
   let settings: any = {};
   try {
@@ -37,41 +39,22 @@ export default async function HeroSection() {
       </div>
 
       {/* Hero Text Content */}
-      <div className="relative z-10 text-center text-white mb-20 px-4 max-w-4xl">
-        <h1 className="text-5xl md:text-6xl font-bold mb-4">
+      <div className="relative z-10 text-center text-white mb-10 md:mb-20 px-4 max-w-5xl">
+        <h1 className="text-4xl md:text-7xl font-bold mb-4 hover:underline cursor-default transition-all duration-300">
           {settings.hero_title}
         </h1>
-        <p className="text-xl md:text-2xl text-gray-200">
+        <p className="text-lg md:text-3xl text-gray-200">
           {settings.hero_subtitle}
         </p>
       </div>
 
       {/* The Red Block Overlapping the Bottom - Creative Stats Bar */}
-      <div className="relative z-10 w-[90%] md:w-[70%] bg-meewa-red rounded-xl shadow-2xl translate-y-12 p-6 overflow-hidden">
+      <div className="relative z-10 w-[95%] md:w-[85%] max-w-6xl bg-meewa-red rounded-2xl shadow-2xl translate-y-6 md:translate-y-12 p-6 md:p-10 overflow-hidden">
         {/* Animated subtle pattern overlay */}
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_white_1px,_transparent_1px)] [background-size:20px_20px] animate-[pulse_4s_ease-in-out_infinite]"></div>
         
-        <div className="relative z-20 flex flex-col md:flex-row items-center justify-between gap-6 px-4 md:px-10">
-          
-          <div className="flex flex-col items-center group cursor-pointer">
-            <span className="text-3xl md:text-4xl font-black text-white group-hover:scale-110 transition-transform duration-300 drop-shadow-md">50+</span>
-            <span className="text-xs md:text-sm font-bold text-white/90 uppercase tracking-widest mt-1">Countries Served</span>
-          </div>
-
-          <div className="hidden md:block w-px h-12 bg-white/30"></div>
-
-          <div className="flex flex-col items-center group cursor-pointer">
-            <span className="text-3xl md:text-4xl font-black text-white group-hover:scale-110 transition-transform duration-300 drop-shadow-md">100%</span>
-            <span className="text-xs md:text-sm font-bold text-white/90 uppercase tracking-widest mt-1">Food-Grade Safe</span>
-          </div>
-
-          <div className="hidden md:block w-px h-12 bg-white/30"></div>
-
-          <div className="flex flex-col items-center group cursor-pointer">
-            <span className="text-3xl md:text-4xl font-black text-white group-hover:scale-110 transition-transform duration-300 drop-shadow-md">48h</span>
-            <span className="text-xs md:text-sm font-bold text-white/90 uppercase tracking-widest mt-1">Quote Turnaround</span>
-          </div>
-          
+        <div className="relative z-20 flex items-center justify-center text-center px-2 md:px-10 py-2 md:py-4">
+          <AnimatedTagline text={settings.hero_tagline || "Premium Paper Packaging. Sustainable, high-quality disposable food packaging solutions."} />
         </div>
       </div>
     </section>

@@ -50,14 +50,14 @@ export default async function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="max-w-xl">
-              <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight tracking-tight mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight tracking-tight mb-6">
                 {settings.about_hero_title || "Stories built to feel precise, cinematic, and commercially sharp."}
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed">
                 {settings.about_hero_subtitle || "Leading exporter of high-quality packaging materials for businesses worldwide."}
               </p>
             </div>
-            <div className="h-[500px] rounded-3xl overflow-hidden relative shadow-lg">
+            <div className="h-[300px] md:h-[500px] rounded-3xl overflow-hidden relative shadow-lg">
               {settings.about_hero_media ? (
                 settings.about_hero_media.endsWith('.mp4') ? (
                   <video src={`${settings.about_hero_media?.startsWith('http') ? settings.about_hero_media : process.env.NEXT_PUBLIC_API_URL + settings.about_hero_media}`} autoPlay loop muted playsInline className="w-full h-full object-cover" />
@@ -79,7 +79,7 @@ export default async function AboutPage() {
             {stats.map((stat: any, idx: number) => (
               <div 
                 key={idx} 
-                className="group relative border border-gray-100 p-10 rounded-2xl bg-white hover:border-transparent hover:shadow-[0_20px_50px_-12px_rgba(206,32,39,0.15)] transition-all duration-500 overflow-hidden transform hover:-translate-y-2"
+                className="group relative border border-gray-100 p-6 md:p-10 rounded-2xl bg-white hover:border-transparent hover:shadow-[0_20px_50px_-12px_rgba(206,32,39,0.15)] transition-all duration-500 overflow-hidden transform hover:-translate-y-2"
               >
                 {/* Background gradient on hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
@@ -88,7 +88,7 @@ export default async function AboutPage() {
                 <div className="absolute -top-10 -right-10 w-40 h-40 bg-meewa-red/5 rounded-full blur-2xl group-hover:bg-meewa-red/20 transition-all duration-700 pointer-events-none"></div>
 
                 <div className="relative z-10">
-                  <h3 className="text-5xl font-extrabold text-gray-900 mb-4 group-hover:text-meewa-red transition-colors duration-500 tracking-tight">{stat.title}</h3>
+                  <h3 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 group-hover:text-meewa-red transition-colors duration-500 tracking-tight">{stat.title}</h3>
                   
                   {/* Expanding divider line */}
                   <div className="w-12 h-1 bg-meewa-red mb-5 rounded-full group-hover:w-24 transition-all duration-500 ease-out opacity-70 group-hover:opacity-100"></div>
@@ -108,7 +108,7 @@ export default async function AboutPage() {
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="border border-gray-200 p-10 rounded-3xl bg-white">
+            <div className="border border-gray-200 p-6 md:p-10 rounded-3xl bg-white">
               {settings.about_vision_icon ? (
                 <div className="w-12 h-12 bg-meewa-red rounded-lg mb-6 shadow-sm flex items-center justify-center p-2.5">
                   <img src={settings.about_vision_icon.startsWith('/') ? `${settings.about_vision_icon?.startsWith('http') ? settings.about_vision_icon : process.env.NEXT_PUBLIC_API_URL + settings.about_vision_icon}` : settings.about_vision_icon} alt="Vision Icon" className="w-full h-full object-contain" />
@@ -117,13 +117,13 @@ export default async function AboutPage() {
                 <div className="w-12 h-12 bg-meewa-red rounded-lg mb-6 shadow-sm"></div>
               )}
               <h4 className="text-meewa-red font-bold text-xl mb-1">{settings.about_vision_subtitle || "See beyond the brief"}</h4>
-              <h3 className="text-3xl font-bold text-gray-900 mb-6">{settings.about_vision_title || "Our Vision"}</h3>
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">{settings.about_vision_title || "Our Vision"}</h3>
               <p className="text-gray-600 text-lg leading-relaxed whitespace-pre-wrap">
                 {settings.about_vision_desc || "To become a global leader in sustainable packaging solutions through innovation, quality, and customer-focused manufacturing.\n\nWe aim to empower businesses worldwide with eco-friendly, high-performance packaging materials that drive growth and environmental responsibility."}
               </p>
             </div>
             
-            <div className="border border-gray-200 p-10 rounded-3xl bg-white">
+            <div className="border border-gray-200 p-6 md:p-10 rounded-3xl bg-white">
               {settings.about_mission_icon ? (
                 <div className="w-12 h-12 bg-meewa-red rounded-lg mb-6 shadow-sm flex items-center justify-center p-2.5">
                   <img src={settings.about_mission_icon.startsWith('/') ? `${settings.about_mission_icon?.startsWith('http') ? settings.about_mission_icon : process.env.NEXT_PUBLIC_API_URL + settings.about_mission_icon}` : settings.about_mission_icon} alt="Mission Icon" className="w-full h-full object-contain" />
@@ -132,7 +132,7 @@ export default async function AboutPage() {
                 <div className="w-12 h-12 bg-meewa-red rounded-lg mb-6 shadow-sm"></div>
               )}
               <h4 className="text-meewa-red font-bold text-xl mb-1">{settings.about_mission_subtitle || "Deliver with precision"}</h4>
-              <h3 className="text-3xl font-bold text-gray-900 mb-6">{settings.about_mission_title || "Our Mission"}</h3>
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">{settings.about_mission_title || "Our Mission"}</h3>
               <p className="text-gray-600 text-lg leading-relaxed whitespace-pre-wrap">
                 {settings.about_mission_desc || "To deliver high-quality packaging materials and custom manufacturing solutions that help businesses grow.\n\nWe are committed to innovation, ethical practices, sustainable packaging, and exceptional customer satisfaction to build long-term partnerships worldwide."}
               </p>
@@ -176,7 +176,7 @@ export default async function AboutPage() {
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="h-[600px] rounded-3xl overflow-hidden shadow-xl bg-gray-900 relative group">
+            <div className="h-[300px] md:h-[600px] rounded-3xl overflow-hidden shadow-xl bg-gray-900 relative group">
               {settings.about_how_we_work_media ? (
                 <img src={`${settings.about_how_we_work_media?.startsWith('http') ? settings.about_how_we_work_media : process.env.NEXT_PUBLIC_API_URL + settings.about_how_we_work_media}`} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="How We Work" />
               ) : (
@@ -186,7 +186,7 @@ export default async function AboutPage() {
             
             <div>
               <h4 className="text-meewa-red font-bold text-lg mb-4">How we work</h4>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
                 {settings.about_how_we_work_title || "Production-minded design for every brand touch point."}
               </h2>
               <p className="text-xl text-gray-600 mb-12 leading-relaxed">

@@ -1,11 +1,12 @@
 "use client";
 
 import { useRef, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import ContactFaqSection from '@/components/landing/ContactFaqSection';
 import Link from 'next/link';
 
 export default function ProductClientPage({ product, relatedProducts, settings }: any) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState(0);
@@ -27,16 +28,23 @@ export default function ProductClientPage({ product, relatedProducts, settings }
     }
   }, [product]);
 
-  // Image Discrete States
-  const imageStates = isMobile ? [
-    { top: "20%", left: "50%", rotate: -10, scale: 0.9 }, // 0: Title
-    { top: "20%", left: "50%", rotate: 5, scale: 0.7 },   // 1: Specs
-    { top: "20%", left: "50%", rotate: -5, scale: 0.7 },  // 2: CTA
-  ] : [
-    { top: "55%", left: "75%", rotate: -15, scale: 1.2 }, // 0: Title
-    { top: "55%", left: "65%", rotate: 5, scale: 0.8 },   // 1: Specs
-    { top: "55%", left: "25%", rotate: -10, scale: 0.8 }, // 2: CTA
-  ];
+  // Scroll-linked Animation
+  const { scrollYProgress } = useScroll({ 
+    target: containerRef, 
+    offset: ["start start", "end end"] 
+  });
+
+  // Mobile Keyframes
+  const mTop = useTransform(scrollYProgress, [0, 0.38, 0.77, 1], ["30%", "40%", "60%", "85%"]);
+  const mLeft = useTransform(scrollYProgress, [0, 0.38, 0.77, 1], ["50%", "50%", "50%", "50%"]);
+  const mRotate = useTransform(scrollYProgress, [0, 0.38, 0.77, 1], [-10, 5, -5, 0]);
+  const mScale = useTransform(scrollYProgress, [0, 0.38, 0.77, 1], [0.7, 0.7, 0.7, 0.8]);
+
+  // Desktop Keyframes
+  const dTop = useTransform(scrollYProgress, [0, 0.38, 0.77, 1], ["45%", "50%", "70%", "85%"]);
+  const dLeft = useTransform(scrollYProgress, [0, 0.38, 0.77, 1], ["75%", "46%", "25%", "50%"]);
+  const dRotate = useTransform(scrollYProgress, [0, 0.38, 0.77, 1], [-15, 5, -10, 0]);
+  const dScale = useTransform(scrollYProgress, [0, 0.38, 0.77, 1], [0.95, 0.95, 0.95, 0.9]);
 
   // Marquee text
   const marqueeText = product?.marquee_text || "Restaurants Hotels Cafés Bakeries Caterers Retail Stores Supermarkets Global Importers";
@@ -49,178 +57,172 @@ export default function ProductClientPage({ product, relatedProducts, settings }
     <div className="bg-white min-h-screen text-gray-900">
       
       {/* 1. Discrete Scroll Sections */}
-      <div className="relative">
+      <div className="relative" ref={containerRef}>
         
         {/* Sticky Floating Image */}
-        <div className="sticky top-0 h-screen w-full overflow-hidden pointer-events-none z-10">
+        <div className="sticky top-0 h-screen w-full overflow-hidden pointer-events-none z-30 hidden md:block">
           {heroImage && (
             <motion.div 
               className="absolute w-[200px] h-[200px] md:w-[300px] md:h-[300px] lg:w-[400px] lg:h-[400px]"
-              animate={imageStates[activeSection]}
-              transition={{ type: "spring", stiffness: 60, damping: 20 }}
-              style={{ x: "-50%", y: "-50%" }}
+              style={{ 
+                x: "-50%", 
+                y: "-50%",
+                top: isMobile ? mTop : dTop,
+                left: isMobile ? mLeft : dLeft,
+                rotate: isMobile ? mRotate : dRotate,
+                scale: isMobile ? mScale : dScale
+              }}
             >
-              <motion.div 
-                animate={{ y: [0, -25, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="w-full h-full"
-              >
-                <img 
-                  src={heroImage} 
-                  alt={product?.name} 
-                  className="w-full h-full object-contain drop-shadow-2xl mix-blend-multiply"
-                />
-              </motion.div>
+              <img 
+                src={heroImage} 
+                alt={product?.name} 
+                className="w-full h-full object-contain drop-shadow-2xl mix-blend-multiply"
+              />
             </motion.div>
           )}
         </div>
 
         {/* Scrolling Content Sections */}
-        <div className="relative z-20 -mt-[100vh]">
+        <div className="relative -mt-[100vh]">
           
-          {/* Section 0: Title */}
-          <motion.section 
+          {/* Invisible Trigger for Section 0 */}
+          <motion.div 
             onViewportEnter={() => setActiveSection(0)}
             viewport={{ margin: "-40% 0px -40% 0px" }}
-            className="min-h-screen flex items-end md:items-center pb-20 md:pb-0 px-8 md:px-24 lg:px-32"
-          >
-            <div className="max-w-3xl pt-20">
-              <h4 className="text-meewa-red font-bold text-sm md:text-lg tracking-widest mb-4 mt-[40vh] md:mt-0">
-                {product?.category?.name || "Premium Product"}
-              </h4>
-              <h1 className="text-6xl md:text-8xl font-black text-black leading-[1.1] tracking-tighter mb-6">
-                {product?.name}
-              </h1>
-              {product?.hero_description && (
-                <p className="text-xl md:text-2xl text-gray-600 font-medium leading-relaxed max-w-xl">
-                  {product.hero_description}
-                </p>
-              )}
-            </div>
-          </motion.section>
+            className="absolute top-0 w-full h-[80vh] pointer-events-none"
+          />
 
-          {/* Section 1: Description & Specs */}
-          <motion.section 
-            onViewportEnter={() => setActiveSection(1)}
-            viewport={{ margin: "-40% 0px -40% 0px" }}
-            className="min-h-screen flex items-end md:items-center pb-20 md:pb-0 px-8 md:px-24 lg:px-32"
-          >
-            <div className="max-w-xl bg-white/80 md:bg-white/50 backdrop-blur-md p-8 rounded-3xl shadow-sm border border-gray-100">
-              <p className="text-xl md:text-2xl text-gray-600 font-medium mb-10 leading-relaxed text-left">
-                {product?.short_description || "Reliable takeaway containers designed to keep food fresh during transport and delivery."}
-              </p>
+          {/* Section 0: Title (Behind Banner) */}
+          <div className="h-[150vh] w-full">
+            <div className="sticky top-0 pt-48 md:pt-56 px-6 md:px-24 lg:px-32 h-screen flex flex-col justify-start z-10">
+              <h1 className="text-5xl md:text-8xl lg:text-9xl font-black text-black leading-[1.1] tracking-tighter mb-6">
+                {product?.name || "Food Service"}
+              </h1>
+              <h2 className="text-xl md:text-2xl font-extrabold text-black leading-tight max-w-sm">
+                {product?.hero_description || "Discover premium quality of customizable cups"}
+              </h2>
               
-              <div className="space-y-8">
-                {product?.specs?.available_colors && product.specs.available_colors.length > 0 && (
-                  <div className="flex flex-col items-start">
-                    <p className="font-bold uppercase text-xs tracking-[0.2em] mb-3 text-black">Available In:</p>
-                    <div className="flex flex-wrap gap-2 justify-start">
-                      {product.specs.available_colors.map((color: string, i: number) => (
-                        <button 
-                          key={i} 
-                          onClick={() => setSelectedColor(color)}
-                          className={`border rounded px-4 py-2 text-sm font-semibold transition-all ${
-                            selectedColor === color 
-                              ? 'border-meewa-red text-meewa-red bg-red-50 ring-1 ring-meewa-red' 
-                              : 'border-gray-200 text-gray-600 hover:border-gray-400 hover:bg-gray-50'
-                          }`}
-                        >
-                          {color}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                
-                {product?.specs?.available_sizes && product.specs.available_sizes.length > 0 && (
-                  <div className="flex flex-col items-start">
-                    <p className="font-bold uppercase text-xs tracking-[0.2em] mb-3 text-black">Available Sizes:</p>
-                    <div className="flex flex-wrap gap-2 justify-start">
-                      {product.specs.available_sizes.map((size: string, i: number) => (
-                        <button 
-                          key={i} 
-                          onClick={() => setSelectedSize(size)}
-                          className={`border rounded px-4 py-2 text-sm font-semibold transition-all ${
-                            selectedSize === size 
-                              ? 'border-meewa-red text-meewa-red bg-red-50 ring-1 ring-meewa-red' 
-                              : 'border-gray-200 text-gray-600 hover:border-gray-400 hover:bg-gray-50'
-                          }`}
-                        >
-                          {size}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+              {/* Mobile Static Image */}
+              <div className="block md:hidden mt-10 w-full max-w-[250px] mx-auto pointer-events-none">
+                {heroImage && (
+                  <img src={heroImage} alt="Product" className="w-full h-auto drop-shadow-2xl mix-blend-multiply" />
                 )}
               </div>
             </div>
-          </motion.section>
-          
-          {/* Section 2: CTA & Stats */}
-          <motion.section 
-            onViewportEnter={() => setActiveSection(2)}
-            viewport={{ margin: "-40% 0px -40% 0px" }}
-            className="min-h-screen flex items-end md:items-center justify-start md:justify-end pb-20 md:pb-0 px-8 md:px-24 lg:px-32"
-          >
-            <div className="max-w-xl flex flex-col items-start bg-white/80 md:bg-white/50 backdrop-blur-md p-8 rounded-3xl shadow-sm border border-gray-100">
-              <h2 className="text-4xl md:text-5xl font-black mb-8 text-black leading-tight">
-                Ready to elevate your packaging?
-              </h2>
-              <div className="flex gap-6 mb-8">
-                {product?.moq && (
-                  <div>
-                    <p className="text-gray-500 text-xs uppercase tracking-widest mb-1 font-bold">Minimum Order</p>
-                    <p className="text-black font-black text-2xl">{product.moq}</p>
-                  </div>
-                )}
-                {product?.price_from && (
-                  <div>
-                    <p className="text-gray-500 text-xs uppercase tracking-widest mb-1 font-bold">Price From</p>
-                    <p className="text-black font-black text-2xl">{product.price_from}</p>
-                  </div>
-                )}
+          </div>
+
+          {/* Banner Image Container */}
+          <div id="banner-container" className="relative w-full -mt-[calc(50vh+5rem)] md:-mt-[calc(50vh+8rem)] overflow-hidden shadow-2xl bg-black z-20">
+            {product?.section1_image ? (
+              <img src={`${product.section1_image?.startsWith('http') ? product.section1_image : process.env.NEXT_PUBLIC_API_URL + product.section1_image}`} alt="Banner" className="absolute inset-0 w-full h-full object-cover" />
+            ) : (
+              <div className="absolute inset-0 w-full h-full bg-gray-900" />
+            )}
+            
+            {/* Dark gradient overlay for text readability */}
+            <div className="absolute inset-0 bg-black/40" />
+            
+            {/* Banner Top (Cup in Middle, Text on Right) */}
+            <motion.section 
+              onViewportEnter={() => setActiveSection(1)}
+              viewport={{ margin: "-40% 0px -40% 0px" }}
+              className="relative h-[50vh] flex flex-row justify-end items-center px-6 md:px-24 lg:px-32"
+            >
+              {/* Right Side: Title */}
+              <div className="max-w-xl text-right z-40">
+                <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-white leading-tight drop-shadow-lg">
+                  {product?.banner_title || "Get your customized coffee cup"}
+                </h2>
               </div>
-              <Link href={`/contact?product=${product?.id}`} className="bg-meewa-red text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-red-700 transition-colors shadow-lg hover:shadow-meewa-red/30">
-                Request a Quote
-              </Link>
+            </motion.section>
+
+            {/* Banner Bottom (Text on Right, Cup on Left) */}
+            <motion.section 
+              onViewportEnter={() => setActiveSection(2)}
+              viewport={{ margin: "-40% 0px -40% 0px" }}
+              className="relative h-[50vh] flex flex-col justify-start items-end px-6 md:px-24 lg:px-32 pt-10"
+            >
+              <div className="max-w-xl text-right z-40">
+                <p className="text-xl md:text-2xl text-white/90 font-medium mb-8 drop-shadow-md">
+                  {product?.banner_subtitle || product?.short_description || "Hot, cold, frozen or fresh, our food service packaging works to keep every meal presentable and intact."}
+                </p>
+                <Link href="/contact" className="inline-flex items-center gap-2 font-bold bg-meewa-red text-white px-8 py-4 md:px-10 md:py-5 rounded-full hover:bg-red-700 transition-colors shadow-xl text-lg md:text-xl">
+                  Order now <span className="text-xl md:text-2xl font-light">↗</span>
+                </Link>
+              </div>
+            </motion.section>
+          </div>
+
+          {/* Section 0.5: Discover Text (Absolute, ON TOP of Banner, Pure White, Clipped) */}
+          <div className="absolute top-0 left-0 w-full h-[150vh] pointer-events-none z-50">
+            <div className="w-full h-full block md:hidden" style={{ clipPath: "inset(calc(100vh - 5rem) 0 0 0)" }}>
+              <div className="sticky top-0 pt-48 md:pt-56 px-6 md:px-24 lg:px-32 h-screen flex flex-col justify-start">
+                <h1 className="text-5xl md:text-8xl lg:text-9xl font-black leading-[1.1] tracking-tighter mb-6 opacity-0">
+                  {product?.name || "Food Service"}
+                </h1>
+                <h2 className="text-xl md:text-2xl font-extrabold leading-tight text-white max-w-sm drop-shadow-md">
+                  {product?.hero_description || "Discover premium quality of customizable cups"}
+                </h2>
+
+                {/* Mobile Static Image (White Text Reveal Layer) */}
+                <div className="block md:hidden mt-10 w-full max-w-[250px] mx-auto pointer-events-none">
+                  {heroImage && (
+                    <img src={heroImage} alt="Product" className="w-full h-auto drop-shadow-2xl mix-blend-multiply brightness-0 invert" />
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="w-full h-full hidden md:block" style={{ clipPath: "inset(calc(100vh - 8rem) 0 0 0)" }}>
+              <div className="sticky top-0 pt-48 md:pt-56 px-6 md:px-24 lg:px-32 h-screen flex flex-col justify-start">
+                <h1 className="text-5xl md:text-8xl lg:text-9xl font-black leading-[1.1] tracking-tighter mb-6 opacity-0">
+                  {product?.name || "Food Service"}
+                </h1>
+                <h2 className="text-xl md:text-2xl font-extrabold leading-tight text-white max-w-sm drop-shadow-md">
+                  {product?.hero_description || "Discover premium quality of customizable cups"}
+                </h2>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 3: Dual Marquee Section */}
+          <motion.section 
+            onViewportEnter={() => setActiveSection(3)}
+            viewport={{ margin: "-20% 0px -20% 0px" }}
+            className="h-[30vh] flex flex-col justify-center border-y border-gray-100 overflow-hidden relative z-20"
+          >
+            {/* Clockwise (Left to Right) */}
+            <div className="flex whitespace-nowrap mb-6 opacity-60">
+              <motion.div 
+                className="flex gap-8 text-3xl md:text-6xl font-black text-transparent [-webkit-text-stroke:2px_#cbd5e1]"
+                animate={{ x: [0, -1000] }}
+                transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+              >
+                {[...marqueeWords, ...marqueeWords, ...marqueeWords, ...marqueeWords].map((word, idx) => (
+                  <span key={`cw-${idx}`} className="px-4">{word}</span>
+                ))}
+              </motion.div>
+            </div>
+            {/* Anti-clockwise (Right to Left) */}
+            <div className="flex whitespace-nowrap">
+              <motion.div 
+                className="flex gap-8 text-3xl md:text-6xl font-black text-transparent [-webkit-text-stroke:2px_#ee3050]"
+                animate={{ x: [-1000, 0] }}
+                transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+              >
+                {[...marqueeWords, ...marqueeWords, ...marqueeWords, ...marqueeWords].reverse().map((word, idx) => (
+                  <span key={`acw-${idx}`} className="px-4">{word}</span>
+                ))}
+              </motion.div>
             </div>
           </motion.section>
 
         </div>
       </div>
 
-      {/* 2. Dual Marquee Section */}
-      <section className="py-12 bg-white border-y border-gray-100 overflow-hidden relative z-20">
-        {/* Clockwise (Left to Right) */}
-        <div className="flex whitespace-nowrap mb-6 opacity-60">
-          <motion.div 
-            className="flex gap-8 text-4xl md:text-6xl font-black text-transparent [-webkit-text-stroke:2px_#cbd5e1]"
-            animate={{ x: [0, -1000] }}
-            transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
-          >
-            {[...marqueeWords, ...marqueeWords, ...marqueeWords, ...marqueeWords].map((word, idx) => (
-              <span key={`cw-${idx}`} className="px-4">{word}</span>
-            ))}
-          </motion.div>
-        </div>
-        {/* Anti-clockwise (Right to Left) */}
-        <div className="flex whitespace-nowrap">
-          <motion.div 
-            className="flex gap-8 text-4xl md:text-6xl font-black text-transparent [-webkit-text-stroke:2px_#ee3050]"
-            animate={{ x: [-1000, 0] }}
-            transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
-          >
-            {[...marqueeWords, ...marqueeWords, ...marqueeWords, ...marqueeWords].reverse().map((word, idx) => (
-              <span key={`acw-${idx}`} className="px-4">{word}</span>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
       {/* 3. Long Banners Section */}
       {bannerImages.length > 0 && (
-        <section className="py-24 bg-white relative z-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        <section className="py-12 md:py-24 bg-white relative z-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 md:space-y-12">
             {bannerImages.map((bannerUrl: string, idx: number) => (
               <div key={idx} className="w-full rounded-3xl overflow-hidden shadow-sm border border-gray-100">
                 <img src={`${bannerUrl?.startsWith('http') ? bannerUrl : process.env.NEXT_PUBLIC_API_URL + bannerUrl}`} alt="Product Banner" className="w-full h-auto object-cover" />
@@ -232,9 +234,9 @@ export default function ProductClientPage({ product, relatedProducts, settings }
 
       {/* 4. Related Products Section */}
       {relatedProducts && relatedProducts.length > 0 && (
-        <section className="py-24 bg-gray-50 relative z-20">
+        <section className="py-12 md:py-24 bg-gray-50 relative z-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-bold text-black border-b border-gray-200 pb-4 mb-12">Related Products</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-black border-b border-gray-200 pb-4 mb-12">Related Products</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {relatedProducts.map((relProduct: any) => (

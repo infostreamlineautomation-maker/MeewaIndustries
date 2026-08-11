@@ -35,6 +35,8 @@ export default function SettingsPage() {
     contact_email: "",
     notification_emails: "",
     site_logo_url: "",
+    mobile_logo_url: "",
+    hamburger_logo_url: "",
     header_text: "",
     footer_text: "",
     smtp_host: "",
@@ -45,10 +47,14 @@ export default function SettingsPage() {
     smtp_from_name: "",
     footer_title: "",
     footer_subtitle: "",
-    privacy_content: "",
+    footer_logo_url: "",
+    footer_phone: "",
+    footer_email: "",
+    footer_address: "",
     terms_content: "",
     sitemap_content: "",
-    cookies_content: ""
+    cookies_content: "",
+    privacy_content: ""
   });
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -66,6 +72,8 @@ export default function SettingsPage() {
         contact_email: settingsData.contact_email || "info@meewaindustries.com",
         notification_emails: settingsData.notification_emails || "",
         site_logo_url: settingsData.site_logo_url || "",
+        mobile_logo_url: settingsData.mobile_logo_url || "",
+        hamburger_logo_url: settingsData.hamburger_logo_url || "",
         header_text: settingsData.header_text || "Free shipping on bulk orders!",
         footer_text: settingsData.footer_text || `© ${new Date().getFullYear()} Meewa. All Rights Reserved.`,
         smtp_host: settingsData.smtp_host || "",
@@ -87,12 +95,16 @@ export default function SettingsPage() {
           {label: "Instagram", href: "#"},
           {label: "YouTube", href: "#"}
         ],
-        footer_title: settingsData.footer_title || "Ready to source premium food packaging?",
-        footer_subtitle: settingsData.footer_subtitle || "Get in touch with our experts for customized manufacturing and global export solutions.",
-        privacy_content: settingsData.privacy_content || "We value your privacy. This privacy policy explains how we collect and use your data.",
+        footer_title: settingsData.footer_title || "Packaging the Future with Sustainable Food Packaging Solutions",
+        footer_subtitle: settingsData.footer_subtitle || "Trusted by importers, wholesalers, distributors, and food service businesses worldwide for premium paper packaging, custom manufacturing, and eco-friendly solutions.",
+        footer_logo_url: settingsData.footer_logo_url || "",
+        footer_phone: settingsData.footer_phone || "773-365-1240",
+        footer_email: settingsData.footer_email || "office@anantagraphics.com",
+        footer_address: settingsData.footer_address || "1425 N McLean Blvd. Elgin, IL",
         terms_content: settingsData.terms_content || "These are the terms and conditions for using our website.",
         sitemap_content: settingsData.sitemap_content || "Sitemap coming soon.",
-        cookies_content: settingsData.cookies_content || "This website uses cookies to ensure you get the best experience."
+        cookies_content: settingsData.cookies_content || "This website uses cookies to ensure you get the best experience.",
+        privacy_content: settingsData.privacy_content || "Privacy policy content goes here."
       });
       if (auditData.length > 0) setLastChanged(auditData[0]);
       setLoading(false);
@@ -186,7 +198,7 @@ export default function SettingsPage() {
             <label className="block text-sm font-medium text-gray-700 mb-1">Site Logo</label>
             {settings.site_logo_url && (
               <div className="mb-4 bg-gray-100 p-4 rounded inline-block">
-                <img src={`${process.env.NEXT_PUBLIC_API_URL}${settings.site_logo_url}`} alt="Site Logo Preview" className="h-16 object-contain" onError={(e) => { e.currentTarget.src = settings.site_logo_url }} />
+                <img src={(settings.site_logo_url)?.startsWith("http") ? (settings.site_logo_url) : `${process.env.NEXT_PUBLIC_API_URL}${settings.site_logo_url}`} alt="Site Logo Preview" className="h-16 object-contain" onError={(e) => { e.currentTarget.src = settings.site_logo_url }} />
               </div>
             )}
             <input 
@@ -202,6 +214,48 @@ export default function SettingsPage() {
                 hover:file:bg-red-100"
             />
             {uploading && <p className="text-sm text-meewa-red mt-2">Uploading...</p>}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Mobile View Logo (Top Header)</label>
+            {settings.mobile_logo_url && (
+              <div className="mb-4 bg-gray-100 p-4 rounded inline-block">
+                <img src={(settings.mobile_logo_url)?.startsWith("http") ? (settings.mobile_logo_url) : `${process.env.NEXT_PUBLIC_API_URL}${settings.mobile_logo_url}`} alt="Mobile Logo Preview" className="h-12 object-contain" onError={(e) => { e.currentTarget.src = settings.mobile_logo_url }} />
+              </div>
+            )}
+            <input 
+              type="file" 
+              accept="image/*"
+              onChange={(e) => handleMediaUpload(e, "mobile_logo_url")}
+              disabled={uploading}
+              className="block w-full text-sm text-gray-500
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-md file:border-0
+                file:text-sm file:font-semibold
+                file:bg-red-50 file:text-meewa-red
+                hover:file:bg-red-100"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Hamburger Menu Logo (Sidebar)</label>
+            {settings.hamburger_logo_url && (
+              <div className="mb-4 bg-gray-100 p-4 rounded inline-block">
+                <img src={(settings.hamburger_logo_url)?.startsWith("http") ? (settings.hamburger_logo_url) : `${process.env.NEXT_PUBLIC_API_URL}${settings.hamburger_logo_url}`} alt="Hamburger Logo Preview" className="h-12 object-contain" onError={(e) => { e.currentTarget.src = settings.hamburger_logo_url }} />
+              </div>
+            )}
+            <input 
+              type="file" 
+              accept="image/*"
+              onChange={(e) => handleMediaUpload(e, "hamburger_logo_url")}
+              disabled={uploading}
+              className="block w-full text-sm text-gray-500
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-md file:border-0
+                file:text-sm file:font-semibold
+                file:bg-red-50 file:text-meewa-red
+                hover:file:bg-red-100"
+            />
           </div>
 
 
@@ -237,7 +291,29 @@ export default function SettingsPage() {
           </div>
 
           <div className="pt-4 border-t">
-            <h3 className="text-lg font-medium text-gray-800 mb-4">Footer Text</h3>
+            <h3 className="text-lg font-medium text-gray-800 mb-4">Footer Content & Info</h3>
+            
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Footer Horizontal Logo</label>
+              {settings.footer_logo_url && (
+                <div className="mb-4 bg-gray-100 p-4 rounded inline-block">
+                  <img src={(settings.footer_logo_url)?.startsWith("http") ? (settings.footer_logo_url) : `${process.env.NEXT_PUBLIC_API_URL}${settings.footer_logo_url}`} alt="Footer Logo Preview" className="h-12 object-contain" onError={(e) => { e.currentTarget.src = settings.footer_logo_url }} />
+                </div>
+              )}
+              <input 
+                type="file" 
+                accept="image/*"
+                onChange={(e) => handleMediaUpload(e, "footer_logo_url")}
+                disabled={uploading}
+                className="block w-full text-sm text-gray-500
+                  file:mr-4 file:py-2 file:px-4
+                  file:rounded-md file:border-0
+                  file:text-sm file:font-semibold
+                  file:bg-red-50 file:text-meewa-red
+                  hover:file:bg-red-100"
+              />
+            </div>
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Footer Main Title</label>
@@ -258,6 +334,39 @@ export default function SettingsPage() {
                   rows={2} 
                   className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red focus:ring-meewa-red"
                 ></textarea>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Footer Phone</label>
+                  <input 
+                    type="text" 
+                    name="footer_phone"
+                    value={settings.footer_phone}
+                    onChange={handleChange}
+                    className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red focus:ring-meewa-red" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Footer Email</label>
+                  <input 
+                    type="email" 
+                    name="footer_email"
+                    value={settings.footer_email}
+                    onChange={handleChange}
+                    className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red focus:ring-meewa-red" 
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Footer Address</label>
+                  <input 
+                    type="text" 
+                    name="footer_address"
+                    value={settings.footer_address}
+                    onChange={handleChange}
+                    className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red focus:ring-meewa-red" 
+                  />
+                </div>
               </div>
             </div>
           </div>

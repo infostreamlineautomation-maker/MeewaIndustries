@@ -30,15 +30,16 @@ export default async function ExportProcess() {
         </p>
       </div>
 
-      {/* Split layout extending to screen edges on large screens */}
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row rounded-2xl overflow-hidden shadow-xl">
-        
-        {/* Left Side: Red Background with Steps */}
-        <div className="bg-meewa-red text-white w-full lg:w-1/2 p-12 lg:p-16 flex flex-col justify-center">
-          <div className="space-y-8">
+      {/* Floating Card Layout */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl">
+          
+          {/* Left Side: Red Background with Steps */}
+          <div className="bg-meewa-red text-white w-full lg:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+          <div className="space-y-6 md:space-y-8">
             {steps.map((step: any, idx: number) => (
               <div key={idx} className="flex flex-row items-start space-x-6 group">
-                <div className="text-4xl font-light opacity-60 font-mono group-hover:opacity-100 transition-opacity">
+                <div className="text-3xl md:text-4xl font-light opacity-60 font-mono group-hover:opacity-100 transition-opacity">
                   {step.num}
                   <span className="text-red-300 ml-1">.</span>
                 </div>
@@ -52,7 +53,7 @@ export default async function ExportProcess() {
         </div>
 
         {/* Right Side: Image/Video */}
-        <div className="w-full lg:w-1/2 min-h-[400px] lg:min-h-full relative bg-gray-50 flex items-center justify-center">
+        <div className="w-full lg:w-1/2 min-h-[300px] lg:min-h-full relative bg-gray-50 flex items-center justify-center">
           {settings.export_process_media_url ? (
             settings.export_process_media_url.endsWith('.mp4') ? (
               <video 
@@ -79,8 +80,9 @@ export default async function ExportProcess() {
               <p className="text-xs mt-1">Upload an image or video in Admin Settings.</p>
             </div>
           )}
-        </div>
+          </div>
 
+        </div>
       </div>
     </section>
   );

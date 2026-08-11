@@ -19,6 +19,7 @@ export default function CategoriesPageManagement() {
 
   const [dbCategories, setDbCategories] = useState<any[]>([]);
   const [dbProducts, setDbProducts] = useState<any[]>([]);
+  const [draggedProductIdx, setDraggedProductIdx] = useState<number | null>(null);
 
   useEffect(() => {
     Promise.all([
@@ -29,7 +30,13 @@ export default function CategoriesPageManagement() {
       .then(async ([resSettings, resCat, resProd]) => {
         const data = await resSettings.json();
         setDbCategories(await resCat.json());
-        setDbProducts(await resProd.json());
+        const rawProds = await resProd.json();
+        
+        // Filter active products and sort by sequence
+        const activeProds = rawProds
+          .filter((p: any) => p.status === 'active')
+          .sort((a: any, b: any) => (a.sequence || 0) - (b.sequence || 0));
+        setDbProducts(activeProds);
         setSettings({
           categories_hero_image_url: data.categories_hero_image_url || "",
           categories_why_title: data.categories_why_title || "Why Our Products?",
@@ -105,7 +112,6 @@ export default function CategoriesPageManagement() {
     try {
       const bulkData = [
         ...Object.entries(settings).map(([key, value]) => ({ key, value })),
-        { key: "categories_list", value: categoriesList },
         { key: "categories_why_features", value: whyFeatures },
         { key: "categories_custom_banner_images", value: bannerImages }
       ];
@@ -126,28 +132,29 @@ export default function CategoriesPageManagement() {
     }
   };
 
-  // Categories Handlers
-  const addCategory = () => setCategoriesList([...categoriesList, { title: "", subtitle: "", image_url: "" }]);
-  const removeCategory = (index: number) => setCategoriesList(categoriesList.filter((_, i) => i !== index));
-  const updateCategory = (index: number, field: 'title' | 'subtitle', value: string) => {
-    const newList = [...categoriesList];
-    newList[index][field] = value;
-    setCategoriesList(newList);
-  };
-  const handleCategoryImageUpload = async (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
-    const formData = new FormData();
-    formData.append("file", e.target.files[0]);
+  // Product Reorder Handlers
+  const handleDragStart = (idx: number) => setDraggedProductIdx(idx);
+  const handleDragOver = (e: React.DragEvent) => e.preventDefault();
+  
+  const handleDrop = async (idx: number) => {
+    if (draggedProductIdx === null || draggedProductIdx === idx) return;
+    
+    const newProducts = [...dbProducts];
+    const item = newProducts.splice(draggedProductIdx, 1)[0];
+    newProducts.splice(idx, 0, item);
+    
+    setDbProducts(newProducts);
+    setDraggedProductIdx(null);
+    
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings/upload`, { method: 'POST', body: formData });
-      const data = await res.json();
-      if (res.ok && data.url) {
-        const newList = [...categoriesList];
-        newList[index].image_url = data.url;
-        setCategoriesList(newList);
-      }
+      const orderedIds = newProducts.map(p => p.id);
+      await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/products/reorder`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderedIds)
+      });
     } catch (err) {
-      console.error(err);
+      console.error("Failed to save sequence", err);
     }
   };
 
@@ -208,7 +215,7 @@ export default function CategoriesPageManagement() {
 
   return (
     <div className="max-w-4xl">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Categories Page Management</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-8">Product Page Settings</h1>
       
       <form onSubmit={handleSave} className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 space-y-12">
         
@@ -219,71 +226,52 @@ export default function CategoriesPageManagement() {
             <label className="block text-sm font-medium text-gray-700 mb-1">Hero Background Image</label>
             {settings.categories_hero_image_url && (
               <div className="mb-4">
-                <img src={`${process.env.NEXT_PUBLIC_API_URL}${settings.categories_hero_image_url}`} className="h-40 rounded border object-cover" />
+                <img src={(settings.categories_hero_image_url)?.startsWith("http") ? (settings.categories_hero_image_url) : `${process.env.NEXT_PUBLIC_API_URL}${settings.categories_hero_image_url}`} className="h-40 rounded border object-cover" />
               </div>
             )}
             <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, "categories_hero_image_url")} disabled={uploading === "categories_hero_image_url"} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red" />
           </div>
         </div>
 
-        {/* Categories Grid */}
+        {/* Product Reordering UI */}
         <div className="space-y-6">
-          <div className="flex justify-between items-center border-b pb-2">
-            <h2 className="text-xl font-semibold text-gray-800">Categories Grid</h2>
-            <button type="button" onClick={addCategory} className="text-sm bg-meewa-red text-white px-3 py-1 rounded">+ Add Item</button>
+          <div className="border-b pb-2">
+            <h2 className="text-xl font-semibold text-gray-800">Product Display Order</h2>
+            <p className="text-sm text-gray-500 mt-1">Drag and drop the products below to change the order they appear on the Product Page and Landing Page. Only active products are shown.</p>
           </div>
-          <div className="space-y-4">
-            {categoriesList.map((cat, idx) => (
-              <div key={idx} className="p-4 border rounded-lg bg-gray-50 relative">
-                <button type="button" onClick={() => removeCategory(idx)} className="absolute top-4 right-4 text-red-500 text-sm font-bold">✕ Remove</button>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mr-16">
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-1">Select Category</label>
-                    <select 
-                      value={dbCategories.find(c => c.name === cat.title)?.id || ""}
-                      onChange={(e) => {
-                        const selectedCat = dbCategories.find(c => c.id === parseInt(e.target.value));
-                        if (selectedCat) updateCategory(idx, 'title', selectedCat.name);
-                      }}
-                      className="w-full border-gray-300 rounded-md p-2 border text-sm bg-white"
-                    >
-                      <option value="" disabled>Select a category</option>
-                      {dbCategories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-1">Select Product</label>
-                    <select 
-                      value={dbProducts.find(p => p.name === cat.subtitle)?.id || ""}
-                      onChange={(e) => {
-                        const selectedProd = dbProducts.find(p => p.id === parseInt(e.target.value));
-                        if (selectedProd) {
-                           updateCategory(idx, 'subtitle', selectedProd.name);
-                           if (selectedProd.cover_image) {
-                             const newList = [...categoriesList];
-                             newList[idx].image_url = selectedProd.cover_image;
-                             setCategoriesList(newList);
-                           }
-                        }
-                      }}
-                      className="w-full border-gray-300 rounded-md p-2 border text-sm bg-white"
-                    >
-                      <option value="" disabled>Select a product</option>
-                      {dbProducts
-                        .filter(p => !cat.title || dbCategories.find(c => c.name === cat.title)?.id === p.category_id)
-                        .map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
-                    </select>
-                  </div>
-                  <div className="md:col-span-2">
-                    <label className="block text-xs font-medium text-gray-700 mb-1">Image Preview (Auto-populated from Product)</label>
-                    <div className="flex items-center gap-4">
-                      {cat.image_url && <img src={`${process.env.NEXT_PUBLIC_API_URL}${cat.image_url}`} className="w-16 h-16 object-cover bg-white rounded border" />}
-                      <span className="text-xs text-gray-500">Edit the product in Manage Products to change this image.</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+            <table className="min-w-full divide-y divide-gray-200">
+              <tbody className="bg-white divide-y divide-gray-200">
+                {dbProducts.map((prod, idx) => (
+                  <tr 
+                    key={prod.id}
+                    draggable
+                    onDragStart={() => handleDragStart(idx)}
+                    onDragOver={handleDragOver}
+                    onDrop={() => handleDrop(idx)}
+                    className="cursor-move hover:bg-gray-50 transition-colors"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap w-24">
+                      <div className="flex items-center gap-3">
+                        <div className="text-gray-400 cursor-grab" title="Drag to reorder">⠿</div>
+                        {prod.cover_image ? (
+                          <img src={(prod.cover_image)?.startsWith("http") ? (prod.cover_image) : `${process.env.NEXT_PUBLIC_API_URL}${prod.cover_image}`} className="w-10 h-10 object-cover rounded" />
+                        ) : (
+                          <div className="w-10 h-10 bg-gray-200 rounded"></div>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{prod.name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-gray-500 text-sm">Category ID: {prod.category_id}</td>
+                  </tr>
+                ))}
+                {dbProducts.length === 0 && (
+                  <tr>
+                    <td colSpan={3} className="px-6 py-4 text-center text-gray-500">No active products found.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -317,7 +305,7 @@ export default function CategoriesPageManagement() {
                   <label className="block text-xs font-medium text-gray-700 mb-1">Icon (Red Checkmark by default)</label>
                   <div className="flex items-center gap-2">
                     {feat.icon_url ? (
-                      <img src={`${process.env.NEXT_PUBLIC_API_URL}${feat.icon_url}`} className="w-8 h-8 object-contain" />
+                      <img src={(feat.icon_url)?.startsWith("http") ? (feat.icon_url) : `${process.env.NEXT_PUBLIC_API_URL}${feat.icon_url}`} className="w-8 h-8 object-contain" />
                     ) : (
                       <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-red-500 text-xs">✓</div>
                     )}
@@ -341,7 +329,7 @@ export default function CategoriesPageManagement() {
             {bannerImages.map((banner, idx) => (
               <div key={idx} className="relative border p-2 rounded bg-gray-50 w-32 h-32">
                 <button type="button" onClick={() => removeBanner(idx)} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 text-xs flex items-center justify-center">✕</button>
-                <img src={`${process.env.NEXT_PUBLIC_API_URL}${banner.image_url}`} className="w-full h-full object-cover rounded" />
+                <img src={(banner.image_url)?.startsWith("http") ? (banner.image_url) : `${process.env.NEXT_PUBLIC_API_URL}${banner.image_url}`} className="w-full h-full object-cover rounded" />
               </div>
             ))}
           </div>
@@ -354,7 +342,7 @@ export default function CategoriesPageManagement() {
 
         <div className="mt-10 pt-6 border-t">
           <button type="submit" className="bg-meewa-red text-white px-6 py-3 rounded-lg font-bold hover:bg-red-700 transition-colors">
-            Save Categories Page Settings
+            Save Product Page Settings
           </button>
         </div>
       </form>

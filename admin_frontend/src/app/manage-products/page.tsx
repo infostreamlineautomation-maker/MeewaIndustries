@@ -62,7 +62,11 @@ interface Product {
   status: string;
   cover_image?: string;
   hero_animated_image?: string;
+  section1_image?: string;
+  section2_image?: string;
   banner_images?: string[];
+  banner_title?: string;
+  banner_subtitle?: string;
   marquee_text?: string;
   specs?: {
     available_colors?: string[];
@@ -303,7 +307,7 @@ export default function ManageProductsPage() {
         </div>
         {!isEditing && (
           <button 
-            onClick={() => { setIsEditing(true); setCurrentProduct({ name: "", slug: "", short_description: "", hero_description: "", moq: "", price_from: "", status: "active", category_id: undefined, banner_images: [] }); }}
+            onClick={() => { setIsEditing(true); setCurrentProduct({ name: "", slug: "", short_description: "", hero_description: "", moq: "", price_from: "", status: "active", category_id: undefined, banner_images: [], banner_title: "", banner_subtitle: "" }); }}
             className="bg-meewa-red text-white px-4 py-2 rounded font-medium hover:bg-red-700 transition"
           >
             + Add New Product
@@ -395,16 +399,40 @@ export default function ManageProductsPage() {
             <div className="grid grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1" title="The main thumbnail image used in grids and search results. Should be square or standard portrait.">Cover Image (Thumbnail) <span className="text-gray-400 cursor-help font-normal ml-1">ⓘ</span></label>
-                {currentProduct.cover_image && <img src={`${process.env.NEXT_PUBLIC_API_URL}${currentProduct.cover_image}`} className="h-20 mb-2 rounded border" />}
+                {currentProduct.cover_image && <img src={(currentProduct.cover_image)?.startsWith("http") ? (currentProduct.cover_image) : `${process.env.NEXT_PUBLIC_API_URL}${currentProduct.cover_image}`} className="h-20 mb-2 rounded border" />}
                 <input type="file" onChange={(e) => handleFileUpload(e, 'cover_image')} className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" />
                 {uploading === 'cover_image' && <span className="text-sm text-red-500 ml-2">Uploading...</span>}
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1" title="The image that animates downwards on scroll on the product page. Ideally a transparent PNG of the product.">Hero Animated Image (Cutout for Parallax) <span className="text-gray-400 cursor-help font-normal ml-1">ⓘ</span></label>
-                {currentProduct.hero_animated_image && <img src={`${process.env.NEXT_PUBLIC_API_URL}${currentProduct.hero_animated_image}`} className="h-20 mb-2 rounded border object-contain bg-gray-100" />}
-                <input type="file" onChange={(e) => handleFileUpload(e, 'hero_animated_image')} className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" />
+                {currentProduct.hero_animated_image && <img src={(currentProduct.hero_animated_image)?.startsWith("http") ? (currentProduct.hero_animated_image) : `${process.env.NEXT_PUBLIC_API_URL}${currentProduct.hero_animated_image}`} className="h-20 mb-2 rounded border object-contain bg-gray-100" />}
+                <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'hero_animated_image')} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" />
                 {uploading === 'hero_animated_image' && <span className="text-sm text-meewa-red ml-2 font-medium">Brewing your image for animation... (This may take a moment)</span>}
+              </div>
+            </div>
+
+            <div className="border-t pt-4 mt-4 grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Section 1 Banner Image (Parallax Background)</label>
+                <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'section1_image')} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"/>
+                {currentProduct.section1_image && <img src={`${currentProduct.section1_image?.startsWith('http') ? currentProduct.section1_image : process.env.NEXT_PUBLIC_ADMIN_API_URL + currentProduct.section1_image}`} alt="Preview" className="h-16 mt-2 object-contain rounded-md" />}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Section 2 Image</label>
+                <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'section2_image')} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"/>
+                {currentProduct.section2_image && <img src={`${currentProduct.section2_image?.startsWith('http') ? currentProduct.section2_image : process.env.NEXT_PUBLIC_ADMIN_API_URL + currentProduct.section2_image}`} alt="Preview" className="h-16 mt-2 object-contain rounded-md" />}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 mt-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Banner Title</label>
+                <input type="text" name="banner_title" value={currentProduct.banner_title || ""} onChange={handleInputChange} placeholder="e.g. Get your customized coffee cup" className="w-full border p-2 rounded text-gray-900" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Banner Subtitle (Paragraph)</label>
+                <textarea name="banner_subtitle" value={currentProduct.banner_subtitle || ""} onChange={handleInputChange} rows={3} placeholder="e.g. Hot, cold, frozen or fresh..." className="w-full border p-2 rounded text-gray-900" />
               </div>
             </div>
 
@@ -431,7 +459,7 @@ export default function ManageProductsPage() {
                     className="flex items-center gap-4 bg-gray-50 p-2 rounded border cursor-move hover:bg-gray-100 transition-colors"
                   >
                     <div className="text-gray-400 px-2 cursor-grab" title="Drag to reorder">⠿</div>
-                    <img src={`${process.env.NEXT_PUBLIC_API_URL}${banner}`} className="h-12 object-contain" />
+                    <img src={(banner)?.startsWith("http") ? (banner) : `${process.env.NEXT_PUBLIC_API_URL}${banner}`} className="h-12 object-contain" />
                     <button type="button" onClick={() => removeBanner(idx)} className="text-red-500 text-sm font-medium ml-auto">✕ Remove</button>
                   </div>
                 ))}
@@ -469,7 +497,7 @@ export default function ManageProductsPage() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-3">
                       <div className="text-gray-400 cursor-grab" title="Drag to reorder">⠿</div>
-                      {prod.cover_image ? <img src={`${process.env.NEXT_PUBLIC_API_URL}${prod.cover_image}`} className="w-10 h-10 rounded object-cover" /> : <div className="w-10 h-10 bg-gray-200 rounded"></div>}
+                      {prod.cover_image ? <img src={(prod.cover_image)?.startsWith("http") ? (prod.cover_image) : `${process.env.NEXT_PUBLIC_API_URL}${prod.cover_image}`} className="w-10 h-10 rounded object-cover" /> : <div className="w-10 h-10 bg-gray-200 rounded"></div>}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{prod.name}</td>

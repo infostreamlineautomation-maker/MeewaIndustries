@@ -21,7 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: 'https://meewaindustries.com/categories',
+      url: 'https://meewaindustries.com/products',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,

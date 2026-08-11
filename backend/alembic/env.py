@@ -25,8 +25,8 @@ load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file_
 import models
 target_metadata = models.Base.metadata
 
-# Set sqlalchemy.url
-config.set_main_option("sqlalchemy.url", os.getenv("DATABASE_URL", "postgresql+psycopg://postgres:root123@localhost:5432/meewa"))
+db_url = os.getenv("DATABASE_URL", "postgresql+psycopg://postgres:root123@localhost:5432/meewa")
+config.set_main_option("sqlalchemy.url", db_url.replace('%', '%%'))
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

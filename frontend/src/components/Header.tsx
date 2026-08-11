@@ -8,14 +8,14 @@ import { useState, useEffect } from 'react';
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   const pathname = usePathname();
   let isActive = href === '/' ? pathname === '/' : pathname.startsWith(href);
-  if (href === '/categories' && pathname.startsWith('/products')) {
+  if (href === '/products' && pathname.startsWith('/products')) {
     isActive = true;
   }
   
   return (
     <Link 
       href={href} 
-      className={`relative px-4 py-2 transition-all duration-300 rounded-full group overflow-hidden ${isActive ? 'text-meewa-red font-bold shadow-sm' : 'text-white hover:text-white'}`}
+      className={`relative z-10 px-4 py-2 whitespace-nowrap transition-all duration-300 rounded-full group overflow-hidden ${isActive ? 'text-meewa-red font-bold shadow-sm' : 'text-white hover:text-white'}`}
     >
       {/* Active Tab Background */}
       <span className={`absolute inset-0 bg-white rounded-full -z-10 transition-transform duration-300 ease-out origin-center ${isActive ? 'scale-100 opacity-100' : 'scale-75 opacity-0'}`}></span>
@@ -33,7 +33,7 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
 function MobileNavLink({ href, children, onClick }: { href: string; children: React.ReactNode; onClick: () => void }) {
   const pathname = usePathname();
   let isActive = href === '/' ? pathname === '/' : pathname.startsWith(href);
-  if (href === '/categories' && pathname.startsWith('/products')) {
+  if (href === '/products' && pathname.startsWith('/products')) {
     isActive = true;
   }
   
@@ -51,17 +51,19 @@ function MobileNavLink({ href, children, onClick }: { href: string; children: Re
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
+  const [footerLogoUrl, setFooterLogoUrl] = useState<string | null>(null);
+  const [mobileLogoUrl, setMobileLogoUrl] = useState<string | null>(null);
+  const [hamburgerLogoUrl, setHamburgerLogoUrl] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const [leftLinks, setLeftLinks] = useState([{ label: "Home", href: "/" }, { label: "About Us", href: "/about" }]);
-  const [rightLinks, setRightLinks] = useState([{ label: "Our Product", href: "/categories" }, { label: "Contact Us", href: "/contact" }]);
+  const [rightLinks, setRightLinks] = useState([{ label: "Our Product", href: "/products" }, { label: "Contact Us", href: "/contact" }]);
+
+  const pathname = usePathname();
+  const isProductDetailPage = pathname.match(/^\/products\/[^/]+$/);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Removed scroll logic
   }, []);
 
   useEffect(() => {
@@ -71,7 +73,16 @@ export default function Header() {
         if (data.site_logo_url) {
           setLogoUrl(`${data.site_logo_url?.startsWith('http') ? data.site_logo_url : process.env.NEXT_PUBLIC_API_URL + data.site_logo_url}`);
         }
-        if (data.header_links && Array.isArray(data.header_links)) {
+        if (data.footer_logo_url) {
+          setFooterLogoUrl(`${data.footer_logo_url?.startsWith('http') ? data.footer_logo_url : process.env.NEXT_PUBLIC_API_URL + data.footer_logo_url}`);
+        }
+        if (data.mobile_logo_url) {
+          setMobileLogoUrl(`${data.mobile_logo_url?.startsWith('http') ? data.mobile_logo_url : process.env.NEXT_PUBLIC_API_URL + data.mobile_logo_url}`);
+        }
+        if (data.hamburger_logo_url) {
+          setHamburgerLogoUrl(`${data.hamburger_logo_url?.startsWith('http') ? data.hamburger_logo_url : process.env.NEXT_PUBLIC_API_URL + data.hamburger_logo_url}`);
+        }
+        if (data.header_links && Array.isArray(data.header_links) && data.header_links.length > 0) {
           const links = data.header_links;
           const mid = Math.ceil(links.length / 2);
           setLeftLinks(links.slice(0, mid));
@@ -83,14 +94,14 @@ export default function Header() {
 
   return (
     <>
-      <header className={`fixed w-full z-50 transition-all duration-300 pt-6 ${isScrolled ? 'top-[-10px] transform translate-y-2' : 'top-0'}`}>
+      <header className={`${isProductDetailPage ? 'absolute' : 'fixed'} w-full z-50 pt-8 top-0 left-0 transition-all duration-300`}>
         <div className="max-w-4xl mx-auto px-4 relative flex justify-center">
-          {/* Desktop & Mobile Pill Background */}
-          <div className="bg-meewa-red rounded-full flex items-center justify-between md:justify-center gap-4 md:gap-10 h-14 px-6 md:px-6 shadow-xl shadow-red-500/20 w-full md:w-fit animate-float">
+          {/* Desktop Pill Background / Mobile Transparent Header */}
+          <div className="bg-transparent md:bg-meewa-red rounded-none md:rounded-full flex items-center justify-between md:justify-center gap-4 md:gap-10 h-14 px-2 md:px-6 shadow-none md:shadow-xl md:shadow-red-500/20 w-full md:w-fit">
             
             {/* Mobile Hamburger Button */}
             <button 
-              className="md:hidden text-white p-2 focus:outline-none z-50"
+              className="md:hidden text-white bg-meewa-red p-2 rounded-full focus:outline-none z-50 shadow-md shadow-red-500/30"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,29 +113,46 @@ export default function Header() {
               </svg>
             </button>
 
+            {/* Mobile Horizontal Logo */}
+            <Link 
+              href="/" 
+              className={`md:hidden flex items-center h-full transition-opacity duration-200 ${isMobileMenuOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`} 
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              {(mobileLogoUrl || footerLogoUrl || logoUrl) ? (
+                <img src={(mobileLogoUrl || footerLogoUrl || logoUrl)!} alt="MEEWA Logo" className="h-7 object-contain" />
+              ) : (
+                <span className="text-xl font-bold tracking-widest leading-none text-meewa-red drop-shadow-md">MEEWA</span>
+              )}
+            </Link>
+
             {/* Left Navigation (Desktop) */}
-            <nav className="hidden md:flex space-x-10 text-white text-sm font-medium items-center">
-              {leftLinks.map((link, idx) => (
-                <NavLink key={idx} href={link.href}>{link.label}</NavLink>
-              ))}
-            </nav>
+            <div className="hidden md:flex w-[240px] lg:w-[280px] justify-end">
+              <nav className="flex space-x-4 lg:space-x-8 text-white text-sm font-medium items-center">
+                {leftLinks.map((link, idx) => (
+                  <NavLink key={idx} href={link.href}>{link.label}</NavLink>
+                ))}
+              </nav>
+            </div>
 
             {/* Center Logo Area (Placeholder space for absolute circle) */}
-            <div className="hidden md:block w-20"></div>
+            <div className="hidden md:block w-24 flex-shrink-0"></div>
 
             {/* Right Navigation (Desktop) */}
-            <nav className="hidden md:flex space-x-10 text-white text-sm font-medium items-center">
-              {rightLinks.map((link, idx) => (
-                <NavLink key={idx} href={link.href}>{link.label}</NavLink>
-              ))}
-            </nav>
+            <div className="hidden md:flex w-[240px] lg:w-[300px] justify-start">
+              <nav className="flex space-x-4 lg:space-x-8 text-white text-sm font-medium items-center">
+                {rightLinks.map((link, idx) => (
+                  <NavLink key={idx} href={link.href}>{link.label}</NavLink>
+                ))}
+              </nav>
+            </div>
 
             {/* Mobile Empty Spacer for balancing the hamburger so the logo stays centered */}
             <div className="md:hidden w-10"></div>
           </div>
 
           {/* Floating Circular Logo */}
-          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full w-20 h-20 md:w-24 md:h-24 flex flex-col items-center justify-center shadow-xl shadow-red-500/10 border-4 border-white overflow-hidden hover:scale-110 transition-transform duration-300 animate-float z-50" style={{ animationDelay: '0.5s' }}>
+          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="hidden md:flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full w-20 h-20 md:w-24 md:h-24 flex-col items-center justify-center shadow-xl shadow-red-500/10 border-4 border-white overflow-hidden hover:scale-110 transition-transform duration-300 z-50">
             {logoUrl ? (
               <img src={logoUrl} alt="MEEWA Logo" className="w-full h-full object-contain p-2" />
             ) : (
@@ -143,8 +171,17 @@ export default function Header() {
       ></div>
       
       {/* Sidebar Content */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-meewa-red shadow-2xl transform transition-transform duration-300 ease-in-out md:hidden flex flex-col p-6 pt-12 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <div className={`fixed inset-y-0 right-0 z-50 w-64 bg-meewa-red/95 backdrop-blur-md shadow-2xl transform transition-transform duration-300 ease-in-out md:hidden flex flex-col p-6 pt-10 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         
+        {/* Horizontal Logo in Sidebar */}
+        <div className="mb-8">
+          {(hamburgerLogoUrl || footerLogoUrl || logoUrl) ? (
+            <img src={(hamburgerLogoUrl || footerLogoUrl || logoUrl)!} alt="MEEWA Logo" className="h-10 object-contain" />
+          ) : (
+            <span className="text-2xl font-bold tracking-widest leading-none text-white">MEEWA</span>
+          )}
+        </div>
+
         {/* Close Button */}
         <button 
           className="absolute top-4 right-4 text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors"

@@ -16,7 +16,11 @@ SQLALCHEMY_DATABASE_URL = os.getenv(
     "postgresql+psycopg://postgres:root123@localhost:5432/meewa"
 )
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL,
+    connect_args={"prepare_threshold": None},
+    pool_pre_ping=True
+)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()

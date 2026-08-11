@@ -1,18 +1,35 @@
 import Link from 'next/link';
 
-export default async function ProductCategories() {
-  let categories: any[] = [];
+export default async function FeaturedProducts() {
+  let products: any[] = [];
+  let featuredProductIds: number[] = [];
+  
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, { next: { revalidate: 10 } });
-    if (res.ok) {
-      categories = await res.json();
+    const [productsRes, settingsRes] = await Promise.all([
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, { next: { revalidate: 10 } }),
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/settings`, { next: { revalidate: 10 } })
+    ]);
+    
+    if (productsRes.ok) {
+      products = await productsRes.json();
+    }
+    if (settingsRes.ok) {
+      const settings = await settingsRes.json();
+      featuredProductIds = settings.landing_featured_products || [];
     }
   } catch (e) {
-    console.error("Could not fetch categories:", e);
+    console.error("Could not fetch data for FeaturedProducts:", e);
   }
 
-  // Only show the first 6 categories on the landing page
-  const displayCategories = categories.slice(0, 6);
+  // Filter and order based on settings, or fallback to first 5 products
+  let displayProducts = [];
+  if (featuredProductIds.length > 0) {
+    displayProducts = featuredProductIds
+      .map(id => products.find(p => p.id === id))
+      .filter(p => p !== undefined);
+  } else {
+    displayProducts = products.slice(0, 5);
+  }
 
   return (
     <section className="py-24 bg-white">
@@ -21,13 +38,13 @@ export default async function ProductCategories() {
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
           <div className="max-w-2xl">
-            <h2 className="text-4xl font-bold text-meewa-red mb-4">Product Categories</h2>
+            <h2 className="text-4xl font-bold text-meewa-red mb-4">Products</h2>
             <p className="text-gray-600 text-lg">
               Explore our wide range of food-grade disposable packaging solutions designed for restaurants, cafés, catering companies, and businesses worldwide.
             </p>
           </div>
           <div className="mt-6 md:mt-0">
-            <Link href="/categories" className="bg-meewa-red text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-red-700 transition-colors inline-block">
+            <Link href="/products" className="bg-meewa-red text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-red-700 transition-colors inline-block">
               View All Products
             </Link>
           </div>
@@ -36,16 +53,16 @@ export default async function ProductCategories() {
         {/* Grid Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           
-          {displayCategories.map((cat, idx) => (
-            <Link href={`/categories#category-${cat.name.replace(/\s+/g, '-')}`} key={idx} className="relative h-80 rounded-xl overflow-hidden group shadow-sm bg-gray-100 block">
+          {displayProducts.map((prod, idx) => (
+            <Link href={`/products/${prod.slug}`} key={idx} className="relative h-80 rounded-xl overflow-hidden group shadow-sm bg-gray-100 block border border-gray-200">
               <div 
                 className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                style={{ backgroundImage: `url('${cat.cover_image?.startsWith('http') ? cat.cover_image : process.env.NEXT_PUBLIC_API_URL + (cat.cover_image || '')}')` }}
+                style={{ backgroundImage: `url('${prod.cover_image?.startsWith('http') ? prod.cover_image : process.env.NEXT_PUBLIC_API_URL + (prod.cover_image || '')}')` }}
               ></div>
               
               {/* Bottom Dark Label */}
               <div className="absolute bottom-0 inset-x-0 h-16 bg-meewa-dark/90 flex items-center px-6">
-                <h3 className="text-white font-medium text-xl">{cat.name}</h3>
+                <h3 className="text-white font-medium text-xl">{prod.name}</h3>
               </div>
             </Link>
           ))}

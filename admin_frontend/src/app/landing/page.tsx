@@ -6,6 +6,7 @@ export default function LandingPageManagement() {
   const [settings, setSettings] = useState({
     hero_title: "",
     hero_subtitle: "",
+    hero_tagline: "",
     hero_image_url: "",
     about_title: "",
     about_subtitle: "",
@@ -24,7 +25,10 @@ export default function LandingPageManagement() {
     export_title: "",
     export_subtitle: "",
     export_process_media_url: "",
+    landing_featured_products: [] as number[],
   });
+  
+  const [products, setProducts] = useState<any[]>([]);
   
   const [faqs, setFaqs] = useState<{question: string, answer: string}[]>([]);
   const [features, setFeatures] = useState<{title: string, description: string, icon: string}[]>([]);
@@ -35,12 +39,16 @@ export default function LandingPageManagement() {
   const [uploading, setUploading] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings`)
-      .then(res => res.json())
-      .then(data => {
+    Promise.all([
+      fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings`).then(res => res.json()),
+      fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/products`).then(res => res.json())
+    ])
+      .then(([data, productsData]) => {
+        setProducts(productsData || []);
         setSettings({
           hero_title: data.hero_title || "Premium Paper Packaging",
           hero_subtitle: data.hero_subtitle || "Sustainable, high-quality disposable food packaging solutions.",
+          hero_tagline: data.hero_tagline || "Premium Paper Packaging. Sustainable, high-quality disposable food packaging solutions.",
           hero_image_url: data.hero_image_url || "",
           about_title: data.about_title || "About Company",
           about_subtitle: data.about_subtitle || "Your Trusted Disposable Food Packaging Export Partner",
@@ -59,6 +67,7 @@ export default function LandingPageManagement() {
           export_title: data.export_title || "Export Process",
           export_subtitle: data.export_subtitle || "We make international sourcing easy with a transparent export process.",
           export_process_media_url: data.export_process_media_url || "",
+          landing_featured_products: data.landing_featured_products || [],
         });
 
         const defaultFeatures = [
@@ -236,6 +245,29 @@ export default function LandingPageManagement() {
     setExportSteps(newSteps);
   };
 
+  // Featured Products Handlers
+  const addFeaturedProduct = (productId: number) => {
+    if (!settings.landing_featured_products.includes(productId)) {
+      setSettings({ ...settings, landing_featured_products: [...settings.landing_featured_products, productId] });
+    }
+  };
+  const removeFeaturedProduct = (index: number) => {
+    const newList = [...settings.landing_featured_products];
+    newList.splice(index, 1);
+    setSettings({ ...settings, landing_featured_products: newList });
+  };
+  const moveFeaturedProduct = (index: number, direction: 'up' | 'down') => {
+    if (direction === 'up' && index > 0) {
+      const newList = [...settings.landing_featured_products];
+      [newList[index - 1], newList[index]] = [newList[index], newList[index - 1]];
+      setSettings({ ...settings, landing_featured_products: newList });
+    } else if (direction === 'down' && index < settings.landing_featured_products.length - 1) {
+      const newList = [...settings.landing_featured_products];
+      [newList[index + 1], newList[index]] = [newList[index], newList[index + 1]];
+      setSettings({ ...settings, landing_featured_products: newList });
+    }
+  };
+
   if (loading) return <div className="p-8">Loading settings...</div>;
 
   return (
@@ -277,13 +309,25 @@ export default function LandingPageManagement() {
             </div>
 
             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1 text-gray-900">Hero Pink Container Tagline</label>
+              <textarea 
+                name="hero_tagline"
+                value={settings.hero_tagline}
+                onChange={handleChange}
+                rows={2} 
+                placeholder="e.g. Premium Paper Packaging. Sustainable, high-quality disposable food packaging solutions."
+                className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red"
+              ></textarea>
+            </div>
+
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Hero Banner Image/Video</label>
               {settings.hero_image_url && (
                 <div className="mb-4">
                   {settings.hero_image_url.endsWith('.mp4') ? (
-                    <video src={`${process.env.NEXT_PUBLIC_API_URL}${settings.hero_image_url}`} autoPlay loop muted playsInline className="h-40 rounded border object-cover" />
+                    <video src={(settings.hero_image_url)?.startsWith("http") ? (settings.hero_image_url) : `${process.env.NEXT_PUBLIC_API_URL}${settings.hero_image_url}`} autoPlay loop muted playsInline className="h-40 rounded border object-cover" />
                   ) : (
-                    <img src={`${process.env.NEXT_PUBLIC_API_URL}${settings.hero_image_url}`} alt="Hero Banner Preview" className="h-40 rounded border object-cover" onError={(e) => { e.currentTarget.src = settings.hero_image_url }} />
+                    <img src={(settings.hero_image_url)?.startsWith("http") ? (settings.hero_image_url) : `${process.env.NEXT_PUBLIC_API_URL}${settings.hero_image_url}`} alt="Hero Banner Preview" className="h-40 rounded border object-cover" onError={(e) => { e.currentTarget.src = settings.hero_image_url }} />
                   )}
                 </div>
               )}
@@ -300,6 +344,61 @@ export default function LandingPageManagement() {
                   hover:file:bg-red-100"
               />
               {uploading === "hero_image_url" && <p className="text-sm text-meewa-red mt-2">Uploading...</p>}
+            </div>
+          </div>
+
+          {/* Featured Products Selection */}
+          <div className="space-y-6">
+            <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">Featured Products</h2>
+            <p className="text-sm text-gray-500">Select which products to display on the landing page and arrange their order. If none are selected, the first 5 active products will be shown automatically.</p>
+            
+            <div className="flex gap-4">
+              <select 
+                id="product-select"
+                className="flex-1 border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white"
+                defaultValue=""
+              >
+                <option value="" disabled>Select a product to feature...</option>
+                {products.filter(p => !settings.landing_featured_products.includes(p.id)).map(p => (
+                  <option key={p.id} value={p.id}>{p.name}</option>
+                ))}
+              </select>
+              <button 
+                type="button" 
+                onClick={() => {
+                  const select = document.getElementById('product-select') as HTMLSelectElement;
+                  if (select && select.value) {
+                    addFeaturedProduct(parseInt(select.value));
+                    select.value = "";
+                  }
+                }}
+                className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700"
+              >
+                Add
+              </button>
+            </div>
+
+            <div className="space-y-2 mt-4">
+              {settings.landing_featured_products.length === 0 && (
+                <p className="text-sm text-gray-400 italic">No products manually featured. Displaying default recent products.</p>
+              )}
+              {settings.landing_featured_products.map((productId, idx) => {
+                const prod = products.find(p => p.id === productId);
+                return (
+                  <div key={`${productId}-${idx}`} className="flex justify-between items-center bg-gray-50 border p-3 rounded-lg shadow-sm">
+                    <div className="flex items-center gap-3">
+                      <span className="font-bold text-gray-400">{idx + 1}.</span>
+                      {prod?.cover_image && <img src={prod.cover_image.startsWith('http') ? prod.cover_image : `${process.env.NEXT_PUBLIC_API_URL}${prod.cover_image}`} alt="" className="w-10 h-10 object-cover rounded" />}
+                      <span className="font-medium text-gray-800">{prod ? prod.name : `Unknown Product (ID: ${productId})`}</span>
+                    </div>
+                    <div className="flex gap-2">
+                      <button type="button" onClick={() => moveFeaturedProduct(idx, 'up')} disabled={idx === 0} className="p-1 text-gray-500 hover:text-gray-900 disabled:opacity-30">▲</button>
+                      <button type="button" onClick={() => moveFeaturedProduct(idx, 'down')} disabled={idx === settings.landing_featured_products.length - 1} className="p-1 text-gray-500 hover:text-gray-900 disabled:opacity-30">▼</button>
+                      <button type="button" onClick={() => removeFeaturedProduct(idx)} className="p-1 text-red-500 hover:text-red-700 font-bold ml-2">✕</button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -366,7 +465,7 @@ export default function LandingPageManagement() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">{labelMap[num]}</label>
                       {settings[key] && (
                         <div className="mb-2 flex items-center justify-center">
-                          <img src={`${process.env.NEXT_PUBLIC_API_URL}${settings[key]}`} alt={`Industry ${num} Preview`} className="h-24 rounded border object-contain bg-white w-full" onError={(e) => { e.currentTarget.src = settings[key] as string }} />
+                          <img src={(settings[key] as string)?.startsWith("http") ? (settings[key] as string) : `${process.env.NEXT_PUBLIC_API_URL}${settings[key]}`} alt={`Industry ${num} Preview`} className="h-24 rounded border object-contain bg-white w-full" onError={(e) => { e.currentTarget.src = settings[key] as string }} />
                         </div>
                       )}
                       <input 
@@ -425,9 +524,9 @@ export default function LandingPageManagement() {
               {settings.export_process_media_url && (
                 <div className="mb-4">
                   {settings.export_process_media_url.endsWith('.mp4') ? (
-                    <video src={`${process.env.NEXT_PUBLIC_API_URL}${settings.export_process_media_url}`} autoPlay loop muted playsInline className="h-40 rounded border object-cover" />
+                    <video src={(settings.export_process_media_url)?.startsWith("http") ? (settings.export_process_media_url) : `${process.env.NEXT_PUBLIC_API_URL}${settings.export_process_media_url}`} autoPlay loop muted playsInline className="h-40 rounded border object-cover" />
                   ) : (
-                    <img src={`${process.env.NEXT_PUBLIC_API_URL}${settings.export_process_media_url}`} alt="Export Process Media Preview" className="h-40 rounded border object-cover" onError={(e) => { e.currentTarget.src = settings.export_process_media_url }} />
+                    <img src={(settings.export_process_media_url)?.startsWith("http") ? (settings.export_process_media_url) : `${process.env.NEXT_PUBLIC_API_URL}${settings.export_process_media_url}`} alt="Export Process Media Preview" className="h-40 rounded border object-cover" onError={(e) => { e.currentTarget.src = settings.export_process_media_url }} />
                   )}
                 </div>
               )}
@@ -589,9 +688,9 @@ export default function LandingPageManagement() {
               {settings.about_media_url && (
                 <div className="mb-4">
                   {settings.about_media_url.endsWith('.mp4') ? (
-                    <video src={`${process.env.NEXT_PUBLIC_API_URL}${settings.about_media_url}`} autoPlay loop muted playsInline className="h-40 rounded border object-cover" />
+                    <video src={(settings.about_media_url)?.startsWith("http") ? (settings.about_media_url) : `${process.env.NEXT_PUBLIC_API_URL}${settings.about_media_url}`} autoPlay loop muted playsInline className="h-40 rounded border object-cover" />
                   ) : (
-                    <img src={`${process.env.NEXT_PUBLIC_API_URL}${settings.about_media_url}`} alt="About Media Preview" className="h-40 rounded border object-cover" onError={(e) => { e.currentTarget.src = settings.about_media_url }} />
+                    <img src={(settings.about_media_url)?.startsWith("http") ? (settings.about_media_url) : `${process.env.NEXT_PUBLIC_API_URL}${settings.about_media_url}`} alt="About Media Preview" className="h-40 rounded border object-cover" onError={(e) => { e.currentTarget.src = settings.about_media_url }} />
                   )}
                 </div>
               )}

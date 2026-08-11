@@ -23,26 +23,23 @@ function ContactFormInner() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [catRes, prodRes] = await Promise.all([
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`),
+        const [prodRes] = await Promise.all([
           fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`)
         ]);
-        const cats = await catRes.json();
         const prods = await prodRes.json();
-        setCategories(cats);
         setProducts(prods);
 
         // Auto-add product if query param exists
         if (initialProductId) {
           const preSelectedProd = prods.find((p: any) => p.id.toString() === initialProductId);
           if (preSelectedProd) {
-            setRequestedProducts([{
-              product_id: preSelectedProd.id,
-              product_name: preSelectedProd.name,
-              category_id: preSelectedProd.category_id,
-              category_name: preSelectedProd.category?.name || cats.find((c: any) => c.id === preSelectedProd.category_id)?.name || "",
-              quantity: preSelectedProd.moq || "" // default moq or empty
-            }]);
+              setRequestedProducts([{
+                product_id: preSelectedProd.id,
+                product_name: preSelectedProd.name,
+                category_id: preSelectedProd.category_id,
+                category_name: "",
+                quantity: preSelectedProd.moq || "" // default moq or empty
+              }]);
           }
         }
       } catch (err) {
@@ -66,14 +63,7 @@ function ContactFormInner() {
 
   const handleProductChange = (index: number, field: string, value: string) => {
     const updated = [...requestedProducts];
-    if (field === "category_id") {
-      updated[index].category_id = value;
-      const cat = categories.find((c: any) => c.id.toString() === value);
-      updated[index].category_name = cat ? cat.name : "";
-      // Reset product when category changes
-      updated[index].product_id = "";
-      updated[index].product_name = "";
-    } else if (field === "product_id") {
+    if (field === "product_id") {
       updated[index].product_id = value;
       const prod = products.find((p: any) => p.id.toString() === value);
       updated[index].product_name = prod ? prod.name : "";
@@ -174,29 +164,14 @@ function ContactFormInner() {
               <div key={index} className="flex flex-col md:flex-row gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200 relative pr-10">
                 
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                  <select 
-                    value={rp.category_id}
-                    onChange={(e) => handleProductChange(index, "category_id", e.target.value)}
-                    className="block w-full rounded-lg border border-gray-300 bg-white py-2.5 px-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-meewa-red"
-                  >
-                    <option value="">Select Category</option>
-                    {categories.map((c: any) => (
-                      <option key={c.id} value={c.id}>{c.name}</option>
-                    ))}
-                  </select>
-                </div>
-                
-                <div className="flex-1">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Product</label>
                   <select 
                     value={rp.product_id}
                     onChange={(e) => handleProductChange(index, "product_id", e.target.value)}
-                    disabled={!rp.category_id}
-                    className="block w-full rounded-lg border border-gray-300 bg-white py-2.5 px-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-meewa-red disabled:bg-gray-100"
+                    className="block w-full rounded-lg border border-gray-300 bg-white py-2.5 px-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-meewa-red"
                   >
                     <option value="">Select Product</option>
-                    {products.filter((p: any) => p.category_id.toString() === rp.category_id.toString()).map((p: any) => (
+                    {products.map((p: any) => (
                       <option key={p.id} value={p.id}>{p.name}</option>
                     ))}
                   </select>
@@ -242,7 +217,7 @@ function ContactFormInner() {
       </div>
       
       <div className="pt-4">
-        <button type="submit" className="bg-[#C9253B] text-white py-4 px-10 rounded-full hover:bg-red-700 font-semibold shadow-md hover:shadow-lg transition-all text-lg">
+        <button type="submit" className="bg-meewa-red text-white py-4 px-10 rounded-full hover:brightness-90 font-semibold shadow-md hover:shadow-lg transition-all text-lg">
           Submit Inquiry
         </button>
       </div>

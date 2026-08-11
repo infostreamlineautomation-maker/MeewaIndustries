@@ -1,5 +1,6 @@
 import { fetchServerSettings } from '@/lib/fetchSettings';
 import Link from 'next/link';
+import AboutMedia from './AboutMedia';
 
 export default async function AboutCompany() {
   let settings: any = {};
@@ -22,25 +23,19 @@ export default async function AboutCompany() {
         </div>
 
         {/* Video / Map Display */}
-        <div className="relative w-full h-[500px] rounded-2xl overflow-hidden shadow-lg bg-gray-100">
+        <div className="relative w-full h-[300px] md:h-[500px] rounded-2xl overflow-hidden shadow-lg bg-gray-100">
           
           {settings.about_media_url ? (
-            <div className="absolute inset-0">
-              {settings.about_media_url.endsWith('.mp4') ? (
-                <video src={`${settings.about_media_url?.startsWith('http') ? settings.about_media_url : process.env.NEXT_PUBLIC_API_URL + settings.about_media_url}`} autoPlay loop muted playsInline className="w-full h-full object-cover" />
-              ) : (
-                <img src={`${settings.about_media_url?.startsWith('http') ? settings.about_media_url : process.env.NEXT_PUBLIC_API_URL + settings.about_media_url}`} alt="About Background" className="w-full h-full object-cover" />
-              )}
-            </div>
+            <AboutMedia mediaUrl={settings.about_media_url} />
           ) : (
             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-30"></div>
           )}
 
           {/* Learn More Button */}
-          <div className="absolute bottom-6 right-8">
-            <Link href="/about" className="bg-meewa-red text-white px-8 py-4 rounded-lg font-bold hover:bg-red-700 transition-colors inline-flex items-center shadow-lg">
+          <div className="absolute bottom-4 right-4 md:bottom-6 md:right-8">
+            <Link href="/about" className="bg-meewa-red text-white px-6 py-3 md:px-8 md:py-4 rounded-lg font-bold hover:bg-red-700 transition-colors inline-flex items-center shadow-lg text-sm md:text-base">
               Learn More
-              <svg className="w-5 h-5 ml-2 transform -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+              <svg className="w-4 h-4 md:w-5 md:h-5 ml-2 transform -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </Link>
           </div>
         </div>

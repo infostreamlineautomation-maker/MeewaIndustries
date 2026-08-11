@@ -227,7 +227,7 @@ export default function ManageCategoriesPage() {
             <label className="block text-sm font-medium text-gray-700 mb-1" title="The main thumbnail image used for this category. Ideally square or standard portrait.">Cover Image <span className="text-gray-400 cursor-help font-normal ml-1">ⓘ</span></label>
             <div className="flex items-center gap-4">
               {currentCategory.cover_image && (
-                <img src={`${process.env.NEXT_PUBLIC_API_URL}${currentCategory.cover_image}`} className="w-16 h-16 object-cover border rounded" />
+                <img src={(currentCategory.cover_image)?.startsWith("http") ? (currentCategory.cover_image) : `${process.env.NEXT_PUBLIC_API_URL}${currentCategory.cover_image}`} className="w-16 h-16 object-cover border rounded" />
               )}
               <input type="file" accept="image/*" onChange={handleFileUpload} disabled={uploading} className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" />
             </div>
@@ -263,7 +263,7 @@ export default function ManageCategoriesPage() {
                     <div className="flex items-center gap-3">
                       <div className="text-gray-400 cursor-grab" title="Drag to reorder">⠿</div>
                       {cat.cover_image ? (
-                        <img src={`${process.env.NEXT_PUBLIC_API_URL}${cat.cover_image}`} className="w-10 h-10 object-cover rounded" />
+                        <img src={(cat.cover_image)?.startsWith("http") ? (cat.cover_image) : `${process.env.NEXT_PUBLIC_API_URL}${cat.cover_image}`} className="w-10 h-10 object-cover rounded" />
                       ) : (
                         <div className="w-10 h-10 bg-gray-200 rounded"></div>
                       )}

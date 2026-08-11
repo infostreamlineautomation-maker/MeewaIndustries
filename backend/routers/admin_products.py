@@ -53,3 +53,13 @@ def delete_product(product_id: int, request: Request, db: Session = Depends(get_
     db.commit()
     log_audit(db, request, "Deleted", "product", product_id, f"Deleted product: {db_prod.name}")
     return {"message": "Deleted successfully"}
+
+@router.post("/reorder")
+def reorder_products(product_ids: list[int], request: Request, db: Session = Depends(get_db)):
+    for idx, pid in enumerate(product_ids):
+        db_prod = db.query(Product).filter(Product.id == pid).first()
+        if db_prod:
+            db_prod.sequence = idx
+    db.commit()
+    log_audit(db, request, "Updated", "product", None, "Reordered products")
+    return {"message": "Sequence updated successfully"}

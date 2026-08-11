@@ -8,7 +8,7 @@ export default function AuditLogsPage() {
 
   const fetchLogs = () => {
     setLoading(true);
-    let url = `${process.env.NEXT_PUBLIC_ADMIN_API_URL}/audit-logs`;
+    let url = `${process.env.NEXT_PUBLIC_ADMIN_API_URL}/audit`;
     if (filter) url += `?target_type=${filter}`;
     
     fetch(url)
@@ -67,7 +67,7 @@ export default function AuditLogsPage() {
                       {new Date(log.created_at).toLocaleString()}
                     </td>
                     <td className="p-4 text-sm font-medium text-gray-900">
-                      {log.admin.username}
+                      {log.admin?.username || 'System'}
                     </td>
                     <td className="p-4">
                       <span className={`text-xs px-2 py-1 rounded-full whitespace-nowrap font-semibold ${

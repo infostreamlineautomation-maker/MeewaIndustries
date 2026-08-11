@@ -13,7 +13,7 @@ export default function AdminSidebar() {
       .then(res => res.json())
       .then(data => {
         if (data.admin_logo_url) {
-          setLogoUrl(`${process.env.NEXT_PUBLIC_API_URL}${data.admin_logo_url}`);
+          setLogoUrl(data.admin_logo_url.startsWith('http') ? data.admin_logo_url : `${process.env.NEXT_PUBLIC_API_URL}${data.admin_logo_url}`);
         }
       })
       .catch(err => console.error("Error fetching admin logo:", err));
@@ -70,7 +70,7 @@ export default function AdminSidebar() {
         </Link>
         <div className="px-4 py-2 pt-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Page Settings</div>
         <Link href="/categories" className={navItemClass("/categories")}>
-          Categories Page
+          Products Page
         </Link>
         <Link href="/enquiries" className={navItemClass("/enquiries")}>
           Enquiries
