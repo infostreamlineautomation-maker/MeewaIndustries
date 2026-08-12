@@ -7,6 +7,8 @@ export default function AboutPageManagement() {
     about_hero_title: "",
     about_hero_subtitle: "",
     about_hero_media: "",
+    about_hero_video_title: "",
+    about_hero_video_subtitle: "",
     about_vision_title: "",
     about_vision_subtitle: "",
     about_vision_desc: "",
@@ -16,6 +18,8 @@ export default function AboutPageManagement() {
     about_how_we_work_title: "",
     about_how_we_work_desc: "",
     about_how_we_work_media: "",
+    about_how_we_work_video_title: "",
+    about_how_we_work_video_subtitle: "",
     about_vision_icon: "",
     about_mission_icon: "",
   });
@@ -36,6 +40,8 @@ export default function AboutPageManagement() {
           about_hero_title: data.about_hero_title || "",
           about_hero_subtitle: data.about_hero_subtitle || "",
           about_hero_media: data.about_hero_media || "",
+          about_hero_video_title: data.about_hero_video_title || "",
+          about_hero_video_subtitle: data.about_hero_video_subtitle || "",
           about_vision_title: data.about_vision_title || "",
           about_vision_subtitle: data.about_vision_subtitle || "",
           about_vision_desc: data.about_vision_desc || "",
@@ -47,6 +53,8 @@ export default function AboutPageManagement() {
           about_how_we_work_title: data.about_how_we_work_title || "",
           about_how_we_work_desc: data.about_how_we_work_desc || "",
           about_how_we_work_media: data.about_how_we_work_media || "",
+          about_how_we_work_video_title: data.about_how_we_work_video_title || "",
+          about_how_we_work_video_subtitle: data.about_how_we_work_video_subtitle || "",
         });
 
         const defaultStats = [
@@ -280,6 +288,14 @@ export default function AboutPageManagement() {
             )}
             <input type="file" accept="image/*,video/mp4" onChange={(e) => handleFileUpload(e, "about_hero_media")} disabled={uploading === "about_hero_media"} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red" />
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Hero Video Overlay Subtitle</label>
+            <input type="text" name="about_hero_video_subtitle" value={settings.about_hero_video_subtitle} onChange={handleChange} placeholder="Studio to delivery" className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Hero Video Overlay Title</label>
+            <textarea name="about_hero_video_title" value={settings.about_hero_video_title} onChange={handleChange} rows={2} placeholder="Design, production and print aligned end to end." className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red"></textarea>
+          </div>
         </div>
 
         {/* Stats Grid */}
@@ -408,6 +424,14 @@ export default function AboutPageManagement() {
               </div>
             )}
             <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, "about_how_we_work_media")} className="block w-full text-sm text-gray-500 file:mr-4 file:bg-red-50 file:text-meewa-red" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Video Overlay Subtitle</label>
+            <input type="text" name="about_how_we_work_video_subtitle" value={settings.about_how_we_work_video_subtitle} onChange={handleChange} placeholder="Print Excellence" className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Video Overlay Title</label>
+            <textarea name="about_how_we_work_video_title" value={settings.about_how_we_work_video_title} onChange={handleChange} rows={2} placeholder="Crafted visuals, flawless finishes and production quality built for modern brands." className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red"></textarea>
           </div>
           
           <div className="mt-4">

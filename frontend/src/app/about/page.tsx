@@ -91,9 +91,9 @@ export default async function AboutPage() {
 
               {/* Text Overlay on Video */}
               <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
-                <div className="text-white/80 text-sm font-medium mb-1">Studio to delivery</div>
+                <div className="text-white/80 text-sm font-medium mb-1">{settings.about_hero_video_subtitle || "Studio to delivery"}</div>
                 <h3 className="text-white text-xl md:text-2xl font-bold leading-tight">
-                  Design, production and print aligned end to end.
+                  {settings.about_hero_video_title || "Design, production and print aligned end to end."}
                 </h3>
               </div>
             </div>
@@ -183,9 +183,9 @@ export default async function AboutPage() {
               )}
               {/* Text Overlay on Video */}
               <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
-                <div className="text-white/80 text-sm font-medium mb-1">Print Excellence</div>
+                <div className="text-white/80 text-sm font-medium mb-1">{settings.about_how_we_work_video_subtitle || "Print Excellence"}</div>
                 <h3 className="text-white text-xl md:text-2xl font-bold leading-tight">
-                  Crafted visuals, flawless finishes and production quality built for modern brands.
+                  {settings.about_how_we_work_video_title || "Crafted visuals, flawless finishes and production quality built for modern brands."}
                 </h3>
               </div>
             </div>

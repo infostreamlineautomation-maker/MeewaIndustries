@@ -20,9 +20,9 @@ export default async function ExportProcess() {
     ];
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-        <h2 className="text-4xl font-bold text-meewa-red mb-4">
+        <h2 className="text-[40px] md:text-[65px] font-medium text-meewa-red leading-none tracking-normal mb-4">
           {settings.export_title || "Export Process"}
         </h2>
         <p className="text-gray-600 text-lg">
@@ -31,11 +31,11 @@ export default async function ExportProcess() {
       </div>
 
       {/* Floating Card Layout */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl">
+      <div className="max-w-[1262px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row rounded-[10px] overflow-hidden lg:h-[745px]">
           
           {/* Left Side: Red Background with Steps */}
-          <div className="bg-meewa-red text-white w-full lg:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+          <div className="bg-meewa-red text-white w-full lg:w-[656px] p-8 md:p-12 lg:p-[4.5rem] flex flex-col justify-center">
           <div className="space-y-6 md:space-y-8">
             {steps.map((step: any, idx: number) => (
               <div key={idx} className="flex flex-row items-start space-x-6 group">
@@ -53,7 +53,7 @@ export default async function ExportProcess() {
         </div>
 
         {/* Right Side: Image/Video */}
-        <div className="w-full lg:w-1/2 min-h-[300px] lg:min-h-full relative bg-gray-50 flex items-center justify-center">
+        <div className="w-full lg:w-[606px] min-h-[300px] lg:min-h-full relative bg-gray-50 flex items-center justify-center">
           {settings.export_process_media_url ? (
             settings.export_process_media_url.endsWith('.mp4') ? (
               <video 

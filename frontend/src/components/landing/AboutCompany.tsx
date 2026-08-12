@@ -10,18 +10,18 @@ export default async function AboutCompany() {
   } catch(e) {}
 
   return (
-    <section className="pt-32 pb-24 bg-white relative z-10">
+    <section className="py-12 bg-white relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="mb-12">
           {(!settings.about_title || settings.about_title.trim() === '') ? null : (
-            <h2 className="text-4xl font-bold text-meewa-red mb-4">
+            <h2 className="text-[40px] md:text-[65px] font-medium text-meewa-red leading-none tracking-normal mb-4">
               {settings.about_title}
             </h2>
           )}
           {/* Fallback title if both are empty? Let's just always render About Company if empty */}
           {(!settings.about_title || settings.about_title.trim() === '') && (
-            <h2 className="text-4xl font-bold text-meewa-red mb-4">
+            <h2 className="text-[40px] md:text-[65px] font-medium text-meewa-red leading-none tracking-normal mb-4">
               About Company
             </h2>
           )}

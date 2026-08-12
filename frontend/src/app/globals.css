@@ -8,8 +8,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: 'Google Sans Flex Variable', sans-serif;
+  --font-mono: 'Google Sans Flex Variable', monospace;
   --color-meewa-red: #EE3050;
   --color-meewa-dark: #1F1F1F;
   --color-meewa-light: #F9F9F9;
@@ -38,5 +38,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
 }

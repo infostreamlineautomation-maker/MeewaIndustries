@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import "@fontsource-variable/google-sans-flex";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PreviewBanner from "@/components/PreviewBanner";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
@@ -51,7 +49,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
         />
       </head>
-      <body className={inter.className}>
+      <body className="antialiased">
         <PreviewBanner />
         <Header />
         <main>{children}</main>

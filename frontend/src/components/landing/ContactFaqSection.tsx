@@ -34,13 +34,13 @@ export default function ContactFaqSection() {
   };
 
   return (
-    <section className="py-24 bg-white">
+    <section className="py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row gap-16">
           
           {/* Left: Get In Touch */}
           <div className="w-full lg:w-5/12 bg-gray-100 rounded-3xl p-10 text-gray-900 shadow-xl border border-gray-200">
-            <h2 className="text-4xl font-bold text-meewa-red mb-4">Get In Touch</h2>
+            <h2 className="text-[40px] md:text-[65px] font-medium text-meewa-red leading-none tracking-normal mb-4">Get In Touch</h2>
             <p className="text-gray-600 text-sm mb-10">
               Get product details, pricing, samples, and export support. We'll respond within 24 hours.
             </p>
@@ -108,7 +108,7 @@ export default function ContactFaqSection() {
 
           {/* Right: FAQs */}
           <div className="w-full lg:w-7/12">
-            <h2 className="text-4xl font-bold text-meewa-red mb-10">FAQs</h2>
+            <h2 className="text-[40px] md:text-[65px] font-medium text-meewa-red leading-none tracking-normal mb-10">FAQs</h2>
             <div className="space-y-4">
               {faqs.map((faq, index) => (
                 <div key={index} className="border border-gray-300 rounded-xl overflow-hidden transition-all duration-200">

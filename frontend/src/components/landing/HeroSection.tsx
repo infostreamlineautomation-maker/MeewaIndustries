@@ -49,11 +49,8 @@ export default async function HeroSection() {
       </div>
 
       {/* The Red Block Overlapping the Bottom - Creative Stats Bar */}
-      <div className="relative z-10 w-[95%] md:w-[85%] max-w-6xl bg-meewa-red rounded-2xl shadow-2xl translate-y-6 md:translate-y-12 p-6 md:p-10 overflow-hidden">
-        {/* Animated subtle pattern overlay */}
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_white_1px,_transparent_1px)] [background-size:20px_20px] animate-[pulse_4s_ease-in-out_infinite]"></div>
-        
-        <div className="relative z-20 flex items-center justify-center text-center px-2 md:px-10 py-2 md:py-4">
+      <div className="relative z-10 mx-auto w-full max-w-[1043px] h-[121px] bg-meewa-red translate-y-[60.5px] flex items-center justify-center px-4">
+        <div className="relative z-20 flex items-center justify-center text-center w-full">
           <AnimatedTagline text={settings.hero_tagline || "Premium Paper Packaging. Sustainable, high-quality disposable food packaging solutions."} />
         </div>
       </div>

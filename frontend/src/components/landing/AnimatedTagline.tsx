@@ -36,8 +36,8 @@ export default function AnimatedTagline({ text }: { text: string }) {
   };
 
   return (
-    <motion.h2
-      className="text-xl md:text-2xl font-bold text-white/95 tracking-wide leading-relaxed drop-shadow-sm flex flex-wrap justify-center gap-x-1.5 relative group cursor-pointer"
+      <motion.h2
+        className="text-[17px] md:text-xl font-medium md:font-bold text-white flex flex-wrap justify-center gap-x-[0.35rem] relative group cursor-pointer"
       variants={container}
       initial="hidden"
       whileInView="visible"

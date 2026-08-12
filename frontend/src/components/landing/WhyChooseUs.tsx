@@ -37,7 +37,7 @@ export default async function WhyChooseUs() {
   ];
 
   return (
-    <section className="py-16 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
+    <section className="py-12 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-meewa-red/5 rounded-full blur-3xl"></div>
@@ -47,8 +47,7 @@ export default async function WhyChooseUs() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <div className="mb-12 max-w-3xl">
-          <span className="text-meewa-red font-semibold tracking-wider uppercase text-sm mb-2 block">Our Advantages</span>
-          <h2 className="text-5xl font-extrabold text-meewa-red mb-6 tracking-tight">Why Choose Us</h2>
+          <h2 className="text-[40px] md:text-[65px] font-medium text-meewa-red leading-none tracking-normal mb-6">Why Choose Us</h2>
           <p className="text-gray-600 text-xl leading-relaxed">
             We provide complete packaging solutions with a focus on quality, reliability, and customer satisfaction.
           </p>

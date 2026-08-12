@@ -16,6 +16,7 @@ export default function LandingPageManagement() {
     industries_image_2: "",
     industries_image_3: "",
     industries_image_4: "",
+    industries_image_5: "",
     contact_phone: "",
     contact_email: "",
     contact_address: "",
@@ -58,6 +59,7 @@ export default function LandingPageManagement() {
           industries_image_2: data.industries_image_2 || "",
           industries_image_3: data.industries_image_3 || "",
           industries_image_4: data.industries_image_4 || "",
+          industries_image_5: data.industries_image_5 || "",
           contact_phone: data.contact_phone || "",
           contact_email: data.contact_email || "",
           contact_address: data.contact_address || "",
@@ -456,32 +458,69 @@ export default function LandingPageManagement() {
 
             <div className="mt-6 border-t pt-4">
               <h3 className="text-lg font-medium text-gray-800 mb-4">Industry Images (Collage)</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {[1, 2, 3, 4].map((num) => {
-                  const key = `industries_image_${num}` as keyof typeof settings;
-                  const labelMap = { 1: "Restaurant Image", 2: "Supermarket Image", 3: "Hotel Image", 4: "Coffee Chain Image" } as any;
-                  return (
-                    <div key={num} className="border p-4 rounded-lg bg-gray-50">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">{labelMap[num]}</label>
-                      {settings[key] && (
-                        <div className="mb-2 flex items-center justify-center">
-                          <img src={(settings[key] as string)?.startsWith("http") ? (settings[key] as string) : `${process.env.NEXT_PUBLIC_API_URL}${settings[key]}`} alt={`Industry ${num} Preview`} className="h-24 rounded border object-contain bg-white w-full" onError={(e) => { e.currentTarget.src = settings[key] as string }} />
+              <p className="text-sm text-gray-500 mb-4">Upload images in the same masonry layout as they appear on the homepage.</p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl bg-gray-50 p-6 rounded-xl border border-gray-200">
+                {/* Col 1 */}
+                <div className="flex flex-col gap-4">
+                  {[1, 2].map((num) => {
+                    const key = `industries_image_${num}` as keyof typeof settings;
+                    const labelMap = { 1: "Cafe/Restaurant", 2: "Wholesale/Warehouse" } as any;
+                    return (
+                      <div key={num} className="border border-gray-300 p-4 rounded-lg bg-white shadow-sm flex flex-col">
+                        <label className="block text-sm font-medium text-gray-700 mb-3">{labelMap[num]}</label>
+                        <div className="mb-4 bg-gray-100 rounded-md border border-dashed flex items-center justify-center overflow-hidden aspect-square relative">
+                          {settings[key] ? (
+                            <img src={(settings[key] as string)?.startsWith("http") ? (settings[key] as string) : `${process.env.NEXT_PUBLIC_API_URL}${settings[key]}`} alt={`${labelMap[num]} Preview`} className="w-full h-full object-cover absolute inset-0" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+                          ) : (
+                            <span className="text-gray-400 text-xs">No image</span>
+                          )}
                         </div>
+                        <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, key)} disabled={uploading === key} className="block w-full text-[10px] text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red cursor-pointer" />
+                        {uploading === key && <p className="text-[10px] text-meewa-red mt-2">Uploading...</p>}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Col 2 */}
+                <div className="flex flex-col">
+                  <div className="border border-gray-300 p-4 rounded-lg bg-white shadow-sm flex flex-col h-full">
+                    <label className="block text-sm font-medium text-gray-700 mb-3">Hotel (Tall)</label>
+                    <div className="mb-4 bg-gray-100 rounded-md border border-dashed flex items-center justify-center overflow-hidden flex-grow relative min-h-[200px]">
+                      {settings.industries_image_3 ? (
+                        <img src={(settings.industries_image_3 as string)?.startsWith("http") ? (settings.industries_image_3 as string) : `${process.env.NEXT_PUBLIC_API_URL}${settings.industries_image_3}`} alt="Hotel Preview" className="w-full h-full object-cover absolute inset-0" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+                      ) : (
+                        <span className="text-gray-400 text-xs">No image</span>
                       )}
-                      <input 
-                        type="file" 
-                        accept="image/*"
-                        onChange={(e) => handleFileUpload(e, key)}
-                        disabled={uploading === key}
-                        className="block w-full text-xs text-gray-500
-                          file:mr-4 file:py-1 file:px-2
-                          file:rounded-md file:border-0
-                          file:bg-red-50 file:text-meewa-red"
-                      />
-                      {uploading === key && <p className="text-xs text-meewa-red mt-1">Uploading...</p>}
                     </div>
-                  );
-                })}
+                    <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, "industries_image_3")} disabled={uploading === "industries_image_3"} className="block w-full text-[10px] text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red cursor-pointer" />
+                    {uploading === "industries_image_3" && <p className="text-[10px] text-meewa-red mt-2">Uploading...</p>}
+                  </div>
+                </div>
+
+                {/* Col 3 */}
+                <div className="flex flex-col gap-4">
+                  {[4, 5].map((num) => {
+                    const key = `industries_image_${num}` as keyof typeof settings;
+                    const labelMap = { 4: "Supermarket", 5: "Coffee Chain / Bags" } as any;
+                    const aspectMap = { 4: "aspect-[4/3]", 5: "flex-grow min-h-[150px]" } as any;
+                    return (
+                      <div key={num} className={`border border-gray-300 p-4 rounded-lg bg-white shadow-sm flex flex-col ${num === 5 ? 'flex-grow' : ''}`}>
+                        <label className="block text-sm font-medium text-gray-700 mb-3">{labelMap[num]}</label>
+                        <div className={`mb-4 bg-gray-100 rounded-md border border-dashed flex items-center justify-center overflow-hidden relative ${aspectMap[num]}`}>
+                          {settings[key] ? (
+                            <img src={(settings[key] as string)?.startsWith("http") ? (settings[key] as string) : `${process.env.NEXT_PUBLIC_API_URL}${settings[key]}`} alt={`${labelMap[num]} Preview`} className="w-full h-full object-cover absolute inset-0" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+                          ) : (
+                            <span className="text-gray-400 text-xs">No image</span>
+                          )}
+                        </div>
+                        <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, key)} disabled={uploading === key} className="block w-full text-[10px] text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red cursor-pointer" />
+                        {uploading === key && <p className="text-[10px] text-meewa-red mt-2">Uploading...</p>}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
