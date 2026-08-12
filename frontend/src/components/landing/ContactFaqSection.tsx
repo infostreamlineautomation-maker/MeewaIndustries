@@ -106,10 +106,10 @@ export default function ContactFaqSection() {
             </div>
           </div>
 
-          {/* Right: FAQs */}
-          <div className="w-full lg:w-7/12">
+          {/* Right: FAQs & Promo Box */}
+          <div className="w-full lg:w-7/12 flex flex-col">
             <h2 className="text-[28px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal mb-6 md:mb-10">FAQs</h2>
-            <div className="space-y-4">
+            <div className="space-y-4 mb-8 md:mb-auto">
               {faqs.map((faq, index) => (
                 <div key={index} className="border border-gray-300 rounded-md md:rounded-xl overflow-hidden transition-all duration-200 bg-white">
                   <button 
@@ -132,6 +132,17 @@ export default function ContactFaqSection() {
                   )}
                 </div>
               ))}
+            </div>
+
+            {/* Red Promo Box */}
+            <div className="bg-meewa-red rounded-lg md:rounded-xl p-8 md:p-10 text-center text-white mt-4 md:mt-8 shadow-md">
+              <h3 className="text-xl md:text-3xl font-bold mb-3 md:mb-4">Need Bulk Paper Cups?</h3>
+              <p className="text-[12px] md:text-base mb-6 md:mb-8 text-white/90 px-4 md:px-8">
+                Get pricing, samples, and export details from our packaging experts.
+              </p>
+              <button className="bg-[#D9D9D9] text-gray-900 px-5 py-2 md:px-6 md:py-2.5 rounded-md text-[11px] md:text-sm font-semibold hover:bg-white transition-colors">
+                Request Quote
+              </button>
             </div>
           </div>
 
