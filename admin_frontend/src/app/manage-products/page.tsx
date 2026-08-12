@@ -333,8 +333,32 @@ export default function ManageProductsPage() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1" title="The image that animates downwards on scroll on the product page. Ideally a transparent PNG of the product.">Hero Animated Image (Cutout for Parallax) <span className="text-gray-400 cursor-help font-normal ml-1">ⓘ</span></label>
                 {currentProduct.hero_animated_image && <img src={(currentProduct.hero_animated_image)?.startsWith("http") ? (currentProduct.hero_animated_image) : `${process.env.NEXT_PUBLIC_API_URL}${currentProduct.hero_animated_image}`} className="h-20 mb-2 rounded border object-contain bg-gray-100" />}
-                <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'hero_animated_image')} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" />
-                {uploading === 'hero_animated_image' && <span className="text-sm text-meewa-red ml-2 font-medium">Brewing your image for animation... (This may take a moment)</span>}
+                
+                {uploading === 'hero_animated_image' ? (
+                  <div className="mt-2 p-4 rounded-lg bg-red-50/50 border border-red-100">
+                    <style>{`
+                      @keyframes indeterminate {
+                        0% { transform: translateX(-100%); }
+                        100% { transform: translateX(200%); }
+                      }
+                    `}</style>
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-5 h-5 rounded-full border-2 border-meewa-red border-t-transparent animate-spin"></div>
+                      <span className="text-sm font-semibold text-gray-900">Brewing your animation...</span>
+                    </div>
+                    <p className="text-xs text-gray-600 mb-3 ml-8 leading-relaxed">
+                      Our AI is currently processing this image to precisely remove the background. <br/>This usually takes <strong>10-15 seconds</strong>. Please don't close this page.
+                    </p>
+                    <div className="ml-8 w-full max-w-sm h-1.5 bg-gray-200 rounded-full overflow-hidden relative">
+                      <div 
+                        className="absolute top-0 left-0 h-full bg-meewa-red rounded-full w-1/2" 
+                        style={{ animation: 'indeterminate 1.5s infinite ease-in-out' }}
+                      ></div>
+                    </div>
+                  </div>
+                ) : (
+                  <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'hero_animated_image')} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" />
+                )}
               </div>
             </div>
 

@@ -58,7 +58,7 @@ export default async function WhyChooseUs() {
           {features.map((feature: any, idx: number) => (
             <div 
               key={idx} 
-              className="group relative bg-gray-100 rounded-2xl p-6 md:p-8 border border-gray-100 overflow-hidden hover:border-transparent hover:shadow-[0_20px_50px_-12px_rgba(206,32,39,0.15)] transition-all duration-500 ease-out transform hover:-translate-y-2"
+              className="group relative bg-white rounded-md p-6 md:p-8 border border-gray-300 overflow-hidden hover:border-meewa-red hover:shadow-lg transition-all duration-300 z-10"
             >
               {/* Glowing gradient background that fades in on hover */}
               <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
@@ -86,6 +86,14 @@ export default async function WhyChooseUs() {
           ))}
         </div>
         
+        {/* Absolute Map Background matching the design */}
+        <div className="absolute right-0 bottom-[-10%] w-[856px] h-[473px] pointer-events-none z-0 hidden lg:block opacity-30">
+          <img 
+            src="/images/locationassest.jpg" 
+            alt="Global Reach Map" 
+            className="w-full h-full object-contain mix-blend-multiply"
+          />
+        </div>
       </div>
     </section>
   );

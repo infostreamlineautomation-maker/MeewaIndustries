@@ -7,7 +7,7 @@ alembic==1.13.2
 boto3
 python-dotenv==1.0.1
 Pillow
-rembg
+rembg[cpu]
 passlib
 bcrypt==3.2.2
 python-jose[cryptography]
