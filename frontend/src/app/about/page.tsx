@@ -46,13 +46,13 @@ export default async function AboutPage() {
     <div className="bg-white min-h-screen">
       
       {/* 1. Hero Section */}
-      <section className="pt-24 pb-16">
+      <section className="pt-40 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
             
             {/* Left Column */}
             <div className="flex flex-col justify-center max-w-xl">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight tracking-tight mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
                 {settings.about_hero_title || "Stories built to feel precise, cinematic, and commercially sharp."}
               </h1>
               <p className="text-lg md:text-xl text-gray-600 leading-relaxed mb-10">
@@ -103,7 +103,7 @@ export default async function AboutPage() {
       </section>
 
       {/* 3. Vision & Mission */}
-      <section className="py-16">
+      <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="border border-gray-200 p-6 md:p-10 rounded-3xl bg-white">
@@ -141,9 +141,9 @@ export default async function AboutPage() {
 
       {/* 4. Our Clients */}
       {clients.length > 0 && (
-        <section className="py-20 bg-gray-50 overflow-hidden">
+        <section className="py-12 bg-gray-50 overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 text-center">
-            <h2 className="text-4xl font-bold text-meewa-red">Our Clients</h2>
+            <h2 className="text-[40px] md:text-[65px] font-medium text-meewa-red leading-none">Our Clients</h2>
           </div>
           
           <div className="flex flex-col gap-8 relative w-full group">
@@ -171,7 +171,7 @@ export default async function AboutPage() {
       )}
 
       {/* 5. How We Work */}
-      <section className="pt-24 pb-8">
+      <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
             {/* Left: Video */}
@@ -192,10 +192,10 @@ export default async function AboutPage() {
             
             {/* Right: Text + Grid */}
             <div className="flex flex-col justify-center">
-              <h4 className="text-meewa-red font-bold text-sm mb-3">How we work</h4>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
+              <h2 className="text-[40px] md:text-[65px] font-medium text-meewa-red leading-none mb-3">How we work</h2>
+              <h3 className="text-xl md:text-2xl lg:text-3xl font-medium text-gray-800 mb-6 leading-relaxed">
                 {settings.about_how_we_work_title || "Production-minded design for every brand touch point."}
-              </h2>
+              </h3>
               <p className="text-lg text-gray-600 mb-10 leading-relaxed">
                 {settings.about_how_we_work_desc || "We combine brand strategy, AI assisted production, web experiences and high quality print solutions so every campaign feels considered from first idea to final delivery."}
               </p>
@@ -213,7 +213,7 @@ export default async function AboutPage() {
       </section>
 
       {/* 6. Capabilities Grid (Features) */}
-      <section className="pb-24 pt-8">
+      <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature: any, idx: number) => (

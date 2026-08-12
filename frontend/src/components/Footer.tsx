@@ -59,11 +59,11 @@ export default async function Footer() {
           
           {/* Left Column (Brand & CTA) */}
           <div className="md:col-span-7">
-            <div className="mb-8">
+            <div className="mb-6 md:mb-8">
               {settings.footer_logo_url ? (
-                <img src={`${settings.footer_logo_url?.startsWith('http') ? settings.footer_logo_url : process.env.NEXT_PUBLIC_API_URL + settings.footer_logo_url}`} alt="MEEWA Logo" className="h-14 object-contain" />
+                <img src={`${settings.footer_logo_url?.startsWith('http') ? settings.footer_logo_url : process.env.NEXT_PUBLIC_API_URL + settings.footer_logo_url}`} alt="MEEWA Logo" className="h-8 md:h-14 object-contain" />
               ) : settings.site_logo_url ? (
-                <img src={`${settings.site_logo_url?.startsWith('http') ? settings.site_logo_url : process.env.NEXT_PUBLIC_API_URL + settings.site_logo_url}`} alt="MEEWA Logo" className="h-14 object-contain" />
+                <img src={`${settings.site_logo_url?.startsWith('http') ? settings.site_logo_url : process.env.NEXT_PUBLIC_API_URL + settings.site_logo_url}`} alt="MEEWA Logo" className="h-8 md:h-14 object-contain" />
               ) : (
                 <div className="flex flex-col">
                   <span className="text-3xl font-bold tracking-widest leading-none text-white">{settings.site_title || "MEEWA"}</span>
@@ -72,71 +72,71 @@ export default async function Footer() {
               )}
             </div>
             
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight pr-0 md:pr-12">
+            <h2 className="text-[17px] md:text-5xl font-bold mb-3 md:mb-6 leading-tight pr-0 md:pr-12">
               {settings.footer_title || "Packaging the Future with Sustainable Food Packaging Solutions"}
             </h2>
-            <p className="text-red-100 text-sm md:text-base mb-8 max-w-xl pr-0 md:pr-12 leading-relaxed">
+            <p className="text-red-100 text-[11px] md:text-base mb-5 md:mb-8 max-w-xl pr-0 md:pr-12 leading-relaxed">
               {settings.footer_subtitle || "Trusted by importers, wholesalers, distributors, and food service businesses worldwide for premium paper packaging, custom manufacturing, and eco-friendly solutions."}
             </p>
             
-            <Link href="/contact" className="bg-[#e5e7eb] text-gray-800 px-6 py-2.5 rounded-md font-semibold text-sm hover:bg-gray-300 transition-colors inline-block">
+            <Link href="/contact" className="bg-[#e5e7eb] text-gray-800 px-4 py-2 md:px-6 md:py-2.5 rounded-md font-semibold text-[11px] md:text-sm hover:bg-gray-300 transition-colors inline-block">
               Request a Free Quote
             </Link>
           </div>
 
-          {/* Quick Links */}
-          <div className="md:col-span-2">
-            <h4 className="text-xl font-medium mb-6">Company</h4>
-            <ul className="space-y-4 text-[15px] text-white/90">
-              {settings.footer_links && Array.isArray(settings.footer_links) ? (
-                settings.footer_links.map((link: any, idx: number) => (
-                  <li key={idx}><Link href={link.href} className="hover:text-white transition-colors block">{link.label}</Link></li>
-                ))
-              ) : (
-                <>
-                  <li><Link href="/" className="hover:text-white transition-colors block">Home</Link></li>
-                  <li><Link href="/products" className="hover:text-white transition-colors block">Our Products</Link></li>
-                  <li><Link href="/about" className="hover:text-white transition-colors block">About Us</Link></li>
-                  <li><Link href="/contact" className="hover:text-white transition-colors block">Contact Us</Link></li>
-                </>
-              )}
-            </ul>
-          </div>
+          {/* Mobile Side-by-Side Wrapper */}
+          <div className="grid grid-cols-2 gap-6 md:gap-12 lg:gap-16 md:col-span-5">
+            {/* Quick Links */}
+            <div>
+              <h4 className="text-[14px] md:text-xl font-medium mb-4 md:mb-6">Company</h4>
+              <ul className="space-y-2 md:space-y-4 text-[11px] md:text-[15px] text-white/90">
+                {settings.footer_links && Array.isArray(settings.footer_links) ? (
+                  settings.footer_links.map((link: any, idx: number) => (
+                    <li key={idx}><Link href={link.href} className="hover:text-white transition-colors block">{link.label}</Link></li>
+                  ))
+                ) : (
+                  <>
+                    <li><Link href="/" className="hover:text-white transition-colors block">Home</Link></li>
+                    <li><Link href="/products" className="hover:text-white transition-colors block">Our Products</Link></li>
+                    <li><Link href="/about" className="hover:text-white transition-colors block">About Us</Link></li>
+                    <li><Link href="/contact" className="hover:text-white transition-colors block">Contact Us</Link></li>
+                  </>
+                )}
+              </ul>
+            </div>
 
-          {/* Contact Us */}
-          <div className="md:col-span-3">
-            <h4 className="text-xl font-medium mb-6">Contact Us</h4>
-            <ul className="space-y-3 text-[15px] text-white/90">
-              {settings.footer_phone && <li>{settings.footer_phone}</li>}
-              {settings.footer_email && <li><a href={`mailto:${settings.footer_email}`} className="hover:underline">{settings.footer_email}</a></li>}
-              {settings.footer_address && <li className="leading-snug">{settings.footer_address}</li>}
-            </ul>
+            {/* Contact Us */}
+            <div>
+              <h4 className="text-[14px] md:text-xl font-medium mb-4 md:mb-6">Contact Us</h4>
+              <ul className="space-y-2 md:space-y-3 text-[11px] md:text-[15px] text-white/90">
+                {settings.footer_phone && <li>{settings.footer_phone}</li>}
+                {settings.footer_email && <li><a href={`mailto:${settings.footer_email}`} className="hover:underline">{settings.footer_email}</a></li>}
+                {settings.footer_address && <li className="leading-snug">{settings.footer_address}</li>}
+              </ul>
             
-            <div className="flex gap-4 mt-8">
-              {settings.footer_socials && Array.isArray(settings.footer_socials) ? (
-                settings.footer_socials.map((link: any, idx: number) => (
-                  <a key={idx} href={link.href} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-transparent border border-white/50 rounded flex items-center justify-center hover:bg-white/10 transition-colors group">
-                    <div className="bg-white rounded-sm w-7 h-7 flex items-center justify-center overflow-hidden">
-                       <SocialIcon type={link.label} />
+              <div className="flex gap-2.5 md:gap-4 mt-4 md:mt-8">
+                {settings.footer_socials && Array.isArray(settings.footer_socials) ? (
+                  settings.footer_socials.map((link: any, idx: number) => (
+                    <a key={idx} href={link.href} target="_blank" rel="noopener noreferrer" className="w-5 h-5 md:w-10 md:h-10 flex items-center justify-center md:border md:border-white/50 md:rounded hover:opacity-80 md:hover:bg-white/10 transition-all cursor-pointer group">
+                      <div className="bg-white rounded-[4px] md:rounded-sm w-full h-full md:w-7 md:h-7 flex items-center justify-center overflow-hidden">
+                         <SocialIcon type={link.label} />
+                      </div>
+                    </a>
+                  ))
+                ) : (
+                  <>
+                    <div className="w-5 h-5 md:w-10 md:h-10 flex items-center justify-center md:border md:border-white/50 md:rounded hover:opacity-80 md:hover:bg-white/10 transition-all cursor-pointer group">
+                      <div className="bg-white rounded-[4px] md:rounded-sm w-full h-full md:w-7 md:h-7 flex items-center justify-center overflow-hidden"><SocialIcon type="Instagram" /></div>
                     </div>
-                  </a>
-                ))
-              ) : (
-                <>
-                  <div className="w-10 h-10 bg-transparent border border-white/50 rounded flex items-center justify-center hover:bg-white/10 transition-colors group cursor-pointer">
-                    <div className="bg-white rounded-sm w-7 h-7 flex items-center justify-center overflow-hidden"><SocialIcon type="LinkedIn" /></div>
-                  </div>
-                  <div className="w-10 h-10 bg-transparent border border-white/50 rounded flex items-center justify-center hover:bg-white/10 transition-colors group cursor-pointer">
-                    <div className="bg-white rounded-sm w-7 h-7 flex items-center justify-center overflow-hidden"><SocialIcon type="Facebook" /></div>
-                  </div>
-                  <div className="w-10 h-10 bg-transparent border border-white/50 rounded flex items-center justify-center hover:bg-white/10 transition-colors group cursor-pointer">
-                    <div className="bg-white rounded-sm w-7 h-7 flex items-center justify-center overflow-hidden"><SocialIcon type="Instagram" /></div>
-                  </div>
-                  <div className="w-10 h-10 bg-transparent border border-white/50 rounded flex items-center justify-center hover:bg-white/10 transition-colors group cursor-pointer">
-                    <div className="bg-white rounded-sm w-7 h-7 flex items-center justify-center overflow-hidden"><SocialIcon type="YouTube" /></div>
-                  </div>
-                </>
-              )}
+                    <div className="w-5 h-5 md:w-10 md:h-10 flex items-center justify-center md:border md:border-white/50 md:rounded hover:opacity-80 md:hover:bg-white/10 transition-all cursor-pointer group">
+                      <div className="bg-white rounded-[4px] md:rounded-sm w-full h-full md:w-7 md:h-7 flex items-center justify-center overflow-hidden"><SocialIcon type="Facebook" /></div>
+                    </div>
+                    <div className="w-5 h-5 md:w-10 md:h-10 flex items-center justify-center md:border md:border-white/50 md:rounded hover:opacity-80 md:hover:bg-white/10 transition-all cursor-pointer group">
+                      <div className="bg-white rounded-[4px] md:rounded-sm w-full h-full md:w-7 md:h-7 flex items-center justify-center overflow-hidden"><SocialIcon type="LinkedIn" /></div>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -144,14 +144,14 @@ export default async function Footer() {
 
       {/* Bottom Bar */}
       <div className="bg-white/10 w-full py-5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center text-[15px] font-medium text-white/90">
-          <div className="flex space-x-6 mb-4 md:mb-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center text-[11px] md:text-[15px] font-medium text-white/90 text-center">
+          <div className="flex space-x-4 md:space-x-6 mb-2 md:mb-0 md:absolute md:left-8">
             <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
             <Link href="/terms-and-conditions" className="hover:text-white">Terms</Link>
             <Link href="/sitemap" className="hover:text-white">Sitemap</Link>
             <Link href="/cookies-policy" className="hover:text-white">Cookies</Link>
           </div>
-          <div>
+          <div className="mt-2 md:mt-0">
             {settings.footer_text || `© 2026 Meewa. All Rights Reserved.`}
           </div>
         </div>

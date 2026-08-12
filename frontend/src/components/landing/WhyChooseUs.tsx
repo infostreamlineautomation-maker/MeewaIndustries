@@ -46,18 +46,18 @@ export default async function WhyChooseUs() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        <div className="mb-12 max-w-3xl">
-          <h2 className="text-[40px] md:text-[65px] font-medium text-meewa-red leading-none tracking-normal mb-6">Why Choose Us</h2>
-          <p className="text-gray-600 text-xl leading-relaxed">
+        <div className="mb-8 md:mb-12 max-w-3xl">
+          <h2 className="text-[24px] sm:text-[28px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal mb-2 md:mb-6">Why Choose Us</h2>
+          <p className="text-gray-600 text-[11px] md:text-xl leading-relaxed">
             We provide complete packaging solutions with a focus on quality, reliability, and customer satisfaction.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
           {features.map((feature: any, idx: number) => (
             <div 
               key={idx} 
-              className="group relative bg-white rounded-md p-6 md:p-8 border border-gray-300 overflow-hidden hover:border-meewa-red hover:shadow-lg transition-all duration-300 z-10"
+              className="group relative bg-white rounded-lg md:rounded-xl p-3.5 md:p-8 border border-gray-300 overflow-hidden hover:border-meewa-red hover:shadow-lg transition-all duration-300 z-10"
             >
               {/* Glowing gradient background that fades in on hover */}
               <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
@@ -68,13 +68,13 @@ export default async function WhyChooseUs() {
               </div>
 
               <div className="relative z-10">
-                <div className="w-16 h-16 bg-red-50 text-meewa-red rounded-2xl flex items-center justify-center mb-8 shadow-sm group-hover:scale-110 group-hover:bg-meewa-red group-hover:text-white transition-all duration-500 overflow-hidden p-3">
+                <div className="w-8 h-8 md:w-16 md:h-16 bg-[#FDF2F3] text-meewa-red rounded-md md:rounded-2xl flex items-center justify-center mb-3 md:mb-8 shadow-sm group-hover:scale-110 group-hover:bg-meewa-red group-hover:text-white transition-all duration-500 overflow-hidden p-1.5 md:p-3">
                   <img src={feature.icon.startsWith('/') ? `${feature.icon?.startsWith('http') ? feature.icon : process.env.NEXT_PUBLIC_API_URL + feature.icon}` : feature.icon} alt={feature.title} className="w-full h-full object-contain filter transition-all duration-500 group-hover:brightness-0 group-hover:invert" />
                 </div>
                 
-                <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-meewa-red transition-colors duration-300">{feature.title}</h3>
+                <h3 className="text-[12.5px] md:text-2xl font-semibold md:font-bold text-gray-900 mb-1.5 md:mb-4 group-hover:text-meewa-red transition-colors duration-300 leading-tight">{feature.title}</h3>
                 
-                <p className="text-gray-600 leading-relaxed font-medium">
+                <p className="text-gray-600 leading-snug md:leading-relaxed text-[10px] md:text-base md:font-medium">
                   {feature.description}
                 </p>
               </div>

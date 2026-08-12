@@ -103,20 +103,6 @@ export default function Header() {
           {/* Desktop Pill Background / Mobile Transparent Header */}
           <div className="bg-transparent md:bg-meewa-red rounded-none md:rounded-full flex items-center justify-between md:justify-center gap-4 md:gap-10 h-14 px-2 md:px-6 shadow-none md:shadow-xl md:shadow-red-500/20 w-full md:w-fit pointer-events-auto">
             
-            {/* Mobile Hamburger Button */}
-            <button 
-              className="md:hidden text-white bg-meewa-red p-2 rounded-full focus:outline-none z-50 shadow-md shadow-red-500/30"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {isMobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
-
             {/* Mobile Horizontal Logo */}
             <Link 
               href="/" 
@@ -124,7 +110,7 @@ export default function Header() {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {(mobileLogoUrl || footerLogoUrl || logoUrl) ? (
-                <img src={(mobileLogoUrl || footerLogoUrl || logoUrl)!} alt="MEEWA Logo" className="h-7 object-contain" />
+                <img src={(mobileLogoUrl || footerLogoUrl || logoUrl)!} alt="MEEWA Logo" className="h-10 object-contain ml-2" />
               ) : null}
             </Link>
 
@@ -149,8 +135,19 @@ export default function Header() {
               </nav>
             </div>
 
-            {/* Mobile Empty Spacer for balancing the hamburger so the logo stays centered */}
-            <div className="md:hidden w-10"></div>
+            {/* Mobile Hamburger Button */}
+            <button 
+              className="md:hidden text-meewa-red p-2 focus:outline-none z-50 mr-2"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {isMobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 6h18M3 10h18M3 14h18M3 18h18" />
+                )}
+              </svg>
+            </button>
           </div>
 
           {/* Floating Circular Logo */}
@@ -182,15 +179,7 @@ export default function Header() {
           ) : null}
         </div>
 
-        {/* Close Button */}
-        <button 
-          className="absolute top-4 right-4 text-white/80 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors"
-          onClick={() => setIsMobileMenuOpen(false)}
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+
 
         <div className="flex flex-col space-y-4 mt-12">
           {[...leftLinks, ...rightLinks].map((link, idx) => (

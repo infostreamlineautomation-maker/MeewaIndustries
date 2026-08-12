@@ -21,11 +21,11 @@ export default async function ExportProcess() {
 
   return (
     <section className="py-12 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-        <h2 className="text-[40px] md:text-[65px] font-medium text-meewa-red leading-none tracking-normal mb-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 md:mb-12">
+        <h2 className="text-[24px] sm:text-[28px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal mb-2 md:mb-4">
           {settings.export_title || "Export Process"}
         </h2>
-        <p className="text-gray-600 text-lg">
+        <p className="text-gray-600 text-[11px] md:text-lg">
           {settings.export_subtitle || "We make international sourcing easy with a transparent export process."}
         </p>
       </div>
@@ -35,17 +35,17 @@ export default async function ExportProcess() {
         <div className="flex flex-col lg:flex-row rounded-[10px] overflow-hidden lg:h-[745px]">
           
           {/* Left Side: Red Background with Steps */}
-          <div className="bg-meewa-red text-white w-full lg:w-[656px] p-8 md:p-12 lg:p-[4.5rem] flex flex-col justify-center">
-          <div className="space-y-6 md:space-y-8">
+          <div className="bg-meewa-red text-white w-full lg:w-[656px] p-6 md:p-12 lg:p-[4.5rem] flex flex-col justify-center rounded-xl md:rounded-[10px] lg:rounded-none">
+          <div className="space-y-4 md:space-y-8">
             {steps.map((step: any, idx: number) => (
-              <div key={idx} className="flex flex-row items-start space-x-6 group">
-                <div className="text-3xl md:text-4xl font-light opacity-60 font-mono group-hover:opacity-100 transition-opacity">
+              <div key={idx} className="flex flex-row items-start space-x-3 md:space-x-6 group">
+                <div className="text-[28px] md:text-4xl font-light opacity-90 transition-opacity mt-[-4px]">
                   {step.num}
-                  <span className="text-red-300 ml-1">.</span>
+                  <span className="text-white ml-0 text-sm md:text-xl">.</span>
                 </div>
-                <div className="mt-1">
-                  <h3 className="text-xl font-bold mb-1">{step.title}</h3>
-                  <p className="text-red-100 text-sm">{step.desc}</p>
+                <div className="mt-0 flex-1">
+                  <h3 className="text-[14px] md:text-xl font-medium md:font-bold mb-0.5 md:mb-1 leading-tight">{step.title}</h3>
+                  <p className="text-white/90 text-[11px] md:text-sm leading-tight">{step.desc}</p>
                 </div>
               </div>
             ))}
@@ -53,7 +53,7 @@ export default async function ExportProcess() {
         </div>
 
         {/* Right Side: Image/Video */}
-        <div className="w-full lg:w-[606px] min-h-[300px] lg:min-h-full relative bg-gray-50 flex items-center justify-center">
+        <div className="hidden lg:flex w-full lg:w-[606px] min-h-[300px] lg:min-h-full relative bg-gray-50 items-center justify-center">
           {settings.export_process_media_url ? (
             settings.export_process_media_url.endsWith('.mp4') ? (
               <video 

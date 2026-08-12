@@ -2,7 +2,7 @@
 import { fetchClientSettings } from '@/lib/fetchClientSettings';
 
 import { useState, useEffect } from 'react';
-import { Phone, Mail, MapPin, MessageCircle } from 'lucide-react';
+import { Phone, Mail, MapPin, MessageCircle, Globe } from 'lucide-react';
 
 const defaultFaqs = [
   { question: "What products do you manufacture?", answer: "Detailed answer for \"What products do you manufacture?\" will be added here. Our team is always ready to provide comprehensive support for your specific needs." },
@@ -39,56 +39,56 @@ export default function ContactFaqSection() {
         <div className="flex flex-col lg:flex-row gap-16">
           
           {/* Left: Get In Touch */}
-          <div className="w-full lg:w-5/12 bg-gray-100 rounded-3xl p-10 text-gray-900 shadow-xl border border-gray-200">
-            <h2 className="text-[40px] md:text-[65px] font-medium text-meewa-red leading-none tracking-normal mb-4">Get In Touch</h2>
-            <p className="text-gray-600 text-sm mb-10">
+          <div className="w-full lg:w-5/12 bg-[#F1F1F1] rounded-2xl md:rounded-3xl p-6 md:p-10 text-gray-900 shadow-sm md:shadow-xl border border-gray-200">
+            <h2 className="text-[28px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal mb-3 md:mb-4">Get In Touch</h2>
+            <p className="text-gray-600 text-[10px] md:text-sm mb-6 md:mb-10 leading-tight">
               Get product details, pricing, samples, and export support. We'll respond within 24 hours.
             </p>
 
-            <div className="space-y-4 mb-12">
-              <div className="flex items-center p-4 border border-gray-200 rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-10 flex-shrink-0 flex justify-center text-meewa-red">
-                  <Phone size={20} />
+            <div className="space-y-3 md:space-y-4 mb-8 md:mb-12">
+              <div className="flex items-center p-3 md:p-4 border border-gray-300 md:border-gray-200 rounded-md md:rounded-xl bg-[#EBEBEB] md:bg-white shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-8 md:w-10 flex-shrink-0 flex justify-center text-gray-600 md:text-meewa-red">
+                  <Phone size={16} className="md:w-5 md:h-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-gray-900">Call Us</h4>
-                  <p className="text-xs text-gray-600">{settings.contact_phone || "Speak directly with our export team."}</p>
+                  <h4 className="text-[11px] md:text-sm font-bold md:font-bold text-gray-900 leading-tight">Call Us</h4>
+                  <p className="text-[9px] md:text-xs text-gray-600 leading-tight">{settings.contact_phone || "Speak directly with our export team."}</p>
                 </div>
               </div>
               
-              <div className="flex items-center p-4 border border-gray-200 rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-10 flex-shrink-0 flex justify-center text-meewa-red">
-                  <Mail size={20} />
+              <div className="flex items-center p-3 md:p-4 border border-gray-300 md:border-gray-200 rounded-md md:rounded-xl bg-[#EBEBEB] md:bg-white shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-8 md:w-10 flex-shrink-0 flex justify-center text-gray-400 md:text-meewa-red">
+                  <Mail size={16} className="md:w-5 md:h-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-gray-900">Email Us</h4>
-                  <p className="text-xs text-gray-600">{settings.contact_email || "Send your product requirements anytime."}</p>
+                  <h4 className="text-[11px] md:text-sm font-bold md:font-bold text-gray-900 leading-tight">Email Us</h4>
+                  <p className="text-[9px] md:text-xs text-gray-600 leading-tight">{settings.contact_email || "Send your product requirements anytime."}</p>
                 </div>
               </div>
 
-              <div className="flex items-center p-4 border border-gray-200 rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-10 flex-shrink-0 flex justify-center text-meewa-red">
-                  <MapPin size={20} />
+              <div className="flex items-center p-3 md:p-4 border border-gray-300 md:border-gray-200 rounded-md md:rounded-xl bg-[#EBEBEB] md:bg-white shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-8 md:w-10 flex-shrink-0 flex justify-center text-red-500 md:text-meewa-red">
+                  <MapPin size={16} className="md:w-5 md:h-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-gray-900">Office Address</h4>
-                  <p className="text-xs text-gray-600">{settings.contact_address || "Your Company Address, Gujarat, India"}</p>
+                  <h4 className="text-[11px] md:text-sm font-bold md:font-bold text-gray-900 leading-tight">Office Address</h4>
+                  <p className="text-[9px] md:text-xs text-gray-600 leading-tight">{settings.contact_address || "Your Company Address, Gujarat, India"}</p>
                 </div>
               </div>
 
-              <div className="flex items-center p-4 border border-gray-200 rounded-xl bg-white shadow-sm hover:shadow-md transition-shadow">
-                <div className="w-10 flex-shrink-0 flex justify-center text-green-600">
-                  <MessageCircle size={20} />
+              <div className="flex items-center p-3 md:p-4 border border-gray-300 md:border-gray-200 rounded-md md:rounded-xl bg-[#EBEBEB] md:bg-white shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-8 md:w-10 flex-shrink-0 flex justify-center text-blue-500 md:text-green-600">
+                  <Globe size={16} className="md:w-5 md:h-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-gray-900">WhatsApp Us</h4>
-                  <p className="text-xs text-gray-600">{settings.contact_whatsapp || "Chat directly with our export team."}</p>
+                  <h4 className="text-[11px] md:text-sm font-bold md:font-bold text-gray-900 leading-tight">Website</h4>
+                  <p className="text-[9px] md:text-xs text-gray-600 leading-tight">{settings.contact_website || "Visit our website for more details."}</p>
                 </div>
               </div>
             </div>
 
-            <div>
-              <p className="text-xs font-semibold text-gray-500 mb-4 uppercase tracking-wider">Connect with us</p>
+            <div className="border-t border-gray-300 pt-4">
+              <p className="text-[8px] md:text-xs font-semibold text-gray-500 mb-2 md:mb-4 tracking-wide">Connect with us</p>
               <div className="flex space-x-5 text-gray-500">
                 <a href="#" className="hover:text-meewa-red transition-colors" aria-label="LinkedIn">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
@@ -108,17 +108,21 @@ export default function ContactFaqSection() {
 
           {/* Right: FAQs */}
           <div className="w-full lg:w-7/12">
-            <h2 className="text-[40px] md:text-[65px] font-medium text-meewa-red leading-none tracking-normal mb-10">FAQs</h2>
+            <h2 className="text-[28px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal mb-6 md:mb-10">FAQs</h2>
             <div className="space-y-4">
               {faqs.map((faq, index) => (
-                <div key={index} className="border border-gray-300 rounded-xl overflow-hidden transition-all duration-200">
+                <div key={index} className="border border-gray-300 rounded-md md:rounded-xl overflow-hidden transition-all duration-200 bg-white">
                   <button 
                     onClick={() => toggleFaq(index)}
-                    className="w-full flex items-center justify-between p-6 text-left focus:outline-none hover:bg-gray-50"
+                    className="w-full flex items-center justify-between p-3 md:p-6 text-left focus:outline-none hover:bg-gray-50"
                   >
-                    <span className="text-gray-800 font-medium">{index + 1}. {faq.question}</span>
-                    <span className="text-gray-400 text-xl font-light">
-                      {openIndex === index ? '−' : '+'}
+                    <span className="text-gray-800 font-medium md:font-medium text-[11px] md:text-base">{index + 1}. {faq.question}</span>
+                    <span className="text-gray-400 text-sm md:text-xl font-light">
+                      {openIndex === index ? (
+                        <span className="w-4 h-4 md:w-5 md:h-5 border border-gray-400 rounded-full flex items-center justify-center font-normal leading-none pb-0.5">−</span>
+                      ) : (
+                        <span className="w-4 h-4 md:w-5 md:h-5 border border-gray-400 rounded-full flex items-center justify-center font-normal leading-none pb-0.5">+</span>
+                      )}
                     </span>
                   </button>
                   {openIndex === index && (

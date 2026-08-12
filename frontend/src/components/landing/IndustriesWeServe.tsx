@@ -26,19 +26,19 @@ export default async function IndustriesWeServe() {
     <section className="py-12 bg-meewa-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="mb-8">
-          <h2 className="text-[40px] md:text-[65px] font-medium text-meewa-red leading-none tracking-normal mb-4">
+        <div className="mb-6 md:mb-8">
+          <h2 className="text-[24px] sm:text-[28px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal mb-2 md:mb-4">
             {settings.industries_title || "Industries We Serve"}
           </h2>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-600 text-[11px] md:text-lg">
             Our disposable packaging products support businesses across multiple industries worldwide.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-16 items-center">
           
           {/* Left Collage (CSS Grid approximation of the design's masonry) */}
-          <div className="grid grid-cols-3 gap-2 max-w-2xl mx-auto lg:mx-0">
+          <div className="grid grid-cols-3 gap-1.5 md:gap-2 max-w-2xl mx-auto lg:mx-0">
             {/* Col 1 */}
             <div className="flex flex-col gap-2">
               <div className="bg-gray-200 w-full aspect-square relative overflow-hidden shadow-sm">
@@ -88,14 +88,14 @@ export default async function IndustriesWeServe() {
           </div>
 
           <div>
-            <h3 className="text-3xl font-bold text-black mb-4 leading-tight whitespace-pre-line">
+            <h3 className="text-lg md:text-3xl font-bold text-black mb-3 md:mb-4 leading-tight whitespace-pre-line">
               {settings.industries_subtitle || "Food Packaging Solutions\nfor Every Industry"}
             </h3>
-            <p className="text-lg text-black mb-4">We Serve:</p>
-            <ul className="flex flex-col gap-1.5 text-black text-[15px] md:text-base">
+            <p className="text-[13px] md:text-lg text-black mb-2 md:mb-4 font-medium">We Serve:</p>
+            <ul className="flex flex-col gap-1 md:gap-1.5 text-black text-[11px] md:text-[15px] lg:text-base">
               {industries.map((industry: string, idx: number) => (
-                <li key={idx} className="flex items-center space-x-3">
-                  <span className="w-1 h-1 bg-black rounded-full flex-shrink-0"></span>
+                <li key={idx} className="flex items-center space-x-2 md:space-x-3">
+                  <span className="w-1 md:w-1.5 h-1 md:h-1.5 bg-black rounded-full flex-shrink-0"></span>
                   <span>{industry}</span>
                 </li>
               ))}
