@@ -32,13 +32,13 @@ export default async function FeaturedProducts() {
   }
 
   return (
-    <section className="pt-32 pb-12 bg-white">
+    <section className="pt-32 pb-4 md:pb-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header Section */}
         <div className="mb-6 md:mb-12">
           <div className="flex flex-row items-center justify-between mb-3 md:mb-4">
-            <h2 className="text-[24px] sm:text-[28px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal">Product Categories</h2>
+            <h2 className="text-[24px] sm:text-[28px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal">Our Products</h2>
             <Link href="/products" className="bg-meewa-red text-white px-3 py-1.5 md:px-6 md:py-2 rounded-full text-[10px] md:text-sm font-medium hover:bg-red-700 transition-colors inline-block whitespace-nowrap ml-4">
               View All Products
             </Link>

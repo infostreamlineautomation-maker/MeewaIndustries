@@ -20,7 +20,7 @@ export default async function ExportProcess() {
     ];
 
   return (
-    <section className="py-12 bg-white">
+    <section className="pt-4 md:pt-12 pb-4 md:pb-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 md:mb-12">
         <h2 className="text-[24px] sm:text-[28px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal mb-2 md:mb-4">
           {settings.export_title || "Export Process"}
@@ -53,7 +53,7 @@ export default async function ExportProcess() {
         </div>
 
         {/* Right Side: Image/Video */}
-        <div className="hidden lg:flex w-full lg:w-[606px] min-h-[300px] lg:min-h-full relative bg-gray-50 items-center justify-center">
+        <div className="hidden lg:flex w-full lg:w-[606px] min-h-[300px] lg:min-h-full relative bg-white items-center justify-center">
           {settings.export_process_media_url ? (
             settings.export_process_media_url.endsWith('.mp4') ? (
               <video 

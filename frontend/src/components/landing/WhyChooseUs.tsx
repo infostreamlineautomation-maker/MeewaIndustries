@@ -37,13 +37,7 @@ export default async function WhyChooseUs() {
   ];
 
   return (
-    <section className="py-12 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
-      {/* Decorative Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-meewa-red/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-[-10%] left-[-5%] w-[40%] h-[40%] bg-gray-200/50 rounded-full blur-3xl"></div>
-      </div>
-
+    <section className="pt-4 md:pt-12 pb-4 md:pb-12 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <div className="mb-8 md:mb-12 max-w-3xl">

@@ -10,7 +10,7 @@ export default async function AboutCompany() {
   } catch(e) {}
 
   return (
-    <section className="py-12 bg-white relative z-10">
+    <section className="pt-4 md:pt-12 pb-4 md:pb-12 bg-white relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="mb-6 md:mb-12">
@@ -31,7 +31,7 @@ export default async function AboutCompany() {
         </div>
 
         {/* Video / Map Display */}
-        <div className="relative w-full h-[250px] md:h-[600px] rounded-lg md:rounded-2xl overflow-hidden shadow-sm md:shadow-lg bg-gray-100">
+        <div className="relative w-full h-[250px] md:h-[439px] rounded-lg md:rounded-2xl overflow-hidden shadow-sm md:shadow-lg bg-gray-100">
           
           {settings.about_media_url ? (
             <AboutMedia mediaUrl={settings.about_media_url} />
