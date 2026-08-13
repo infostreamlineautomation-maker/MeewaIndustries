@@ -107,48 +107,48 @@ function ContactFormInner() {
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label htmlFor="fullName" className="block text-xl font-medium text-gray-900 mb-3">Full Name</label>
+          <label htmlFor="fullName" className="block text-base md:text-xl font-medium text-gray-900 mb-2 md:mb-3">Full Name</label>
           <input 
             type="text" 
             id="fullName" 
             required
             value={formData.name}
             onChange={(e) => setFormData({...formData, name: e.target.value})}
-            className="block w-full rounded-xl border border-gray-200 bg-white py-4 px-5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-meewa-red transition-shadow" 
+            className="block w-full rounded-xl border border-gray-200 bg-white py-3 px-4 md:py-4 md:px-5 text-sm md:text-base text-gray-900 focus:outline-none focus:ring-2 focus:ring-meewa-red transition-shadow" 
             placeholder="Enter Your Name*" 
           />
         </div>
         <div>
-          <label htmlFor="phone" className="block text-xl font-medium text-gray-900 mb-3">Phone Number</label>
+          <label htmlFor="phone" className="block text-base md:text-xl font-medium text-gray-900 mb-2 md:mb-3">Phone Number</label>
           <input 
             type="tel" 
             id="phone" 
             required
             value={formData.phone}
             onChange={(e) => setFormData({...formData, phone: e.target.value})}
-            className="block w-full rounded-xl border border-gray-200 bg-white py-4 px-5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-meewa-red transition-shadow" 
+            className="block w-full rounded-xl border border-gray-200 bg-white py-3 px-4 md:py-4 md:px-5 text-sm md:text-base text-gray-900 focus:outline-none focus:ring-2 focus:ring-meewa-red transition-shadow" 
             placeholder="Enter Your Phone Number*" 
           />
         </div>
       </div>
       
       <div>
-        <label htmlFor="email" className="block text-xl font-medium text-gray-900 mb-3">Email Address</label>
+        <label htmlFor="email" className="block text-base md:text-xl font-medium text-gray-900 mb-2 md:mb-3">Email Address</label>
         <input 
           type="email" 
           id="email" 
           required
           value={formData.email}
           onChange={(e) => setFormData({...formData, email: e.target.value})}
-          className="block w-full rounded-xl border border-gray-200 bg-white py-4 px-5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-meewa-red transition-shadow" 
+          className="block w-full rounded-xl border border-gray-200 bg-white py-3 px-4 md:py-4 md:px-5 text-sm md:text-base text-gray-900 focus:outline-none focus:ring-2 focus:ring-meewa-red transition-shadow" 
           placeholder="Enter Your Email*" 
         />
       </div>
 
       {/* Quote / Products Section */}
       <div className="border-t border-gray-200 pt-6 mt-6">
-        <div className="flex justify-between items-center mb-4">
-          <label className="block text-xl font-medium text-gray-900">Request a Quote (Optional)</label>
+        <div className="flex justify-between items-center mb-2 md:mb-4">
+          <label className="block text-base md:text-xl font-medium text-gray-900">Request a Quote (Optional)</label>
           <button 
             type="button" 
             onClick={handleAddProduct}
@@ -204,20 +204,20 @@ function ContactFormInner() {
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-xl font-medium text-gray-900 mb-3">Your Message</label>
+        <label htmlFor="message" className="block text-base md:text-xl font-medium text-gray-900 mb-2 md:mb-3">Your Message</label>
         <textarea 
           id="message" 
           required
           rows={6} 
           value={formData.message}
           onChange={(e) => setFormData({...formData, message: e.target.value})}
-          className="block w-full rounded-xl border border-gray-200 bg-white py-4 px-5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-meewa-red transition-shadow resize-none" 
+          className="block w-full rounded-xl border border-gray-200 bg-white py-3 px-4 md:py-4 md:px-5 text-sm md:text-base text-gray-900 focus:outline-none focus:ring-2 focus:ring-meewa-red transition-shadow resize-none" 
           placeholder="Enter Your Message*"
         ></textarea>
       </div>
       
-      <div className="pt-4">
-        <button type="submit" className="bg-meewa-red text-white py-4 px-10 rounded-full hover:brightness-90 font-semibold shadow-md hover:shadow-lg transition-all text-lg">
+      <div className="pt-2 md:pt-4">
+        <button type="submit" className="w-full md:w-auto bg-meewa-red text-white py-3 px-6 md:py-4 md:px-10 rounded-full hover:brightness-90 font-semibold shadow-md hover:shadow-lg transition-all text-base md:text-lg">
           Submit Inquiry
         </button>
       </div>

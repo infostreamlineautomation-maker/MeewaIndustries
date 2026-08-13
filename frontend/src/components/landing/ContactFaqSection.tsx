@@ -9,10 +9,24 @@ const defaultFaqs = [
   { question: "Do you offer custom printing?", answer: "Yes, we offer custom printing on many of our packaging products to help your brand stand out." },
   { question: "What is your minimum order quantity?", answer: "Our minimum order quantity varies by product. Please contact our sales team for detailed information." },
   { question: "Which countries do you export to?", answer: "We export globally to many countries across North America, Europe, Asia, and the Middle East." },
-  { question: "Can I request product samples?", answer: "Yes, product samples are available upon request to ensure quality meets your standards before bulk ordering." }
+  { question: "Can I request product samples?", answer: "Yes, product samples are available upon request to ensure quality meets your standards before bulk ordering." },
+  { question: "How long does production take?", answer: "Production time typically ranges from 15 to 30 days depending on the product, customization, and order volume." },
+  { question: "How can I request a quote?", answer: "You can request a quote by filling out the form on our Contact Us page or by directly emailing our sales team." }
 ];
 
-export default function ContactFaqSection() {
+const productFaqs = [
+  { question: "Can I customize products?", answer: "Yes, we offer full customization including size, printing, and material specifications for most products." },
+  { question: "What is MOQ?", answer: "The Minimum Order Quantity depends on the specific product. Please contact us for the exact MOQ for this item." },
+  { question: "Do you provide samples?", answer: "Yes, we provide samples for quality checking before you place a bulk order." }
+];
+
+export default function ContactFaqSection({ 
+  isProductPage = false, 
+  productName = "Paper Cups" 
+}: { 
+  isProductPage?: boolean, 
+  productName?: string 
+}) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [settings, setSettings] = useState<any>({});
   const [faqs, setFaqs] = useState<any[]>(defaultFaqs);
@@ -22,8 +36,12 @@ export default function ContactFaqSection() {
       .then(res => res.json())
       .then(data => {
         setSettings(data);
-        if (data.landing_faqs && data.landing_faqs.length > 0) {
+        if (!isProductPage && data.landing_faqs && data.landing_faqs.length > 0) {
           setFaqs(data.landing_faqs);
+        } else if (isProductPage) {
+          setFaqs(productFaqs);
+        } else {
+          setFaqs(defaultFaqs);
         }
       })
       .catch(err => console.error(err));
@@ -134,16 +152,18 @@ export default function ContactFaqSection() {
               ))}
             </div>
 
-            {/* Red Promo Box */}
-            <div className="bg-meewa-red rounded-lg md:rounded-xl p-8 md:p-10 text-center text-white mt-4 md:mt-8 shadow-md">
-              <h3 className="text-xl md:text-3xl font-bold mb-3 md:mb-4">Need Bulk Paper Cups?</h3>
-              <p className="text-[12px] md:text-base mb-6 md:mb-8 text-white/90 px-4 md:px-8">
-                Get pricing, samples, and export details from our packaging experts.
-              </p>
-              <button className="bg-[#D9D9D9] text-gray-900 px-5 py-2 md:px-6 md:py-2.5 rounded-md text-[11px] md:text-sm font-semibold hover:bg-white transition-colors">
-                Request Quote
-              </button>
-            </div>
+            {/* Red Promo Box (Only on Product Pages) */}
+            {isProductPage && (
+              <div className="bg-meewa-red rounded-lg md:rounded-xl p-8 md:p-10 text-center text-white mt-4 md:mt-8 shadow-md">
+                <h3 className="text-xl md:text-3xl font-bold mb-3 md:mb-4">Need Bulk {productName}?</h3>
+                <p className="text-[12px] md:text-base mb-6 md:mb-8 text-white/90 px-4 md:px-8">
+                  Get pricing, samples, and export details from our packaging experts.
+                </p>
+                <button className="bg-[#D9D9D9] text-gray-900 px-5 py-2 md:px-6 md:py-2.5 rounded-md text-[11px] md:text-sm font-semibold hover:bg-white transition-colors">
+                  Request Quote
+                </button>
+              </div>
+            )}
           </div>
 
         </div>

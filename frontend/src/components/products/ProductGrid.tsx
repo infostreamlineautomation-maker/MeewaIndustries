@@ -23,7 +23,7 @@ export default function ProductGrid({ products }: { products: any[] }) {
       <h2 className="text-[28px] sm:text-[32px] md:text-[60px] font-medium text-meewa-red text-center leading-none tracking-normal mb-6 md:mb-16 pt-6 md:pt-10">Our Products</h2>
       
       <div className="relative">
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-3 gap-y-6 md:gap-x-8 md:gap-y-12 min-h-[400px] md:min-h-[800px]">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-6 md:gap-x-8 md:gap-y-12 min-h-[400px] md:min-h-[800px]">
         {currentProducts.map((prod: any) => (
           <Link href={`/products/${prod.slug || '#'}`} key={prod.id} className="flex flex-col group cursor-pointer">
             <div className="w-full aspect-[4/5] bg-gray-100 rounded-lg md:rounded-3xl overflow-hidden mb-2 md:mb-4 shadow-sm group-hover:shadow-lg transition-shadow border border-gray-200 relative">

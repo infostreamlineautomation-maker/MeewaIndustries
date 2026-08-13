@@ -46,16 +46,16 @@ export default async function AboutPage() {
     <div className="bg-white min-h-screen">
       
       {/* 1. Hero Section */}
-      <section className="pt-40 pb-12">
+      <section className="pt-24 md:pt-40 pb-8 md:pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-stretch">
             
             {/* Left Column */}
             <div className="flex flex-col justify-center max-w-xl">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-4 md:mb-6">
                 {settings.about_hero_title || "Stories built to feel precise, cinematic, and commercially sharp."}
               </h1>
-              <p className="text-lg md:text-xl text-gray-600 leading-relaxed mb-10">
+              <p className="text-base md:text-xl text-gray-600 leading-relaxed mb-8 md:mb-10">
                 {settings.about_hero_subtitle || "Leading exporter of high-quality packaging materials for businesses worldwide. Delivering innovative, sustainable, and customized packaging solutions with trusted quality."}
               </p>
 
@@ -103,9 +103,9 @@ export default async function AboutPage() {
       </section>
 
       {/* 3. Vision & Mission */}
-      <section className="py-12">
+      <section className="py-8 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
             <div className="border border-gray-200 p-6 md:p-10 rounded-3xl bg-white">
               {settings.about_vision_icon ? (
                 <div className="w-12 h-12 bg-meewa-red rounded-lg mb-6 shadow-sm flex items-center justify-center p-2.5">
@@ -141,9 +141,9 @@ export default async function AboutPage() {
 
       {/* 4. Our Clients */}
       {clients.length > 0 && (
-        <section className="py-12 bg-gray-50 overflow-hidden">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 text-center">
-            <h2 className="text-[40px] md:text-[65px] font-medium text-meewa-red leading-none">Our Clients</h2>
+        <section className="py-8 md:py-12 bg-gray-50 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 md:mb-10 text-center">
+            <h2 className="text-[28px] sm:text-[32px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal">Our Clients</h2>
           </div>
           
           <div className="flex flex-col gap-8 relative w-full group">
@@ -171,20 +171,20 @@ export default async function AboutPage() {
       )}
 
       {/* 5. How We Work */}
-      <section className="py-12">
+      <section className="py-8 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-stretch">
             {/* Left: Video */}
-            <div className="h-[400px] lg:h-auto min-h-[500px] rounded-xl overflow-hidden shadow-lg bg-gray-900 relative group">
+            <div className="h-[300px] md:h-[400px] lg:h-auto min-h-[400px] rounded-xl overflow-hidden shadow-lg bg-gray-900 relative group">
               {settings.about_how_we_work_media ? (
                 <img src={`${settings.about_how_we_work_media?.startsWith('http') ? settings.about_how_we_work_media : process.env.NEXT_PUBLIC_API_URL + settings.about_how_we_work_media}`} className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" alt="How We Work" />
               ) : (
                 <div className="absolute inset-0 bg-gray-200"></div>
               )}
               {/* Text Overlay on Video */}
-              <div className="absolute inset-x-0 bottom-0 p-6 md:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
-                <div className="text-white/80 text-sm font-medium mb-1">{settings.about_how_we_work_video_subtitle || "Print Excellence"}</div>
-                <h3 className="text-white text-xl md:text-2xl font-bold leading-tight">
+              <div className="absolute inset-x-0 bottom-0 p-5 md:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+                <div className="text-white/80 text-xs md:text-sm font-medium mb-1">{settings.about_how_we_work_video_subtitle || "Print Excellence"}</div>
+                <h3 className="text-white text-lg md:text-2xl font-bold leading-tight">
                   {settings.about_how_we_work_video_title || "Crafted visuals, flawless finishes and production quality built for modern brands."}
                 </h3>
               </div>
@@ -192,11 +192,11 @@ export default async function AboutPage() {
             
             {/* Right: Text + Grid */}
             <div className="flex flex-col justify-center">
-              <h2 className="text-[40px] md:text-[65px] font-medium text-meewa-red leading-none mb-3">How we work</h2>
-              <h3 className="text-xl md:text-2xl lg:text-3xl font-medium text-gray-800 mb-6 leading-relaxed">
+              <h2 className="text-[28px] sm:text-[32px] md:text-[60px] font-medium text-meewa-red leading-none mb-3 tracking-normal">How we work</h2>
+              <h3 className="text-lg md:text-2xl lg:text-3xl font-medium text-gray-800 mb-4 md:mb-6 leading-relaxed">
                 {settings.about_how_we_work_title || "Production-minded design for every brand touch point."}
               </h3>
-              <p className="text-lg text-gray-600 mb-10 leading-relaxed">
+              <p className="text-sm md:text-lg text-gray-600 mb-6 md:mb-10 leading-relaxed">
                 {settings.about_how_we_work_desc || "We combine brand strategy, AI assisted production, web experiences and high quality print solutions so every campaign feels considered from first idea to final delivery."}
               </p>
               
@@ -213,11 +213,11 @@ export default async function AboutPage() {
       </section>
 
       {/* 6. Capabilities Grid (Features) */}
-      <section className="py-12">
+      <section className="py-8 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {features.map((feature: any, idx: number) => (
-              <div key={idx} className="border border-gray-200 rounded-xl p-6 bg-white hover:shadow-md transition-shadow">
+              <div key={idx} className="border border-gray-200 rounded-xl p-5 md:p-6 bg-white hover:shadow-md transition-shadow">
                 {feature.icon ? (
                   <div className="w-10 h-10 bg-meewa-red rounded-lg mb-4 shadow-sm flex items-center justify-center p-2">
                     <img src={feature.icon.startsWith('/') ? `${feature.icon?.startsWith('http') ? feature.icon : process.env.NEXT_PUBLIC_API_URL + feature.icon}` : feature.icon} alt={feature.title} className="w-full h-full object-contain" />

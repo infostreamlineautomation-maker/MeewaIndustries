@@ -21,14 +21,15 @@ export default function AboutMedia({ mediaUrl }: { mediaUrl: string }) {
               playsInline 
               className="w-full h-full object-cover" 
             />
-            {/* Play Button Overlay */}
+            {/* Full Screen Expand Button Overlay (Top Right, Hover Only) */}
             <div 
-              className="absolute inset-0 flex items-center justify-center cursor-pointer group"
+              className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
               onClick={() => setIsFullScreen(true)}
+              title="View Fullscreen"
             >
-              <div className="bg-meewa-red text-white rounded-full p-4 transform transition-transform hover:scale-110">
-                <svg className="w-10 h-10 ml-1" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M4 4l12 6-12 6z" />
+              <div className="bg-black/40 hover:bg-meewa-red text-white rounded-lg p-2 backdrop-blur-sm transition-all transform hover:scale-105 shadow-sm">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
                 </svg>
               </div>
             </div>

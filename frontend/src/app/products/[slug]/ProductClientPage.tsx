@@ -255,7 +255,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
 
       {/* 5. Contact & FAQ Section */}
       <div className="relative z-20">
-        <ContactFaqSection />
+        <ContactFaqSection isProductPage={true} productName={product.name} />
       </div>
 
     </div>

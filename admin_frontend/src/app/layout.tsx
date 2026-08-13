@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import "@fontsource-variable/google-sans-flex";
 import "./globals.css";
 import Link from "next/link";
 import AdminSidebar from "@/components/AdminSidebar";
 import FetchInterceptor from "@/components/FetchInterceptor";
 import AdminHeaderActions from "@/components/AdminHeaderActions";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Meewa Industries Admin Dashboard",
@@ -20,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className + " bg-meewa-light flex h-screen overflow-hidden text-gray-800"}>
+      <body className="bg-meewa-light flex h-screen overflow-hidden text-gray-800 antialiased">
         <FetchInterceptor />
         <AdminSidebar />
         
