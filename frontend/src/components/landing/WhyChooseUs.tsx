@@ -37,7 +37,7 @@ export default async function WhyChooseUs() {
   ];
 
   return (
-    <section className="pt-4 md:pt-12 pb-4 md:pb-12 bg-white relative overflow-hidden">
+    <section className="pt-4 md:pt-4 pb-4 md:pb-12 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <div className="mb-8 md:mb-12 max-w-3xl">
