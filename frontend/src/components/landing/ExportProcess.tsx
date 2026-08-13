@@ -20,9 +20,9 @@ export default async function ExportProcess() {
     ];
 
   return (
-    <section className="pt-4 md:pt-12 pb-4 md:pb-12 bg-white">
+    <section className="pt-4 md:pt-4 pb-4 md:pb-4 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 md:mb-12">
-        <h2 className="text-[24px] sm:text-[28px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal mb-2 md:mb-4">
+        <h2 className="text-[24px] sm:text-[28px] md:text-[40px] font-medium text-meewa-red leading-none tracking-normal mb-2 md:mb-4">
           {settings.export_title || "Export Process"}
         </h2>
         <p className="text-gray-600 text-[11px] md:text-lg">
@@ -32,11 +32,11 @@ export default async function ExportProcess() {
 
       {/* Floating Card Layout */}
       <div className="max-w-[1262px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row rounded-[10px] overflow-hidden lg:h-[745px]">
+        <div className="flex flex-col lg:flex-row rounded-[10px] overflow-hidden lg:h-[550px]">
           
           {/* Left Side: Red Background with Steps */}
-          <div className="bg-meewa-red text-white w-full lg:w-[656px] p-6 md:p-12 lg:p-[4.5rem] flex flex-col justify-center rounded-xl md:rounded-[10px] lg:rounded-none">
-          <div className="space-y-4 md:space-y-8">
+          <div className="bg-meewa-red text-white w-full lg:w-[656px] p-6 md:p-12 lg:p-12 flex flex-col justify-center rounded-xl md:rounded-[10px] lg:rounded-none">
+          <div className="space-y-4 md:space-y-6">
             {steps.map((step: any, idx: number) => (
               <div key={idx} className="flex flex-row items-start space-x-3 md:space-x-6 group">
                 <div className="text-[28px] md:text-4xl font-light opacity-90 transition-opacity mt-[-4px]">

@@ -37,11 +37,11 @@ export default async function WhyChooseUs() {
   ];
 
   return (
-    <section className="pt-4 md:pt-4 pb-4 md:pb-12 bg-white relative overflow-hidden">
+    <section className="pt-4 md:pt-4 pb-4 md:pb-4 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <div className="mb-8 md:mb-12 max-w-3xl">
-          <h2 className="text-[24px] sm:text-[28px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal mb-2 md:mb-6">Why Choose Us</h2>
+          <h2 className="text-[24px] sm:text-[28px] md:text-[40px] font-medium text-meewa-red leading-none tracking-normal mb-2 md:mb-6">Why Choose Us</h2>
           <p className="text-gray-600 text-[11px] md:text-xl leading-relaxed">
             We provide complete packaging solutions with a focus on quality, reliability, and customer satisfaction.
           </p>

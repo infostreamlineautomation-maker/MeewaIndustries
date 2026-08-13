@@ -38,7 +38,7 @@ export default async function FeaturedProducts() {
         {/* Header Section */}
         <div className="mb-6 md:mb-12">
           <div className="flex flex-row items-center justify-between mb-3 md:mb-4">
-            <h2 className="text-[24px] sm:text-[28px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal">Our Products</h2>
+            <h2 className="text-[24px] sm:text-[28px] md:text-[40px] font-medium text-meewa-red leading-none tracking-normal">Our Products</h2>
             <Link href="/products" className="bg-meewa-red text-white px-3 py-1.5 md:px-6 md:py-2 rounded-full text-[10px] md:text-sm font-medium hover:bg-red-700 transition-colors inline-block whitespace-nowrap ml-4">
               View All Products
             </Link>
@@ -49,7 +49,7 @@ export default async function FeaturedProducts() {
         </div>
 
         {/* Grid Section */}
-        <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-x-3 gap-y-6 md:gap-6 mb-8 md:mb-12">
+        <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-x-3 gap-y-6 md:gap-6 mb-8 lg:mb-0">
 
           {displayProducts.map((prod, idx) => (
             <Link href={`/products/${prod.slug}`} key={idx} className={`group block ${idx === 5 ? 'lg:hidden' : ''}`}>

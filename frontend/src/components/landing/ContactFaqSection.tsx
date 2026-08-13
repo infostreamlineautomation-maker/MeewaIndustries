@@ -52,13 +52,13 @@ export default function ContactFaqSection({
   };
 
   return (
-    <section className="pt-4 md:pt-12 pb-12 bg-white">
+    <section className="pt-4 md:pt-4 pb-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row gap-16">
           
           {/* Left: Get In Touch */}
           <div className="w-full lg:w-5/12 bg-[#F1F1F1] rounded-2xl md:rounded-3xl p-6 md:p-10 text-gray-900 shadow-sm md:shadow-xl border border-gray-200">
-            <h2 className="text-[28px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal mb-3 md:mb-4">Get In Touch</h2>
+            <h2 className="text-[28px] md:text-[40px] font-medium text-meewa-red leading-none tracking-normal mb-3 md:mb-4">Get In Touch</h2>
             <p className="text-gray-600 text-[10px] md:text-sm mb-6 md:mb-10 leading-tight">
               Get product details, pricing, samples, and export support. We'll respond within 24 hours.
             </p>
@@ -126,7 +126,7 @@ export default function ContactFaqSection({
 
           {/* Right: FAQs & Promo Box */}
           <div className="w-full lg:w-7/12 flex flex-col">
-            <h2 className="text-[28px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal mb-6 md:mb-10">FAQs</h2>
+            <h2 className="text-[28px] md:text-[40px] font-medium text-meewa-red leading-none tracking-normal mb-6 md:mb-10">FAQs</h2>
             <div className="space-y-4 mb-8 md:mb-auto">
               {faqs.map((faq, index) => (
                 <div key={index} className="border border-gray-300 rounded-md md:rounded-xl overflow-hidden transition-all duration-200 bg-white">

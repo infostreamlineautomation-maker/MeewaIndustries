@@ -23,11 +23,11 @@ export default async function IndustriesWeServe() {
     ];
 
   return (
-    <section className="pt-4 md:pt-12 pb-4 md:pb-12 bg-white">
+    <section className="pt-4 md:pt-4 pb-4 md:pb-4 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="mb-6 md:mb-8">
-          <h2 className="text-[24px] sm:text-[28px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal mb-2 md:mb-4">
+          <h2 className="text-[24px] sm:text-[28px] md:text-[40px] font-medium text-meewa-red leading-none tracking-normal mb-2 md:mb-4">
             {settings.industries_title || "Industries We Serve"}
           </h2>
           <p className="text-gray-600 text-[11px] md:text-lg">
