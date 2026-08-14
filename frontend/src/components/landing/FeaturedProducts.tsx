@@ -3,6 +3,7 @@ import Link from 'next/link';
 export default async function FeaturedProducts() {
   let products: any[] = [];
   let featuredProductIds: number[] = [];
+  let settings: any = {};
 
   try {
     const [productsRes, settingsRes] = await Promise.all([
@@ -14,7 +15,7 @@ export default async function FeaturedProducts() {
       products = await productsRes.json();
     }
     if (settingsRes.ok) {
-      const settings = await settingsRes.json();
+      settings = await settingsRes.json();
       featuredProductIds = settings.landing_featured_products || [];
     }
   } catch (e) {
@@ -44,7 +45,7 @@ export default async function FeaturedProducts() {
             </Link>
           </div>
           <p className="text-gray-600 text-[11px] md:text-lg max-w-2xl leading-relaxed md:leading-relaxed">
-            Explore our wide range of food-grade disposable packaging solutions designed for restaurants, cafés, catering companies, and businesses worldwide.
+            {settings?.products_subheading || "Explore our wide range of food-grade disposable packaging solutions designed for restaurants, cafés, catering companies, and businesses worldwide."}
           </p>
         </div>
 

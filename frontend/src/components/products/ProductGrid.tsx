@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 
-export default function ProductGrid({ products }: { products: any[] }) {
+export default function ProductGrid({ products, subheading }: { products: any[], subheading?: string }) {
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 12;
   const totalPages = Math.ceil(products.length / itemsPerPage);
@@ -20,7 +20,10 @@ export default function ProductGrid({ products }: { products: any[] }) {
 
   return (
     <section className="pb-10 md:pb-16 pt-32 md:pt-48 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-      <h2 className="text-[28px] sm:text-[32px] md:text-[60px] font-medium text-meewa-red text-center leading-none tracking-normal mb-6 md:mb-16">Our Products</h2>
+      <h2 className="text-[28px] sm:text-[32px] md:text-[60px] font-medium text-meewa-red text-center leading-none tracking-normal mb-2 md:mb-6">Our Products</h2>
+      <p className="text-[12px] md:text-xl text-gray-600 text-center max-w-4xl mx-auto mb-6 md:mb-16">
+        {subheading || "Explore our wide range of food-grade disposable packaging solutions designed for restaurants, cafés, catering companies, and businesses worldwide."}
+      </p>
       
       <div className="relative">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-6 md:gap-x-8 md:gap-y-12 min-h-[400px] md:min-h-[800px]">

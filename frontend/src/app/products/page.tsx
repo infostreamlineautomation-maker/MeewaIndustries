@@ -45,7 +45,7 @@ export default async function ProductsPage() {
     <div className="bg-white min-h-screen pb-20">
       
       {/* 2. Products Grid */}
-      <ProductGrid products={dbProducts} />
+      <ProductGrid products={dbProducts} subheading={settings.products_subheading} />
 
       {/* 3. Why Our Products? */}
       <section className="py-10 md:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
