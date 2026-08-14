@@ -11,6 +11,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [relatedPage, setRelatedPage] = useState(0);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -52,6 +53,13 @@ export default function ProductClientPage({ product, relatedProducts, settings }
   const bannerImages = Array.isArray(product?.banner_images) ? product.banner_images : [];
 
   const heroImage = product?.hero_animated_image ? `${product.hero_animated_image?.startsWith('http') ? product.hero_animated_image : process.env.NEXT_PUBLIC_API_URL + product.hero_animated_image}` : null;
+
+  const relItemsPerPage = isMobile ? 3 : 4;
+  const totalRelPages = Math.ceil((relatedProducts?.length || 0) / relItemsPerPage);
+  const currentRelProducts = relatedProducts ? relatedProducts.slice(relatedPage * relItemsPerPage, (relatedPage + 1) * relItemsPerPage) : [];
+
+  const handleNextRelPage = () => setRelatedPage((p) => (p + 1) % totalRelPages);
+  const handlePrevRelPage = () => setRelatedPage((p) => (p - 1 + totalRelPages) % totalRelPages);
 
   return (
     <div className="bg-white min-h-screen text-gray-900">
@@ -232,14 +240,12 @@ export default function ProductClientPage({ product, relatedProducts, settings }
 
       {/* 3. Long Banners Section */}
       {bannerImages.length > 0 && (
-        <section className="py-12 md:py-24 bg-white relative z-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 md:space-y-12">
-            {bannerImages.map((bannerUrl: string, idx: number) => (
-              <div key={idx} className="w-full rounded-3xl overflow-hidden shadow-sm border border-gray-100">
-                <img src={`${bannerUrl?.startsWith('http') ? bannerUrl : process.env.NEXT_PUBLIC_API_URL + bannerUrl}`} alt="Product Banner" className="w-full h-auto object-cover" />
-              </div>
-            ))}
-          </div>
+        <section className="bg-white relative z-20 flex flex-col">
+          {bannerImages.map((bannerUrl: string, idx: number) => (
+            <div key={idx} className="w-full">
+              <img src={`${bannerUrl?.startsWith('http') ? bannerUrl : process.env.NEXT_PUBLIC_API_URL + bannerUrl}`} alt="Product Banner" className="w-full h-auto object-cover" />
+            </div>
+          ))}
         </section>
       )}
 
@@ -247,26 +253,47 @@ export default function ProductClientPage({ product, relatedProducts, settings }
       {relatedProducts && relatedProducts.length > 0 && (
         <section className="py-12 md:py-24 bg-gray-50 relative z-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-black border-b border-gray-200 pb-4 mb-12">Related Products</h2>
+            <h2 className="text-[28px] sm:text-[32px] md:text-[60px] font-medium text-meewa-red text-center leading-none tracking-normal mb-6 md:mb-16">Related Products</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {relatedProducts.map((relProduct: any) => (
-                <Link href={`/products/${relProduct.slug}`} key={relProduct.id} className="flex flex-col group cursor-pointer">
-                  <div className="w-full aspect-[4/5] bg-white rounded-3xl overflow-hidden mb-6 shadow-sm group-hover:shadow-xl transition-all duration-300 border border-gray-200 p-6 flex items-center justify-center">
-                    {relProduct.cover_image ? (
-                      <img 
-                        src={`${relProduct.cover_image?.startsWith('http') ? relProduct.cover_image : process.env.NEXT_PUBLIC_API_URL + relProduct.cover_image}`} 
-                        alt={relProduct.name} 
-                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" 
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gray-100 flex items-center justify-center rounded-2xl text-gray-400">No Image</div>
-                    )}
-                  </div>
-                  <h4 className="text-meewa-red font-bold text-sm tracking-widest uppercase mb-1">{relProduct.category?.name || "Product"}</h4>
-                  <h3 className="text-black font-bold text-2xl leading-tight group-hover:text-meewa-red transition-colors">{relProduct.name}</h3>
-                </Link>
-              ))}
+            <div className="relative">
+              <div className={`grid grid-cols-3 gap-x-2 gap-y-6 md:gap-x-8 md:gap-y-12 ${currentRelProducts.length < 4 ? 'lg:flex lg:justify-center' : 'lg:grid-cols-4'}`}>
+                {currentRelProducts.map((relProduct: any) => (
+                  <Link href={`/products/${relProduct.slug || '#'}`} key={relProduct.id} className={`flex flex-col group cursor-pointer ${currentRelProducts.length < 4 ? 'lg:w-[calc(25%-1.5rem)]' : ''}`}>
+                    <div className="w-full aspect-[4/5] bg-gray-100 rounded-lg md:rounded-3xl overflow-hidden mb-2 md:mb-4 shadow-sm group-hover:shadow-lg transition-shadow border border-gray-200 relative">
+                      {relProduct.cover_image ? (
+                        <img 
+                          src={`${relProduct.cover_image?.startsWith('http') ? relProduct.cover_image : process.env.NEXT_PUBLIC_API_URL + relProduct.cover_image}`} 
+                          alt={relProduct.name} 
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gray-200"></div>
+                      )}
+                    </div>
+                    <h3 className="text-gray-900 font-bold text-[12px] md:text-2xl leading-tight text-center px-1 md:px-2">{relProduct.name}</h3>
+                  </Link>
+                ))}
+              </div>
+
+              {/* Floating Pagination Arrows */}
+              {totalRelPages > 1 && (
+                <>
+                  <button 
+                    onClick={handlePrevRelPage}
+                    className="absolute -left-3 md:-left-12 lg:-left-16 top-[40%] -translate-y-1/2 z-10 bg-white shadow-xl border border-gray-100 rounded-full w-8 h-8 md:w-14 md:h-14 flex items-center justify-center text-gray-500 hover:text-meewa-red hover:scale-110 transition-all opacity-80 hover:opacity-100"
+                    aria-label="Previous Page"
+                  >
+                    <svg className="w-5 h-5 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7"></path></svg>
+                  </button>
+                  <button 
+                    onClick={handleNextRelPage}
+                    className="absolute -right-3 md:-right-12 lg:-right-16 top-[40%] -translate-y-1/2 z-10 bg-white shadow-xl border border-gray-100 rounded-full w-8 h-8 md:w-14 md:h-14 flex items-center justify-center text-gray-500 hover:text-meewa-red hover:scale-110 transition-all opacity-80 hover:opacity-100"
+                    aria-label="Next Page"
+                  >
+                    <svg className="w-5 h-5 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7"></path></svg>
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </section>
