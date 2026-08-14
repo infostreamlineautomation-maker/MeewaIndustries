@@ -325,14 +325,28 @@ export default function ManageProductsPage() {
             <div className="grid grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1" title="The main thumbnail image used in grids and search results. Should be square or standard portrait.">Cover Image (Thumbnail) <span className="text-gray-400 cursor-help font-normal ml-1">ⓘ</span></label>
-                {currentProduct.cover_image && <img src={(currentProduct.cover_image)?.startsWith("http") ? (currentProduct.cover_image) : `${process.env.NEXT_PUBLIC_API_URL}${currentProduct.cover_image}`} className="h-20 mb-2 rounded border" />}
-                <input type="file" onChange={(e) => handleFileUpload(e, 'cover_image')} className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" />
-                {uploading === 'cover_image' && <span className="text-sm text-red-500 ml-2">Uploading...</span>}
+                {currentProduct.cover_image && (
+                  <div className="relative inline-block mb-2 group">
+                    <img src={(currentProduct.cover_image)?.startsWith("http") ? (currentProduct.cover_image) : `${process.env.NEXT_PUBLIC_API_URL}${currentProduct.cover_image}`} className="h-20 rounded border object-contain bg-gray-50" />
+                    <button type="button" onClick={() => setCurrentProduct({ ...currentProduct, cover_image: '' })} className="absolute -top-2 -right-2 bg-white text-red-500 rounded-full p-1 shadow border border-gray-200 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity" title="Remove image">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
+                    </button>
+                  </div>
+                )}
+                <input type="file" onChange={(e) => handleFileUpload(e, 'cover_image')} className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" />
+                {uploading === 'cover_image' && <span className="block text-sm text-red-500 mt-2">Uploading...</span>}
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1" title="The image that animates downwards on scroll on the product page. Ideally a transparent PNG of the product.">Hero Animated Image (Cutout for Parallax) <span className="text-gray-400 cursor-help font-normal ml-1">ⓘ</span></label>
-                {currentProduct.hero_animated_image && <img src={(currentProduct.hero_animated_image)?.startsWith("http") ? (currentProduct.hero_animated_image) : `${process.env.NEXT_PUBLIC_API_URL}${currentProduct.hero_animated_image}`} className="h-20 mb-2 rounded border object-contain bg-gray-100" />}
+                {currentProduct.hero_animated_image && (
+                  <div className="relative inline-block mb-2 group">
+                    <img src={(currentProduct.hero_animated_image)?.startsWith("http") ? (currentProduct.hero_animated_image) : `${process.env.NEXT_PUBLIC_API_URL}${currentProduct.hero_animated_image}`} className="h-20 rounded border object-contain bg-gray-100" />
+                    <button type="button" onClick={() => setCurrentProduct({ ...currentProduct, hero_animated_image: '' })} className="absolute -top-2 -right-2 bg-white text-red-500 rounded-full p-1 shadow border border-gray-200 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity" title="Remove image">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
+                    </button>
+                  </div>
+                )}
                 
                 {uploading === 'hero_animated_image' ? (
                   <div className="mt-2 p-4 rounded-lg bg-red-50/50 border border-red-100">
@@ -365,8 +379,15 @@ export default function ManageProductsPage() {
             <div className="border-t pt-4 mt-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Section 1 Banner Image (Parallax Background)</label>
-                <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'section1_image')} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"/>
-                {currentProduct.section1_image && <img src={`${currentProduct.section1_image?.startsWith('http') ? currentProduct.section1_image : process.env.NEXT_PUBLIC_ADMIN_API_URL + currentProduct.section1_image}`} alt="Preview" className="h-16 mt-2 object-contain rounded-md" />}
+                {currentProduct.section1_image && (
+                  <div className="relative inline-block mb-2 group">
+                    <img src={`${currentProduct.section1_image?.startsWith('http') ? currentProduct.section1_image : process.env.NEXT_PUBLIC_ADMIN_API_URL + currentProduct.section1_image}`} alt="Preview" className="h-16 object-contain rounded-md border" />
+                    <button type="button" onClick={() => setCurrentProduct({ ...currentProduct, section1_image: '' })} className="absolute -top-2 -right-2 bg-white text-red-500 rounded-full p-1 shadow border border-gray-200 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity" title="Remove image">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
+                    </button>
+                  </div>
+                )}
+                <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'section1_image')} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"/>
               </div>
             </div>
 

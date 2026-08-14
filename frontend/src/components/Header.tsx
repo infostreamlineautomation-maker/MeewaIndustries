@@ -50,6 +50,7 @@ function MobileNavLink({ href, children, onClick }: { href: string; children: Re
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [footerLogoUrl, setFooterLogoUrl] = useState<string | null>(null);
   const [mobileLogoUrl, setMobileLogoUrl] = useState<string | null>(null);
@@ -63,11 +64,23 @@ export default function Header() {
   const isProductDetailPage = pathname.match(/^\/products\/[^/]+$/);
 
   useEffect(() => {
+    let scrollTimeout: NodeJS.Timeout;
+    
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+      
+      // Hide header while scrolling
+      setIsScrolling(true);
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        setIsScrolling(false);
+      }, 250); // Show header 250ms after scrolling stops
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(scrollTimeout);
+    };
   }, []);
 
   useEffect(() => {
@@ -98,20 +111,13 @@ export default function Header() {
 
   return (
     <>
-      <header className={`${isProductDetailPage ? 'fixed md:absolute' : 'fixed'} w-full z-50 pt-4 md:pt-8 top-0 left-0 transition-all duration-300 pointer-events-none`}>
+      <header className={`${isProductDetailPage ? 'fixed md:absolute' : 'fixed'} w-full z-50 pt-4 md:pt-8 top-0 left-0 transition-transform duration-300 ease-in-out pointer-events-none ${(isScrolling && !isMobileMenuOpen && window.scrollY > 50) ? '-translate-y-[150%] md:translate-y-0' : 'translate-y-0'}`}>
         <div className="max-w-4xl mx-auto px-4 relative flex justify-center">
-          {/* Desktop Pill Background / Mobile Transparent Header */}
-          <div className="bg-transparent md:bg-meewa-red rounded-none md:rounded-full flex items-center justify-between md:justify-center gap-4 md:gap-10 h-14 px-2 md:px-6 shadow-none md:shadow-xl md:shadow-red-500/20 w-full md:w-fit pointer-events-auto">
+          {/* Pill Background (Mobile & Desktop) */}
+          <div className="bg-meewa-red rounded-full flex items-center justify-between md:justify-center gap-4 md:gap-10 h-14 px-4 md:px-6 shadow-xl shadow-red-500/20 w-[92%] md:w-fit mx-auto pointer-events-auto relative">
             
-            <Link 
-              href="/" 
-              className={`md:hidden flex items-center h-full transition-all duration-300 ${(isMobileMenuOpen || isScrolled) ? 'opacity-0 pointer-events-none -translate-y-10' : 'opacity-100 translate-y-0'}`} 
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              {(mobileLogoUrl || footerLogoUrl || logoUrl) ? (
-                <img src={(mobileLogoUrl || footerLogoUrl || logoUrl)!} alt="MEEWA Logo" className="h-[70px] w-[70px] object-contain ml-1" />
-              ) : null}
-            </Link>
+            {/* Left Spacer (Mobile) */}
+            <div className="md:hidden w-8"></div>
 
             {/* Left Navigation (Desktop) */}
             <div className="hidden md:flex w-[240px] lg:w-[280px] justify-end">
@@ -136,7 +142,7 @@ export default function Header() {
 
             {/* Mobile Hamburger Button */}
             <button 
-              className="md:hidden text-meewa-red p-2 focus:outline-none z-50 mr-2"
+              className="md:hidden text-white p-2 focus:outline-none z-50"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,10 +155,10 @@ export default function Header() {
             </button>
           </div>
 
-          {/* Floating Circular Logo */}
-          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="hidden md:flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full w-20 h-20 md:w-24 md:h-24 flex-col items-center justify-center shadow-xl shadow-red-500/10 border-4 border-white overflow-hidden hover:scale-110 transition-transform duration-300 z-50 pointer-events-auto">
+          {/* Floating Circular Logo (Mobile & Desktop) */}
+          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className={`flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full w-[70px] h-[70px] md:w-24 md:h-24 flex-col items-center justify-center shadow-xl shadow-red-500/10 border-[3px] md:border-4 border-white overflow-hidden hover:scale-110 transition-all duration-300 z-50 pointer-events-auto ${isMobileMenuOpen && !isProductDetailPage ? 'md:opacity-100 opacity-0 pointer-events-none md:pointer-events-auto translate-y-[-100px] md:translate-y-[-50%]' : 'opacity-100 -translate-y-1/2'}`}>
             {logoUrl ? (
-              <img src={logoUrl} alt="MEEWA Logo" className="w-full h-full object-contain p-2" />
+              <img src={logoUrl} alt="MEEWA Logo" className="w-full h-full object-contain p-1.5 md:p-2" />
             ) : (
               <div className="text-meewa-red flex flex-col items-center justify-center h-full">
                 <span className="text-sm font-bold tracking-widest"></span>

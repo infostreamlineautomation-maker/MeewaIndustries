@@ -38,7 +38,6 @@ export default function SettingsPage() {
     mobile_logo_url: "",
     hamburger_logo_url: "",
     header_text: "",
-    products_subheading: "",
     footer_text: "",
     smtp_host: "",
     smtp_port: "587",
@@ -76,7 +75,6 @@ export default function SettingsPage() {
         mobile_logo_url: settingsData.mobile_logo_url || "",
         hamburger_logo_url: settingsData.hamburger_logo_url || "",
         header_text: settingsData.header_text || "",
-        products_subheading: settingsData.products_subheading || "",
         footer_text: settingsData.footer_text || "",
         smtp_host: settingsData.smtp_host || "",
         smtp_port: settingsData.smtp_port || "587",
@@ -271,18 +269,6 @@ export default function SettingsPage() {
               placeholder="Free shipping on bulk orders!"
               className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red focus:ring-meewa-red" 
             />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Products Page Subheading</label>
-            <textarea 
-              name="products_subheading"
-              value={settings.products_subheading}
-              onChange={handleChange}
-              rows={2} 
-              placeholder="Explore our wide range of food-grade disposable packaging solutions..."
-              className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red focus:ring-meewa-red"
-            ></textarea>
           </div>
 
           <div>

@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 export default function CategoriesPageManagement() {
   const [settings, setSettings] = useState({
     categories_hero_image_url: "",
+    products_subheading: "",
     categories_why_title: "",
     categories_why_subtitle: "",
     categories_custom_banner_title: "",
@@ -39,6 +40,7 @@ export default function CategoriesPageManagement() {
         setDbProducts(activeProds);
         setSettings({
           categories_hero_image_url: data.categories_hero_image_url || "",
+          products_subheading: data.products_subheading || "",
           categories_why_title: data.categories_why_title || "",
           categories_why_subtitle: data.categories_why_subtitle || "",
           categories_custom_banner_title: data.categories_custom_banner_title || "",
@@ -219,6 +221,24 @@ export default function CategoriesPageManagement() {
       
       <form onSubmit={handleSave} className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 space-y-12">
         
+        {/* Page Header Settings */}
+        <div className="space-y-6">
+          <div className="border-b pb-2">
+            <h2 className="text-xl font-semibold text-gray-800">Page Header Text</h2>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Products Page Subheading</label>
+            <textarea 
+              name="products_subheading"
+              value={settings.products_subheading}
+              onChange={handleChange}
+              rows={2} 
+              placeholder="Explore our wide range of food-grade disposable packaging solutions..."
+              className="w-full border-gray-300 rounded-md shadow-sm p-2 border focus:border-meewa-red focus:ring-meewa-red"
+            ></textarea>
+          </div>
+        </div>
+
         {/* Product Reordering UI */}
         <div className="space-y-6">
           <div className="border-b pb-2">
