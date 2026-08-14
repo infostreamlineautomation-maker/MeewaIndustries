@@ -19,8 +19,8 @@ export default function ProductGrid({ products }: { products: any[] }) {
   const currentProducts = products.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
   return (
-    <section className="pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-      <h2 className="text-[28px] sm:text-[32px] md:text-[60px] font-medium text-meewa-red text-center leading-none tracking-normal mb-6 md:mb-16 pt-6 md:pt-10">Our Products</h2>
+    <section className="pb-10 md:pb-16 pt-32 md:pt-48 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <h2 className="text-[28px] sm:text-[32px] md:text-[60px] font-medium text-meewa-red text-center leading-none tracking-normal mb-6 md:mb-16">Our Products</h2>
       
       <div className="relative">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-6 md:gap-x-8 md:gap-y-12 min-h-[400px] md:min-h-[800px]">

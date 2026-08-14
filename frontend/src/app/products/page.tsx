@@ -44,22 +44,13 @@ export default async function ProductsPage() {
   return (
     <div className="bg-white min-h-screen pb-20">
       
-      {/* 1. Hero Section (Image Behind Header) */}
-      <section className="relative w-full h-[300px] md:h-[400px] bg-gray-900">
-        {settings.categories_hero_image_url ? (
-          <img src={`${settings.categories_hero_image_url?.startsWith('http') ? settings.categories_hero_image_url : process.env.NEXT_PUBLIC_API_URL + settings.categories_hero_image_url}`} alt="Products Hero" className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full bg-gray-300"></div>
-        )}
-      </section>
-
       {/* 2. Products Grid */}
       <ProductGrid products={dbProducts} />
 
       {/* 3. Why Our Products? */}
       <section className="py-10 md:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-left mb-8 md:mb-12">
-          <h2 className="text-[28px] sm:text-[32px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal mb-2 md:mb-6">{settings.categories_why_title || "Why Our Products?"}</h2>
+          <h2 className="text-[28px] sm:text-[32px] md:text-[40px] font-medium text-meewa-red leading-none tracking-normal mb-2 md:mb-6">{settings.categories_why_title || "Why Our Products?"}</h2>
           <p className="text-[12px] md:text-xl text-gray-600">{settings.categories_why_subtitle || "Built for Quality, Designed for Performance"}</p>
         </div>
         
@@ -83,7 +74,7 @@ export default async function ProductsPage() {
 
       {/* 4. Custom Packaging Banner */}
       <section className="py-10 md:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-[28px] sm:text-[32px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal mb-6 md:mb-12">{settings.categories_custom_banner_title || "Custom Packaging Banner"}</h2>
+        <h2 className="text-[28px] sm:text-[32px] md:text-[40px] font-medium text-meewa-red leading-none tracking-normal mb-6 md:mb-12">{settings.categories_custom_banner_title || "Custom Packaging Banner"}</h2>
         
         <div className="grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-6">
           {bannerImages.map((banner: any, idx: number) => {

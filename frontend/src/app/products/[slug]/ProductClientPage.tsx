@@ -130,9 +130,15 @@ export default function ProductClientPage({ product, relatedProducts, settings }
             >
               {/* Right Side: Title */}
               <div className="max-w-xl text-right z-40">
-                <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-white leading-tight drop-shadow-lg">
+                <motion.h2 
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, margin: "-50px" }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="text-3xl md:text-5xl lg:text-7xl font-black text-white leading-tight drop-shadow-lg"
+                >
                   {product?.banner_title || "Get your customized coffee cup"}
-                </h2>
+                </motion.h2>
               </div>
             </motion.section>
 
@@ -143,12 +149,25 @@ export default function ProductClientPage({ product, relatedProducts, settings }
               className="relative h-[50vh] flex flex-col justify-start items-end px-6 md:px-24 lg:px-32 pt-10"
             >
               <div className="max-w-xl text-right z-40">
-                <p className="text-xl md:text-2xl text-white/90 font-medium mb-8 drop-shadow-md">
+                <motion.p 
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, margin: "-50px" }}
+                  transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                  className="text-xl md:text-2xl text-white/90 font-medium mb-8 drop-shadow-md"
+                >
                   {product?.banner_subtitle || product?.short_description || "Hot, cold, frozen or fresh, our food service packaging works to keep every meal presentable and intact."}
-                </p>
-                <Link href="/contact" className="inline-flex items-center gap-2 font-bold bg-meewa-red text-white px-8 py-4 md:px-10 md:py-5 rounded-full hover:bg-red-700 transition-colors shadow-xl text-lg md:text-xl">
-                  Order now <span className="text-xl md:text-2xl font-light">↗</span>
-                </Link>
+                </motion.p>
+                <motion.div
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, margin: "-50px" }}
+                  transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                >
+                  <Link href="/contact" className="inline-flex items-center gap-2 font-bold bg-meewa-red text-white px-8 py-4 md:px-10 md:py-5 rounded-full hover:bg-red-700 transition-colors shadow-xl text-lg md:text-xl">
+                    Order now <span className="text-xl md:text-2xl font-light">↗</span>
+                  </Link>
+                </motion.div>
               </div>
             </motion.section>
           </div>

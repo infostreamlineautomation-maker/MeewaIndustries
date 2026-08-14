@@ -20,7 +20,7 @@ export default async function ContactPage() {
       
       {/* Header Area */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-40 pb-6 md:pb-10 flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6">
-        <h1 className="text-[28px] sm:text-[32px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal md:w-1/3">{settings.contact_title || "Contact Us"}</h1>
+        <h1 className="text-[28px] sm:text-[32px] md:text-[40px] font-medium text-meewa-red leading-none tracking-normal md:w-1/3">{settings.contact_title || "Contact Us"}</h1>
         <p className="text-[12px] md:text-lg text-gray-500 md:w-2/3 md:pl-4">
           {settings.contact_subtitle || "If you have any questions, please feel free to get in touch with us via phone, text, email, the form below, or even on social media!"}
         </p>

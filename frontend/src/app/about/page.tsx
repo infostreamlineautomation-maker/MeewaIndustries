@@ -143,7 +143,7 @@ export default async function AboutPage() {
       {clients.length > 0 && (
         <section className="py-8 md:py-12 bg-gray-50 overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 md:mb-10 text-center">
-            <h2 className="text-[28px] sm:text-[32px] md:text-[60px] font-medium text-meewa-red leading-none tracking-normal">Our Clients</h2>
+            <h2 className="text-[28px] sm:text-[32px] md:text-[40px] font-medium text-meewa-red leading-none tracking-normal">Our Clients</h2>
           </div>
           
           <div className="flex flex-col gap-8 relative w-full group">
@@ -192,7 +192,7 @@ export default async function AboutPage() {
             
             {/* Right: Text + Grid */}
             <div className="flex flex-col justify-center">
-              <h2 className="text-[28px] sm:text-[32px] md:text-[60px] font-medium text-meewa-red leading-none mb-3 tracking-normal">How we work</h2>
+              <h2 className="text-[28px] sm:text-[32px] md:text-[40px] font-medium text-meewa-red leading-none mb-3 tracking-normal">How we work</h2>
               <h3 className="text-lg md:text-2xl lg:text-3xl font-medium text-gray-800 mb-4 md:mb-6 leading-relaxed">
                 {settings.about_how_we_work_title || "Production-minded design for every brand touch point."}
               </h3>

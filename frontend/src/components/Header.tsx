@@ -103,14 +103,13 @@ export default function Header() {
           {/* Desktop Pill Background / Mobile Transparent Header */}
           <div className="bg-transparent md:bg-meewa-red rounded-none md:rounded-full flex items-center justify-between md:justify-center gap-4 md:gap-10 h-14 px-2 md:px-6 shadow-none md:shadow-xl md:shadow-red-500/20 w-full md:w-fit pointer-events-auto">
             
-            {/* Mobile Horizontal Logo */}
             <Link 
               href="/" 
               className={`md:hidden flex items-center h-full transition-all duration-300 ${(isMobileMenuOpen || isScrolled) ? 'opacity-0 pointer-events-none -translate-y-10' : 'opacity-100 translate-y-0'}`} 
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {(mobileLogoUrl || footerLogoUrl || logoUrl) ? (
-                <img src={(mobileLogoUrl || footerLogoUrl || logoUrl)!} alt="MEEWA Logo" className="h-10 object-contain ml-2" />
+                <img src={(mobileLogoUrl || footerLogoUrl || logoUrl)!} alt="MEEWA Logo" className="h-[70px] w-[70px] object-contain ml-1" />
               ) : null}
             </Link>
 

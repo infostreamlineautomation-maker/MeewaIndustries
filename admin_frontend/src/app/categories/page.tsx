@@ -219,20 +219,6 @@ export default function CategoriesPageManagement() {
       
       <form onSubmit={handleSave} className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 space-y-12">
         
-        {/* Hero Section */}
-        <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">Hero Section</h2>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Hero Background Image</label>
-            {settings.categories_hero_image_url && (
-              <div className="mb-4">
-                <img src={(settings.categories_hero_image_url)?.startsWith("http") ? (settings.categories_hero_image_url) : `${process.env.NEXT_PUBLIC_API_URL}${settings.categories_hero_image_url}`} className="h-40 rounded border object-cover" />
-              </div>
-            )}
-            <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, "categories_hero_image_url")} disabled={uploading === "categories_hero_image_url"} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red" />
-          </div>
-        </div>
-
         {/* Product Reordering UI */}
         <div className="space-y-6">
           <div className="border-b pb-2">
