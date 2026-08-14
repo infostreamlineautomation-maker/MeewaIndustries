@@ -21,7 +21,7 @@ router = APIRouter(
 )
 
 @router.post("/upload")
-async def upload_asset(file: UploadFile = File(...), remove_bg: bool = False, seo_name: str = Form(None)):
+def upload_asset(file: UploadFile = File(...), remove_bg: bool = False, seo_name: str = Form(None)):
     original_filename = file.filename if file.filename else "uploaded_asset"
     name, ext = os.path.splitext(original_filename)
     

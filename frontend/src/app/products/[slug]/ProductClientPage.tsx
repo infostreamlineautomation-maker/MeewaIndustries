@@ -87,10 +87,10 @@ export default function ProductClientPage({ product, relatedProducts, settings }
 
   // Desktop Keyframes — hero (top-right) -> settle A in banner (hold) -> gradual zoom -> settle B centered on marquee (hold)
   const springConfig = { stiffness: 60, damping: 15, mass: 1 };
-  const dTopRaw = useTransform(scrollYProgress, dBreakpoints, ["36%", "55%", "68%", "68%", "58%", "50%", "50%"]);
-  const dLeftRaw = useTransform(scrollYProgress, dBreakpoints, ["76%", "40%", "28%", "28%", "38%", "50%", "50%"]);
+  const dTopRaw = useTransform(scrollYProgress, dBreakpoints, ["50%", "55%", "68%", "68%", "58%", "50%", "50%"]);
+  const dLeftRaw = useTransform(scrollYProgress, dBreakpoints, ["75%", "40%", "28%", "28%", "38%", "50%", "50%"]);
   const dRotateRaw = useTransform(scrollYProgress, dBreakpoints, [-12, -12, -8, -8, 4, 0, 0]);
-  const dScaleRaw = useTransform(scrollYProgress, dBreakpoints, [0.8, 0.78, 0.72, 0.72, 0.85, 0.92, 0.92]);
+  const dScaleRaw = useTransform(scrollYProgress, dBreakpoints, [1.1, 0.78, 0.72, 0.72, 0.85, 0.92, 0.92]);
   const dTop = useSpring(dTopRaw, springConfig);
   const dLeft = useSpring(dLeftRaw, springConfig);
   const dRotate = useSpring(dRotateRaw, springConfig);
@@ -111,7 +111,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
   const handlePrevRelPage = () => setRelatedPage((p) => (p - 1 + totalRelPages) % totalRelPages);
 
   return (
-    <div className="bg-white min-h-screen text-gray-900">
+    <div className="bg-white min-h-screen text-gray-900 font-sans">
       
       {/* 1. Discrete Scroll Sections */}
       <div className="relative" ref={containerRef}>
@@ -152,10 +152,10 @@ export default function ProductClientPage({ product, relatedProducts, settings }
           {/* Section 0: Title (Behind Banner) */}
           <div className="w-full h-auto pb-0 md:pb-0 md:h-[calc(200vh-20rem)]">
             <div className="md:sticky top-0 pt-24 md:pt-[30vh] px-6 md:px-24 lg:px-32 md:h-screen flex flex-col justify-start">
-              <h1 className="text-5xl md:text-8xl lg:text-9xl font-black text-black leading-[1.1] tracking-tighter mb-4 md:mb-6 md:mt-0">
+              <h1 className="text-5xl md:text-8xl lg:text-9xl font-bold text-black leading-[1.1] tracking-tighter mb-4 md:mb-6 md:mt-0">
                 {product?.name || "Food Service"}
               </h1>
-              <h2 className="text-xl md:text-2xl font-extrabold text-black leading-tight max-w-sm">
+              <h2 className="text-xl md:text-2xl font-semibold text-black leading-tight max-w-sm">
                 {product?.hero_description || "Discover premium quality of customizable cups"}
               </h2>
 
@@ -191,7 +191,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: false, margin: "-50px" }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
-                  className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight drop-shadow-lg break-words"
+                  className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg break-words"
                 >
                   {product?.banner_title || "Get your customized coffee cup"}
                 </motion.h2>
@@ -225,7 +225,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
               transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
               className="relative md:absolute mt-4 md:mt-0 pb-40 md:pb-0 md:top-auto md:bottom-[40vh] left-6 md:left-24 lg:left-32 z-40 max-w-[16rem] md:max-w-sm lg:max-w-md"
             >
-              <h3 className="text-2xl md:text-3xl font-black text-white mb-4 tracking-tight drop-shadow-md">
+              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight drop-shadow-md">
                 Premium Quality Materials
               </h3>
               <ul className="space-y-3">
@@ -248,10 +248,10 @@ export default function ProductClientPage({ product, relatedProducts, settings }
           <div className="absolute top-0 left-0 w-full h-[calc(200vh-20rem)] pointer-events-none z-50 hidden md:block">
             <div className="w-full h-full" style={{ clipPath: "inset(calc(100vh - 8rem) 0 0 0)" }}>
               <div className="sticky top-0 pt-48 md:pt-[30vh] px-6 md:px-24 lg:px-32 h-screen flex flex-col justify-start">
-                <h1 className="text-5xl md:text-8xl lg:text-9xl font-black leading-[1.1] tracking-tighter mb-6 opacity-0">
+                <h1 className="text-5xl md:text-8xl lg:text-9xl font-bold leading-[1.1] tracking-tighter mb-6 opacity-0">
                   {product?.name || "Food Service"}
                 </h1>
-                <h2 className="text-xl md:text-2xl font-extrabold leading-tight text-white max-w-sm drop-shadow-md">
+                <h2 className="text-xl md:text-2xl font-semibold leading-tight text-white max-w-sm drop-shadow-md">
                   {product?.hero_description || "Discover premium quality of customizable cups"}
                 </h2>
               </div>
@@ -278,7 +278,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
               {/* Clockwise (Left to Right) */}
               <div className="flex whitespace-nowrap mb-6 opacity-80">
                 <motion.div
-                  className="flex gap-8 text-4xl md:text-7xl font-black text-transparent [-webkit-text-stroke:2px_white]"
+                  className="flex gap-8 text-4xl md:text-7xl font-bold text-transparent [-webkit-text-stroke:2px_white]"
                   animate={{ x: [0, -1000] }}
                   transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
                 >
@@ -290,7 +290,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
               {/* Anti-clockwise (Right to Left) */}
               <div className="flex whitespace-nowrap">
                 <motion.div
-                  className="flex gap-8 text-4xl md:text-7xl font-black text-white"
+                  className="flex gap-8 text-4xl md:text-7xl font-bold text-white"
                   animate={{ x: [-1000, 0] }}
                   transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
                 >
