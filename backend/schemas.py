@@ -43,6 +43,9 @@ class ProductBase(BaseModel):
     banner_images: Optional[list[str]] = None
     banner_title: Optional[str] = None
     banner_subtitle: Optional[str] = None
+    description_title: Optional[str] = None
+    description_points: Optional[list[str]] = None
+    description_list_style: Optional[str] = "checkmarks"
     status: Optional[str] = "active"
 
 class ProductCreate(ProductBase):
@@ -65,6 +68,9 @@ class ProductUpdate(BaseModel):
     banner_images: Optional[list[str]] = None
     banner_title: Optional[str] = None
     banner_subtitle: Optional[str] = None
+    description_title: Optional[str] = None
+    description_points: Optional[list[str]] = None
+    description_list_style: Optional[str] = None
     status: Optional[str] = None
 
 class ProductResponse(ProductBase):

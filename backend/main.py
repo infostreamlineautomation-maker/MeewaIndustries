@@ -25,6 +25,13 @@ from fastapi import Depends
 
 app = FastAPI(title="MEEWA B2B API")
 
+from utils.limiter import limiter
+from slowapi.errors import RateLimitExceeded
+from slowapi import _rate_limit_exceeded_handler
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
 import os
 
 # Parse CORS origins from .env

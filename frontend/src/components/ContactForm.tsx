@@ -2,6 +2,9 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 function ContactFormInner() {
   const searchParams = useSearchParams();
@@ -20,7 +23,15 @@ function ContactFormInner() {
 
   const [requestedProducts, setRequestedProducts] = useState<any[]>([]);
 
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
   useEffect(() => {
+    if (typeof window !== "undefined" && localStorage.getItem("hasSubmittedContact") === "true") {
+      setIsSubmitted(true);
+    }
+    
     const fetchData = async () => {
       try {
         const [prodRes] = await Promise.all([
@@ -78,6 +89,20 @@ function ContactFormInner() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    
+    // Basic frontend validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setErrorMsg("Please enter a valid email address.");
+      return;
+    }
+    if (!formData.phone || formData.phone.length < 7) {
+      setErrorMsg("Please enter a valid phone number with country code.");
+      return;
+    }
+    setErrorMsg("");
+    setIsSubmitting(true);
+
     try {
       const payload = {
         ...formData,
@@ -92,20 +117,76 @@ function ContactFormInner() {
       });
 
       if (res.ok) {
-        alert("Your inquiry has been submitted successfully!");
-        setFormData({ name: "", phone: "", email: "", message: "" });
-        setRequestedProducts([]);
+        setIsSubmitted(true);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("hasSubmittedContact", "true");
+        }
+      } else if (res.status === 429) {
+        setErrorMsg("You have sent too many requests. Please try again later.");
       } else {
-        alert("Failed to submit inquiry. Please try again.");
+        setErrorMsg("Failed to submit inquiry. Please try again.");
       }
     } catch (error) {
-      alert("An error occurred while submitting.");
+      setErrorMsg("An error occurred while submitting.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="relative">
+      <style>{`
+        .PhoneInputCustom .PhoneInputInput {
+          border: none;
+          outline: none;
+          background: transparent;
+          flex: 1;
+          min-width: 0;
+          font-size: inherit;
+          color: inherit;
+        }
+      `}</style>
+      <AnimatePresence mode="wait">
+        {isSubmitted ? (
+          <motion.div 
+            key="success"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col items-center justify-center py-16 text-center space-y-4"
+          >
+            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-4">
+              <motion.svg 
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="w-10 h-10 text-green-500" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <motion.path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+              </motion.svg>
+            </div>
+            <h3 className="text-3xl font-bold text-gray-900">Thank you for contacting us!</h3>
+            <p className="text-lg text-gray-600">We have received your message and will get back to you shortly.</p>
+          </motion.div>
+        ) : (
+          <motion.form 
+            key="form"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onSubmit={handleSubmit} 
+            className="space-y-6"
+          >
+            {errorMsg && (
+              <div className="bg-red-50 text-red-500 p-3 rounded-lg text-sm font-medium border border-red-100">
+                {errorMsg}
+              </div>
+            )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label htmlFor="fullName" className="block text-base md:text-xl font-medium text-gray-900 mb-2 md:mb-3">Full Name</label>
           <input 
@@ -120,13 +201,13 @@ function ContactFormInner() {
         </div>
         <div>
           <label htmlFor="phone" className="block text-base md:text-xl font-medium text-gray-900 mb-2 md:mb-3">Phone Number</label>
-          <input 
-            type="tel" 
+          <PhoneInput
+            international
+            defaultCountry="IN"
             id="phone" 
-            required
             value={formData.phone}
-            onChange={(e) => setFormData({...formData, phone: e.target.value})}
-            className="block w-full rounded-xl border border-gray-200 bg-white py-3 px-4 md:py-4 md:px-5 text-sm md:text-base text-gray-900 focus:outline-none focus:ring-2 focus:ring-meewa-red transition-shadow" 
+            onChange={(val: any) => setFormData({...formData, phone: val || ""})}
+            className="flex w-full rounded-xl border border-gray-200 bg-white py-3 px-4 md:py-4 md:px-5 text-sm md:text-base text-gray-900 focus-within:ring-2 focus-within:ring-meewa-red transition-shadow PhoneInputCustom" 
             placeholder="Enter Your Phone Number*" 
           />
         </div>
@@ -217,11 +298,14 @@ function ContactFormInner() {
       </div>
       
       <div className="pt-2 md:pt-4">
-        <button type="submit" className="w-full md:w-auto bg-meewa-red text-white py-3 px-6 md:py-4 md:px-10 rounded-full hover:brightness-90 font-semibold shadow-md hover:shadow-lg transition-all text-base md:text-lg">
-          Submit Inquiry
+        <button disabled={isSubmitting} type="submit" className="w-full md:w-auto bg-meewa-red text-white py-3 px-6 md:py-4 md:px-10 rounded-full hover:brightness-90 font-semibold shadow-md hover:shadow-lg transition-all text-base md:text-lg disabled:opacity-50">
+          {isSubmitting ? "Submitting..." : "Submit Inquiry"}
         </button>
       </div>
-    </form>
+    </motion.form>
+    )}
+    </AnimatePresence>
+    </div>
   );
 }
 

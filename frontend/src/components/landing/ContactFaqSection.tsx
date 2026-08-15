@@ -152,20 +152,17 @@ export default function ContactFaqSection({
               ))}
             </div>
 
-            {/* Red Promo Box (Only on Product Pages) */}
-            {isProductPage && (
-              <div className="bg-meewa-red rounded-lg md:rounded-xl p-8 md:p-10 text-center text-white mt-4 md:mt-8 shadow-md">
-                <h3 className="text-xl md:text-3xl font-bold mb-3 md:mb-4">Need Bulk {productName}?</h3>
-                <p className="text-[12px] md:text-base mb-6 md:mb-8 text-white/90 px-4 md:px-8">
-                  Get pricing, samples, and export details from our packaging experts.
-                </p>
-                <button className="bg-[#D9D9D9] text-gray-900 px-5 py-2 md:px-6 md:py-2.5 rounded-md text-[11px] md:text-sm font-semibold hover:bg-white transition-colors">
-                  Request Quote
-                </button>
-              </div>
-            )}
+            {/* Promo Box rendered after all FAQs */}
+            <div className="bg-meewa-red rounded-lg md:rounded-xl p-8 md:p-10 text-center text-white mt-4 md:mt-8 shadow-md">
+              <h3 className="text-lg md:text-3xl font-bold mb-3 md:mb-4 leading-tight">Looking for a Reliable Packaging Partner?</h3>
+              <p className="text-[11px] md:text-base mb-6 md:mb-8 text-white/90 md:px-8 leading-tight">
+                Whether you're sourcing standard products or custom packaging, our team is ready to help.
+              </p>
+              <button className="bg-[#D9D9D9] text-gray-900 px-6 py-2.5 md:px-8 md:py-3 rounded-[5px] md:rounded-md text-[11px] md:text-sm font-semibold hover:bg-white transition-colors">
+                Request Quote
+              </button>
+            </div>
           </div>
-
         </div>
       </div>
     </section>

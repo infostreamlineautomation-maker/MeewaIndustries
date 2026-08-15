@@ -218,30 +218,39 @@ export default function ProductClientPage({ product, relatedProducts, settings }
             </motion.section>
 
             {/* Description Component (Bottom Left) */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-              className="relative md:absolute mt-4 md:mt-0 pb-40 md:pb-0 md:top-auto md:bottom-[40vh] left-6 md:left-24 lg:left-32 z-40 max-w-[16rem] md:max-w-sm lg:max-w-md"
-            >
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight drop-shadow-md">
-                Premium Quality Materials
-              </h3>
-              <ul className="space-y-3">
-                {[
-                  "100% Recyclable & Eco-Friendly",
-                  "Double-wall insulation",
-                  "Custom branding available",
-                  "Available in 8oz to 24oz sizes"
-                ].map((point, i) => (
-                  <li key={i} className="flex items-center gap-3 text-white/90 text-lg font-medium drop-shadow-md">
-                    <span className="text-meewa-red font-bold text-xl">✓</span>
-                    {point}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+            {(product?.description_title || (Array.isArray(product?.description_points) && product.description_points.length > 0)) && (
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+                className="relative md:absolute mt-4 md:mt-0 pb-40 md:pb-0 md:top-auto md:bottom-[40vh] left-6 md:left-24 lg:left-32 z-40 max-w-[16rem] md:max-w-sm lg:max-w-md"
+              >
+                {product?.description_title && (
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight drop-shadow-md">
+                    {product.description_title}
+                  </h3>
+                )}
+                {Array.isArray(product?.description_points) && product.description_points.length > 0 && (
+                  <ul className="space-y-3">
+                    {product.description_points.map((point: string, i: number) => (
+                      <li key={i} className="flex items-start gap-3 text-white/90 text-lg font-medium drop-shadow-md">
+                        {(!product.description_list_style || product.description_list_style === "checkmarks") && (
+                          <span className="text-meewa-red font-bold text-xl mt-[-2px]">✓</span>
+                        )}
+                        {product.description_list_style === "bullets" && (
+                          <span className="text-white font-bold text-xl mt-[-2px]">•</span>
+                        )}
+                        {product.description_list_style === "numbers" && (
+                          <span className="text-white font-bold text-lg">{i + 1}.</span>
+                        )}
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </motion.div>
+            )}
           </div>
 
           {/* Section 0.5: Discover Text (Absolute, ON TOP of Banner, Pure White, Clipped) */}

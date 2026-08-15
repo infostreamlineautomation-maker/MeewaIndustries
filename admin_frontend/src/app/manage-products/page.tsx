@@ -25,6 +25,9 @@ interface Product {
   banner_title?: string;
   banner_subtitle?: string;
   marquee_text?: string;
+  description_title?: string;
+  description_points?: string[];
+  description_list_style?: string;
   specs?: {
     available_colors?: string[];
     available_sizes?: string[];
@@ -429,6 +432,67 @@ export default function ManageProductsPage() {
                     <button type="button" onClick={() => removeBanner(idx)} className="text-red-500 text-sm font-medium ml-auto">✕ Remove</button>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            <div className="border-t pt-4 mt-6">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Product Description Component (Points)</h3>
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Component Title</label>
+                  <input type="text" name="description_title" value={currentProduct.description_title || ""} onChange={handleInputChange} placeholder="Premium Quality Materials" className="w-full border p-2 rounded text-gray-900" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">List Style</label>
+                  <select name="description_list_style" value={currentProduct.description_list_style || "checkmarks"} onChange={handleInputChange} className="w-full border p-2 rounded bg-white text-gray-900">
+                    <option value="checkmarks">Checkmarks (Red)</option>
+                    <option value="bullets">Bullets (Disc)</option>
+                    <option value="numbers">Numbers</option>
+                    <option value="none">None (Plain Text)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Bullet Points</label>
+                <div className="space-y-2">
+                  {Array.isArray(currentProduct.description_points) && currentProduct.description_points.map((pt: string, idx: number) => (
+                    <div key={idx} className="flex gap-2">
+                      <input 
+                        type="text" 
+                        value={pt} 
+                        onChange={(e) => {
+                          const pts = [...(currentProduct.description_points || [])];
+                          pts[idx] = e.target.value;
+                          setCurrentProduct({ ...currentProduct, description_points: pts });
+                        }} 
+                        className="w-full border p-2 rounded text-gray-900" 
+                      />
+                      <button 
+                        type="button" 
+                        onClick={() => {
+                          const pts = [...(currentProduct.description_points || [])];
+                          pts.splice(idx, 1);
+                          setCurrentProduct({ ...currentProduct, description_points: pts });
+                        }} 
+                        className="bg-red-50 text-red-500 px-3 py-2 rounded border border-red-100 hover:bg-red-100"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <button 
+                  type="button" 
+                  onClick={() => {
+                    const pts = Array.isArray(currentProduct.description_points) ? [...currentProduct.description_points] : [];
+                    pts.push("");
+                    setCurrentProduct({ ...currentProduct, description_points: pts });
+                  }} 
+                  className="mt-2 text-sm text-meewa-red font-medium flex items-center gap-1 hover:underline"
+                >
+                  + Add Point
+                </button>
               </div>
             </div>
           </div>
