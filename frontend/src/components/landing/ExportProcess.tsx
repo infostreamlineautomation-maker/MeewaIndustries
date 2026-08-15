@@ -32,10 +32,10 @@ export default async function ExportProcess() {
 
       {/* Floating Card Layout */}
       <div className="max-w-[1262px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row rounded-[10px] overflow-hidden lg:h-[550px]">
+        <div className="flex flex-col md:flex-row rounded-[10px] overflow-hidden md:h-[550px]">
           
           {/* Left Side: Red Background with Steps */}
-          <div className="bg-meewa-red text-white w-full lg:w-[656px] p-6 md:p-12 lg:p-12 flex flex-col justify-center rounded-xl md:rounded-[10px] lg:rounded-none">
+          <div className="bg-meewa-red text-white w-full md:w-1/2 lg:w-[656px] p-6 md:p-12 lg:p-12 flex flex-col justify-center rounded-xl md:rounded-none">
           <div className="space-y-4 md:space-y-6">
             {steps.map((step: any, idx: number) => (
               <div key={idx} className="flex flex-row items-start space-x-3 md:space-x-6 group">
@@ -53,7 +53,7 @@ export default async function ExportProcess() {
         </div>
 
         {/* Right Side: Image/Video */}
-        <div className="hidden lg:flex w-full lg:w-[606px] min-h-[300px] lg:min-h-full relative bg-white items-center justify-center">
+        <div className="hidden md:flex w-full md:w-1/2 lg:w-[606px] min-h-[300px] md:min-h-full relative bg-white items-center justify-center">
           {settings.export_process_media_url ? (
             settings.export_process_media_url.endsWith('.mp4') ? (
               <video 

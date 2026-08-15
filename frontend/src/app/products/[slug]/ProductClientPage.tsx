@@ -152,7 +152,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
           {/* Section 0: Title (Behind Banner) */}
           <div className="w-full h-auto pb-0 md:pb-0 md:h-[calc(200vh-20rem)]">
             <div className="md:sticky top-0 pt-24 md:pt-[30vh] px-6 md:px-24 lg:px-32 md:h-screen flex flex-col justify-start">
-              <h1 className="text-5xl md:text-8xl lg:text-9xl font-bold text-black leading-[1.1] tracking-tighter mb-4 md:mb-6 md:mt-0">
+              <h1 className="text-5xl md:text-7xl lg:text-9xl font-bold text-black leading-[1.1] tracking-tighter mb-4 md:mb-6 md:mt-0">
                 {product?.name || "Food Service"}
               </h1>
               <h2 className="text-xl md:text-2xl font-semibold text-black leading-tight max-w-sm">

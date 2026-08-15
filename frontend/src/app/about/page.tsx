@@ -60,7 +60,7 @@ export default async function AboutPage() {
             
             {/* Left Column */}
             <div className="flex flex-col justify-center max-w-xl w-full">
-              <h1 className="text-[28px] leading-[1.2] md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 lg:mb-6">
+              <h1 className="text-[28px] leading-[1.2] md:text-4xl lg:text-6xl font-bold text-gray-900 mb-6 lg:mb-6">
                 {settings.about_hero_title || "Stories built to feel precise, cinematic, and commercially sharp."}
               </h1>
 
