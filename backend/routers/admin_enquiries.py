@@ -40,7 +40,7 @@ async def reply_to_enquiry(
     enquiry_id: int, 
     message: str = Form(...),
     is_from_admin: bool = Form(True),
-    files: Optional[List[UploadFile]] = File(None),
+    files: List[UploadFile] = File(default=[]),
     db: Session = Depends(get_db)
 ):
     enquiry = db.query(models.Enquiry).filter(models.Enquiry.id == enquiry_id).first()
