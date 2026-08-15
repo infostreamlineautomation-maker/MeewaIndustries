@@ -1,12 +1,14 @@
 # pyrefly: ignore [missing-import]
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Form, UploadFile, File
 # pyrefly: ignore [missing-import]
 from sqlalchemy.orm import Session
 from database import get_db
 import models
 import schemas
-from typing import List
+from typing import List, Optional
 from utils.mail_utils import send_email
+# pyrefly: ignore [missing-import]
+from utils.settings_utils import get_db_settings_dict
 
 router = APIRouter(
     prefix="/enquiries",
@@ -34,31 +36,84 @@ def update_enquiry_status(enquiry_id: int, status: str, db: Session = Depends(ge
     return {"message": "Status updated successfully"}
 
 @router.post("/{enquiry_id}/reply", response_model=schemas.EnquiryReplyResponse)
-def reply_to_enquiry(enquiry_id: int, reply: schemas.EnquiryReplyCreate, db: Session = Depends(get_db)):
+async def reply_to_enquiry(
+    enquiry_id: int, 
+    message: str = Form(...),
+    is_from_admin: bool = Form(True),
+    files: Optional[List[UploadFile]] = File(None),
+    db: Session = Depends(get_db)
+):
     enquiry = db.query(models.Enquiry).filter(models.Enquiry.id == enquiry_id).first()
     if not enquiry:
         raise HTTPException(status_code=404, detail="Enquiry not found")
 
     # Fetch SMTP settings
-    smtp_settings = {}
-    db_settings = db.query(models.SiteSetting).all()
-    for s in db_settings:
-        if isinstance(s.value, dict) and 'value' in s.value:
-            smtp_settings[s.key] = s.value['value']
-        else:
-            smtp_settings[s.key] = s.value
+    smtp_settings = get_db_settings_dict(db)
 
-    # Send Email
     site_title = smtp_settings.get("site_title", "MEEWA")
     subject = f"Re: Your Enquiry at {site_title}"
-    # Safe integer parsing for SMTP port
     port_val = smtp_settings.get("smtp_port")
     smtp_port_num = int(port_val) if port_val else 587
+
+    # Prepare attachments
+    attachments = []
+    if files:
+        for f in files:
+            if f.filename:
+                content = await f.read()
+                attachments.append({
+                    "filename": f.filename,
+                    "content": content
+                })
+
+    # Build HTML Template
+    # We will format the original message to preserve newlines
+    original_msg_html = enquiry.message.replace('\n', '<br>')
+    reply_msg_html = message.replace('\n', '<br>')
+    
+    html_template = f"""
+    <html>
+      <head>
+        <style>
+          body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+          .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+          .header {{ text-align: center; margin-bottom: 30px; }}
+          .header img {{ max-width: 150px; }}
+          .reply-box {{ margin-bottom: 30px; font-size: 16px; }}
+          .original-msg {{ background: #f9f9f9; border-left: 4px solid #E30613; padding: 15px; margin-top: 30px; font-size: 14px; color: #555; }}
+          .footer {{ margin-top: 40px; font-size: 12px; color: #888; text-align: center; }}
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <img src="cid:logo" alt="{site_title} Logo">
+          </div>
+          <div class="reply-box">
+            {reply_msg_html}
+          </div>
+          <div class="original-msg">
+            <strong>On {enquiry.created_at.strftime('%B %d, %Y')}, {enquiry.name} wrote:</strong><br><br>
+            {original_msg_html}
+          </div>
+          <div class="footer">
+            &copy; {enquiry.created_at.year} {site_title}. All rights reserved.
+          </div>
+        </div>
+      </body>
+    </html>
+    """
+
+    # We assume the logo is available in backend/static/logo.png
+    inline_images = {"logo": "static/logo.png"}
 
     success = send_email(
         to_email=enquiry.email,
         subject=subject,
-        message=reply.message,
+        message=message,  # fallback plain text
+        html_message=html_template,
+        attachments=attachments,
+        inline_images=inline_images,
         smtp_host=smtp_settings.get("smtp_host", ""),
         smtp_port=smtp_port_num,
         smtp_user=smtp_settings.get("smtp_user", ""),
@@ -75,8 +130,8 @@ def reply_to_enquiry(enquiry_id: int, reply: schemas.EnquiryReplyCreate, db: Ses
     # Save reply to DB regardless of email success (for record)
     db_reply = models.EnquiryReply(
         enquiry_id=enquiry_id,
-        message=reply.message,
-        is_from_admin=reply.is_from_admin
+        message=message,
+        is_from_admin=is_from_admin
     )
     db.add(db_reply)
     db.commit()

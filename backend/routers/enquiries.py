@@ -9,7 +9,8 @@ from utils.limiter import limiter
 import models
 from database import get_db
 from utils.mail_utils import send_email
-from routers.admin_enquiries import get_db_settings_dict
+# pyrefly: ignore [missing-import]
+from utils.settings_utils import get_db_settings_dict
 
 router = APIRouter(
     prefix="/enquiries",
@@ -35,7 +36,6 @@ def create_enquiry(request: Request, enquiry: EnquiryCreate, db: Session = Depen
 
     # Fetch SMTP settings to notify admin
     try:
-        from routers.admin_enquiries import get_db_settings_dict
         smtp_settings = get_db_settings_dict(db)
         notification_emails = smtp_settings.get("notification_emails", "")
         if notification_emails:

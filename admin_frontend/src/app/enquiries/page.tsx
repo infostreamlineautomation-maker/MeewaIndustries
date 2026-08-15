@@ -5,6 +5,7 @@ export default function EnquiriesPage() {
   const [enquiries, setEnquiries] = useState<any[]>([]);
   const [selectedEnquiry, setSelectedEnquiry] = useState<any>(null);
   const [replyMessage, setReplyMessage] = useState("");
+  const [attachments, setAttachments] = useState<File[]>([]);
   const [sending, setSending] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -38,15 +39,22 @@ export default function EnquiriesPage() {
     if (!replyMessage.trim() || !selectedEnquiry) return;
     setSending(true);
 
+    const formData = new FormData();
+    formData.append("message", replyMessage);
+    formData.append("is_from_admin", "true");
+    attachments.forEach(file => {
+      formData.append("files", file);
+    });
+
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/enquiries/${selectedEnquiry.id}/reply`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: replyMessage, is_from_admin: true })
+        body: formData
       });
       
       if (res.ok) {
         setReplyMessage("");
+        setAttachments([]);
         fetchEnquiries(); // Refresh to see the new reply
         alert("Reply sent via Email!");
       } else {
@@ -179,8 +187,39 @@ export default function EnquiriesPage() {
                   className="w-full border border-gray-200 rounded-xl p-4 focus:outline-none focus:border-meewa-red focus:ring-1 focus:ring-meewa-red resize-none"
                   rows={4}
                 />
-                <div className="flex justify-between items-center mt-2">
-                  <span className="text-xs text-gray-400">Ensure SMTP is configured in Global Settings before replying.</span>
+                <div className="flex justify-between items-end mt-2">
+                  <div className="flex flex-col gap-2 max-w-[70%]">
+                    <label className="cursor-pointer text-sm text-gray-500 hover:text-meewa-red flex items-center gap-1 w-fit transition-colors">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                      </svg>
+                      Attach Photos / PDFs
+                      <input 
+                        type="file" 
+                        multiple 
+                        className="hidden" 
+                        onChange={(e) => setAttachments(Array.from(e.target.files || []))}
+                      />
+                    </label>
+                    
+                    {attachments.length > 0 && (
+                      <div className="flex flex-wrap gap-2 text-xs">
+                        {attachments.map((f, i) => (
+                          <div key={i} className="flex items-center gap-1 bg-gray-100 text-gray-600 px-2 py-1 rounded-md border border-gray-200">
+                            <span className="truncate max-w-[120px]">{f.name}</span>
+                            <button 
+                              onClick={() => setAttachments(attachments.filter((_, idx) => idx !== i))}
+                              className="text-gray-400 hover:text-red-500 ml-1"
+                              title="Remove attachment"
+                            >
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <span className="text-xs text-gray-400 mt-1">Ensure SMTP is configured in Global Settings before replying.</span>
+                  </div>
                   <button 
                     onClick={handleSendReply}
                     disabled={sending || !replyMessage.trim()}
