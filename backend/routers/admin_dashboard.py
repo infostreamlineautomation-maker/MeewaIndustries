@@ -20,10 +20,12 @@ def get_dashboard_stats(db: Session = Depends(get_db)):
     
     total_enquiries = db.query(models.Enquiry).count()
     new_enquiries = db.query(models.Enquiry).filter(models.Enquiry.status == "New").count()
+    recent_enquiries = db.query(models.Enquiry).order_by(models.Enquiry.created_at.desc()).limit(5).all()
     
     return {
         "total_products": total_products,
         "active_categories": active_categories,
         "total_enquiries": total_enquiries,
-        "new_enquiries": new_enquiries
+        "new_enquiries": new_enquiries,
+        "recent_enquiries": recent_enquiries
     }
