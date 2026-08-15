@@ -22,6 +22,12 @@ export default function AboutPageManagement() {
     about_how_we_work_video_subtitle: "",
     about_vision_icon: "",
     about_mission_icon: "",
+    about_show_hero: true,
+    about_show_vision_mission: true,
+    about_show_clients: true,
+    about_show_how_we_work: true,
+    about_show_features: true,
+    about_show_faqs: true,
   });
   
   const [stats, setStats] = useState<{title: string, subtitle: string}[]>([]);
@@ -55,6 +61,12 @@ export default function AboutPageManagement() {
           about_how_we_work_media: data.about_how_we_work_media || "",
           about_how_we_work_video_title: data.about_how_we_work_video_title || "",
           about_how_we_work_video_subtitle: data.about_how_we_work_video_subtitle || "",
+          about_show_hero: data.about_show_hero ?? true,
+          about_show_vision_mission: data.about_show_vision_mission ?? true,
+          about_show_clients: data.about_show_clients ?? true,
+          about_show_how_we_work: data.about_show_how_we_work ?? true,
+          about_show_features: data.about_show_features ?? true,
+          about_show_faqs: data.about_show_faqs ?? true,
         });
 
         const defaultStats = [
@@ -91,7 +103,8 @@ export default function AboutPageManagement() {
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setSettings({ ...settings, [e.target.name]: e.target.value });
+    const value = e.target.type === 'checkbox' ? (e.target as HTMLInputElement).checked : e.target.value;
+    setSettings({ ...settings, [e.target.name]: value });
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, fieldName: string) => {
@@ -264,6 +277,31 @@ export default function AboutPageManagement() {
       
       <form onSubmit={handleSave} className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 space-y-12">
         
+        {/* Component Visibility Settings */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">Component Visibility</h2>
+          <p className="text-sm text-gray-500 mb-4">Toggle switches to hide or show entire components on the About Us page.</p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {['hero', 'vision_mission', 'clients', 'how_we_work', 'features', 'faqs'].map((componentName) => {
+              const fieldName = `about_show_${componentName}` as keyof typeof settings;
+              return (
+                <label key={componentName} className="flex items-center space-x-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name={fieldName}
+                    checked={settings[fieldName] as boolean}
+                    onChange={handleChange}
+                    className="form-checkbox h-5 w-5 text-meewa-red rounded border-gray-300 focus:ring-meewa-red"
+                  />
+                  <span className="text-gray-700 font-medium capitalize">
+                    {componentName.replace(/_/g, ' ')}
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Hero Section */}
         <div className="space-y-6">
           <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">Hero Section</h2>

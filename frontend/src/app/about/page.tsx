@@ -42,11 +42,19 @@ export default async function AboutPage() {
   const features = settings.about_features?.length > 0 ? settings.about_features : defaultFeatures;
   const clients = settings.about_clients || [];
 
+  const showHero = settings.about_show_hero !== false;
+  const showVisionMission = settings.about_show_vision_mission !== false;
+  const showClients = settings.about_show_clients !== false;
+  const showHowWeWork = settings.about_show_how_we_work !== false;
+  const showFeatures = settings.about_show_features !== false;
+  const showFaqs = settings.about_show_faqs !== false;
+
   return (
     <div className="bg-white min-h-screen">
       
       {/* 1. Hero Section */}
-      <section className="pt-24 md:pt-40 pb-8 md:pb-12">
+      {showHero && (
+        <section className="pt-24 md:pt-40 pb-8 md:pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 lg:gap-16 items-stretch">
             
@@ -115,9 +123,11 @@ export default async function AboutPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* 3. Vision & Mission */}
-      <section className="pt-2 pb-4 md:py-12">
+      {showVisionMission && (
+        <section className="pt-2 pb-4 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-8">
             <div className="border border-gray-200 p-3 md:p-10 rounded-[10px] md:rounded-3xl bg-white">
@@ -156,9 +166,10 @@ export default async function AboutPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* 4. Our Clients */}
-      {clients.length > 0 && (
+      {showClients && clients.length > 0 && (
         <section className="py-4 md:py-12 bg-gray-50 overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 md:mb-10 text-center">
             <h2 className="text-[28px] sm:text-[32px] md:text-[40px] font-medium text-meewa-red leading-none tracking-normal">Our Clients</h2>
@@ -190,7 +201,8 @@ export default async function AboutPage() {
       )}
 
       {/* 5. How We Work */}
-      <section className="py-4 md:py-12">
+      {showHowWeWork && (
+        <section className="py-4 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:grid lg:grid-cols-2 gap-4 lg:gap-16 items-stretch">
             
@@ -236,9 +248,11 @@ export default async function AboutPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* 6. Capabilities Grid (Features) */}
-      <section className="pt-2 pb-8 md:py-12">
+      {showFeatures && (
+        <section className="pt-2 pb-8 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {features.map((feature: any, idx: number) => (
@@ -262,9 +276,12 @@ export default async function AboutPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* 7. Contact / FAQs Section (Reused from Landing Page) */}
-      <ContactFaqSection />
+      {showFaqs && (
+        <ContactFaqSection />
+      )}
 
     </div>
   );
