@@ -1,5 +1,5 @@
-# pyrefly: ignore [missing-import]
 from fastapi import APIRouter, Depends, HTTPException, Form, UploadFile, File
+from starlette.concurrency import run_in_threadpool
 # pyrefly: ignore [missing-import]
 from sqlalchemy.orm import Session
 from database import get_db
@@ -107,7 +107,8 @@ async def reply_to_enquiry(
     # We assume the logo is available in backend/static/logo.png
     inline_images = {"logo": "static/logo.png"}
 
-    success = send_email(
+    success = await run_in_threadpool(
+        send_email,
         to_email=enquiry.email,
         subject=subject,
         message=message,  # fallback plain text
@@ -122,12 +123,14 @@ async def reply_to_enquiry(
         from_name=smtp_settings.get("smtp_from_name", site_title)
     )
     
-    if success:
-        # Mark as Replied if it was New
-        if enquiry.status == "New":
-            enquiry.status = "Replied"
+    if not success:
+        raise HTTPException(status_code=500, detail="Failed to send email. Please check your SMTP configuration.")
+
+    # Mark as Replied if it was New
+    if enquiry.status == "New":
+        enquiry.status = "Replied"
             
-    # Save reply to DB regardless of email success (for record)
+    # Save reply to DB only if email was sent successfully
     db_reply = models.EnquiryReply(
         enquiry_id=enquiry_id,
         message=message,

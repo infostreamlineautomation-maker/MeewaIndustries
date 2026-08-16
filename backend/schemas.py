@@ -46,6 +46,8 @@ class ProductBase(BaseModel):
     description_title: Optional[str] = None
     description_points: Optional[list[str]] = None
     description_list_style: Optional[str] = "checkmarks"
+    use_custom_related_products: Optional[bool] = False
+    custom_related_products: Optional[list[int]] = []
     status: Optional[str] = "active"
 
 class ProductCreate(ProductBase):
@@ -71,6 +73,8 @@ class ProductUpdate(BaseModel):
     description_title: Optional[str] = None
     description_points: Optional[list[str]] = None
     description_list_style: Optional[str] = None
+    use_custom_related_products: Optional[bool] = None
+    custom_related_products: Optional[list[int]] = None
     status: Optional[str] = None
 
 class ProductResponse(ProductBase):

@@ -32,16 +32,14 @@ export default function ProductClientPage({ product, relatedProducts, settings }
   }, [product]);
 
   // Scroll-linked Animation
-  const { scrollYProgress } = useScroll({
+  const { scrollYProgress, scrollY } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"]
   });
 
-  // Mobile Keyframes
-  const mTop = useTransform(scrollYProgress, [0, 0.38, 0.77, 1], ["30%", "40%", "60%", "85%"]);
-  const mLeft = useTransform(scrollYProgress, [0, 0.38, 0.77, 1], ["50%", "50%", "50%", "50%"]);
-  const mRotate = useTransform(scrollYProgress, [0, 0.38, 0.77, 1], [-10, 5, -5, 0]);
-  const mScale = useTransform(scrollYProgress, [0, 0.38, 0.77, 1], [0.7, 0.7, 0.7, 0.8]);
+  // Mobile Keyframes (Updated to use dBreakpoints for sync)
+  // We'll define these after dBreakpoints are declared, so for now just placeholder.
+  // Wait, hooks order matters. I should move these below dBreakpoints and smoothProgress!
 
   // Desktop breakpoints are measured from the actual rendered banner/marquee sections
   // (not guessed) so settle A always lands inside the banner and settle B inside the marquee,
@@ -86,15 +84,22 @@ export default function ProductClientPage({ product, relatedProducts, settings }
   }, [product]);
 
   // Desktop Keyframes — hero (top-right) -> settle A in banner (hold) -> gradual zoom -> settle B centered on marquee (hold)
-  const springConfig = { stiffness: 60, damping: 15, mass: 1 };
-  const dTopRaw = useTransform(scrollYProgress, dBreakpoints, ["50%", "55%", "68%", "68%", "58%", "50%", "50%"]);
-  const dLeftRaw = useTransform(scrollYProgress, dBreakpoints, ["75%", "40%", "28%", "28%", "38%", "50%", "50%"]);
-  const dRotateRaw = useTransform(scrollYProgress, dBreakpoints, [-12, -12, -8, -8, 4, 0, 0]);
-  const dScaleRaw = useTransform(scrollYProgress, dBreakpoints, [1.1, 0.78, 0.72, 0.72, 0.85, 0.92, 0.92]);
-  const dTop = useSpring(dTopRaw, springConfig);
-  const dLeft = useSpring(dLeftRaw, springConfig);
-  const dRotate = useSpring(dRotateRaw, springConfig);
-  const dScale = useSpring(dScaleRaw, springConfig);
+  const springConfig = { stiffness: 150, damping: 25, mass: 1 };
+  const smoothProgress = useSpring(scrollYProgress, springConfig);
+
+  const dTop = useTransform(smoothProgress, dBreakpoints, ["50%", "50%", "50%", "50%", "50%", "50%", "50%"]);
+  const dLeft = useTransform(smoothProgress, dBreakpoints, ["75%", "50%", "25%", "25%", "38%", "50%", "50%"]);
+  const dRotate = useTransform(smoothProgress, dBreakpoints, [-12, -12, -8, -8, 4, 0, 0]);
+  const dScale = useTransform(smoothProgress, dBreakpoints, [1.1, 0.78, 1.3, 0.9, 0.5, 1.0, 1.0]);
+
+  // Mobile Keyframes for the static cup
+  const mStaticY = useTransform(smoothProgress, dBreakpoints, ["0vh", "10vh", "25vh", "40vh", "55vh", "70vh", "70vh"]);
+  const mStaticScale = useTransform(smoothProgress, dBreakpoints, [1, 0.8, 0.6, 0.4, 0.8, 1.3, 1.3]);
+  const mStaticRotate = useTransform(smoothProgress, dBreakpoints, [0, 5, 10, 0, -5, 0, 0]);
+
+  // Title Slide Up Animation (using absolute pixels for guaranteed fast fade)
+  const titleY = useTransform(scrollY, [0, 300], ["0px", "-300px"]);
+  const titleOpacity = useTransform(scrollY, [0, 150], [1, 0]);
 
   // Marquee text
   const marqueeText = product?.marquee_text || "Restaurants Hotels Cafés Bakeries Caterers Retail Stores Supermarkets Global Importers";
@@ -124,10 +129,10 @@ export default function ProductClientPage({ product, relatedProducts, settings }
               style={{ 
                 x: "-50%", 
                 y: "-50%",
-                top: isMobile ? mTop : dTop,
-                left: isMobile ? mLeft : dLeft,
-                rotate: isMobile ? mRotate : dRotate,
-                scale: isMobile ? mScale : dScale
+                top: dTop,
+                left: dLeft,
+                rotate: dRotate,
+                scale: dScale
               }}
             >
               <img 
@@ -150,133 +155,116 @@ export default function ProductClientPage({ product, relatedProducts, settings }
           />
 
           {/* Section 0: Title (Behind Banner) */}
-          <div className="w-full h-auto pb-0 md:pb-0 md:h-[calc(200vh-20rem)]">
+          {settings.hide_pd_hero !== "true" && (
+            <div className="w-full h-auto pb-0 md:pb-0 md:h-[calc(200vh-20rem)]">
             <div className="md:sticky top-0 pt-24 md:pt-[30vh] px-6 md:px-24 lg:px-32 md:h-screen flex flex-col justify-start">
-              <h1 className="text-5xl md:text-7xl lg:text-9xl font-bold text-black leading-[1.1] tracking-tighter mb-4 md:mb-6 md:mt-0">
-                {product?.name || "Food Service"}
-              </h1>
-              <h2 className="text-xl md:text-2xl font-semibold text-black leading-tight max-w-sm">
-                {product?.hero_description || "Discover premium quality of customizable cups"}
-              </h2>
+              <motion.div style={{ y: titleY, opacity: titleOpacity }}>
+                <h1 className="text-5xl md:text-7xl lg:text-9xl font-bold text-black leading-[1.1] tracking-tighter mb-4 md:mb-6 md:mt-0">
+                  {product?.name || "Food Service"}
+                </h1>
+                <h2 className="text-xl md:text-2xl font-semibold text-black leading-tight max-w-sm">
+                  {product?.hero_description || "Discover premium quality of customizable cups"}
+                </h2>
+
+                {/* Description Component (Moved from Banner) */}
+                {(product?.description_title || (Array.isArray(product?.description_points) && product.description_points.length > 0)) && (
+                  <div className="mt-8 md:mt-12 max-w-sm lg:max-w-md">
+                    {product?.description_title && (
+                      <h3 className="text-xl md:text-2xl font-bold text-black mb-4 tracking-tight drop-shadow-sm">
+                        {product.description_title}
+                      </h3>
+                    )}
+                    {Array.isArray(product?.description_points) && product.description_points.length > 0 && (
+                      <ul className="space-y-3">
+                        {product.description_points.map((point: string, i: number) => (
+                          <li key={i} className="flex items-start gap-3 text-black/80 text-lg font-medium">
+                            {(!product.description_list_style || product.description_list_style === "checkmarks") && (
+                              <span className="text-meewa-red font-bold text-xl mt-[-2px]">✓</span>
+                            )}
+                            {product.description_list_style === "bullets" && (
+                              <span className="text-black font-bold text-xl mt-[-2px]">•</span>
+                            )}
+                            {product.description_list_style === "numbers" && (
+                              <span className="text-black font-bold text-lg">{i + 1}.</span>
+                            )}
+                            <span>{point}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
+              </motion.div>
 
               {/* Mobile Static Image (Top) - Bridging the gap */}
-              <div className="block md:hidden mt-8 -mb-32 w-full max-w-[280px] mx-auto pointer-events-none relative z-30">
+              <motion.div 
+                className="block md:hidden mt-4 -mb-24 w-full max-w-[220px] mx-auto pointer-events-none relative z-30"
+                style={{ y: mStaticY, scale: mStaticScale, rotate: mStaticRotate }}
+              >
                 {heroImage && (
                   <img src={heroImage} alt="Product" className="w-full h-auto drop-shadow-2xl mix-blend-multiply" />
                 )}
-              </div>
+              </motion.div>
             </div>
           </div>
+          )}
 
           {/* Banner Image Container */}
-          <div id="banner-container" ref={bannerRef} className="relative w-full overflow-hidden shadow-2xl bg-black z-20 md:-mt-[calc(100vh-12rem)]">
-            {product?.section1_image ? (
-              <img src={`${product.section1_image?.startsWith('http') ? product.section1_image : process.env.NEXT_PUBLIC_API_URL + product.section1_image}`} alt="Banner" className="absolute inset-0 w-full h-full object-cover" />
-            ) : (
-              <div className="absolute inset-0 w-full h-full bg-gray-900" />
-            )}
-            
-            {/* Dark gradient overlay for text readability */}
-            <div className="absolute inset-0 bg-black/40" />
-            
-            {/* Banner Content (Text on Right) */}
-            <motion.section 
-              onViewportEnter={() => setActiveSection(1)}
-              viewport={{ margin: "-40% 0px -40% 0px" }}
-              className="relative h-auto pt-32 pb-8 md:py-0 md:h-[120vh] flex flex-col justify-start md:justify-center items-start md:items-end px-6 md:px-24 lg:px-32"
-            >
-              <div className="max-w-xl text-left md:text-right z-40 flex flex-col items-start md:items-end gap-6">
-                <motion.h2 
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false, margin: "-50px" }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
-                  className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg break-words"
-                >
-                  {product?.banner_title || "Get your customized coffee cup"}
-                </motion.h2>
-                <motion.p 
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false, margin: "-50px" }}
-                  transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                  className="text-xl md:text-2xl text-white/90 font-medium drop-shadow-md max-w-lg"
-                >
-                  {product?.banner_subtitle || product?.short_description || "Hot, cold, frozen or fresh, our food service packaging works to keep every meal presentable and intact."}
-                </motion.p>
-                <motion.div
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false, margin: "-50px" }}
-                  transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-                >
-                  <Link href="/contact" className="inline-flex items-center gap-2 font-bold bg-meewa-red text-white px-8 py-4 md:px-10 md:py-5 rounded-full hover:bg-red-700 transition-colors shadow-xl text-lg md:text-xl mt-4">
-                    Order now <span className="text-xl md:text-2xl font-light">↗</span>
-                  </Link>
-                </motion.div>
-              </div>
-            </motion.section>
-
-            {/* Description Component (Bottom Left) */}
-            {(product?.description_title || (Array.isArray(product?.description_points) && product.description_points.length > 0)) && (
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false, margin: "-50px" }}
-                transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-                className="relative md:absolute mt-4 md:mt-0 pb-40 md:pb-0 md:top-auto md:bottom-[40vh] left-6 md:left-24 lg:left-32 z-40 max-w-[16rem] md:max-w-sm lg:max-w-md"
+          {settings.hide_pd_banner !== "true" && (
+          <>
+            <div id="banner-container" ref={bannerRef} className="relative w-full overflow-hidden shadow-2xl bg-black z-20 md:-mt-[calc(100vh-12rem)]">
+              {product?.section1_image ? (
+                <img src={`${product.section1_image?.startsWith('http') ? product.section1_image : process.env.NEXT_PUBLIC_API_URL + product.section1_image}`} alt="Banner" className="absolute inset-0 w-full h-full object-cover" />
+              ) : (
+                <div className="absolute inset-0 w-full h-full bg-gray-900" />
+              )}
+              
+              {/* Dark gradient overlay for text readability */}
+              <div className="absolute inset-0 bg-black/40" />
+              
+              {/* Banner Content (Text on Right) */}
+              <motion.section 
+                onViewportEnter={() => setActiveSection(1)}
+                viewport={{ margin: "-40% 0px -40% 0px" }}
+                className="relative h-auto pt-16 pb-32 md:py-0 md:h-[120vh] flex flex-col justify-start md:justify-center items-start md:items-end px-6 md:px-24 lg:px-32"
               >
-                {product?.description_title && (
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight drop-shadow-md">
-                    {product.description_title}
-                  </h3>
-                )}
-                {Array.isArray(product?.description_points) && product.description_points.length > 0 && (
-                  <ul className="space-y-3">
-                    {product.description_points.map((point: string, i: number) => (
-                      <li key={i} className="flex items-start gap-3 text-white/90 text-lg font-medium drop-shadow-md">
-                        {(!product.description_list_style || product.description_list_style === "checkmarks") && (
-                          <span className="text-meewa-red font-bold text-xl mt-[-2px]">✓</span>
-                        )}
-                        {product.description_list_style === "bullets" && (
-                          <span className="text-white font-bold text-xl mt-[-2px]">•</span>
-                        )}
-                        {product.description_list_style === "numbers" && (
-                          <span className="text-white font-bold text-lg">{i + 1}.</span>
-                        )}
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </motion.div>
-            )}
-          </div>
-
-          {/* Section 0.5: Discover Text (Absolute, ON TOP of Banner, Pure White, Clipped) */}
-          <div className="absolute top-0 left-0 w-full h-[calc(200vh-20rem)] pointer-events-none z-50 hidden md:block">
-            <div className="w-full h-full" style={{ clipPath: "inset(calc(100vh - 8rem) 0 0 0)" }}>
-              <div className="sticky top-0 pt-48 md:pt-[30vh] px-6 md:px-24 lg:px-32 h-screen flex flex-col justify-start">
-                <h1 className="text-5xl md:text-8xl lg:text-9xl font-bold leading-[1.1] tracking-tighter mb-6 opacity-0">
-                  {product?.name || "Food Service"}
-                </h1>
-                <h2 className="text-xl md:text-2xl font-semibold leading-tight text-white max-w-sm drop-shadow-md">
-                  {product?.hero_description || "Discover premium quality of customizable cups"}
-                </h2>
-              </div>
+                <div className="max-w-xl text-left md:text-right z-40 flex flex-col items-start md:items-end gap-4 md:gap-6">
+                  <motion.h2 
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, margin: "-50px" }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg break-words"
+                  >
+                    {product?.banner_title || "Get your customized coffee cup"}
+                  </motion.h2>
+                  <motion.p 
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, margin: "-50px" }}
+                    transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                    className="text-xl md:text-2xl text-white/90 font-medium drop-shadow-md max-w-lg"
+                  >
+                    {product?.banner_subtitle || product?.short_description || "Hot, cold, frozen or fresh, our food service packaging works to keep every meal presentable and intact."}
+                  </motion.p>
+                  <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, margin: "-50px" }}
+                    transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                  >
+                    <Link href="/contact" className="inline-flex items-center gap-2 font-bold bg-meewa-red text-white px-8 py-4 md:px-10 md:py-5 rounded-full hover:bg-red-700 transition-colors shadow-xl text-lg md:text-xl mt-4 md:mt-4">
+                      Order now <span className="text-xl md:text-2xl font-light">↗</span>
+                    </Link>
+                  </motion.div>
+                </div>
+              </motion.section>
             </div>
-          </div>
-
-          {/* Mobile Static Image (Positioned at bottom of banner) */}
-          <div className="block md:hidden relative w-full h-0 z-30 flex justify-center pointer-events-none">
-             <div className="absolute top-0 -translate-y-3/4 w-48 h-48 drop-shadow-2xl">
-               {heroImage && (
-                  <img src={heroImage} alt="Product" className="w-full h-full object-contain mix-blend-multiply" />
-               )}
-             </div>
-          </div>
+          </>
+          )}
 
           {/* Section 3: Solid Theme Color Section with Marquee */}
+          {settings.hide_pd_marquee !== "true" && (
           <div ref={marqueeWrapperRef} className="relative -mt-[5vh] md:-mt-[15vh]">
             <div className="absolute inset-0 bg-meewa-red z-[25]"></div>
             <motion.section
@@ -310,12 +298,13 @@ export default function ProductClientPage({ product, relatedProducts, settings }
               </div>
             </motion.section>
           </div>
+          )}
 
         </div>
       </div>
 
       {/* 3. Long Banners Section */}
-      {bannerImages.length > 0 && (
+      {settings.hide_pd_features !== "true" && bannerImages.length > 0 && (
         <section className="bg-white relative z-20 flex flex-col">
           {bannerImages.map((bannerUrl: string, idx: number) => (
             <div key={idx} className="w-full">
@@ -326,7 +315,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
       )}
 
       {/* 4. Related Products Section */}
-      {relatedProducts && relatedProducts.length > 0 && (
+      {settings.hide_pd_related !== "true" && relatedProducts && relatedProducts.length > 0 && (
         <section className="py-12 md:py-24 bg-gray-50 relative z-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-[28px] sm:text-[32px] md:text-[60px] font-medium text-meewa-red text-center leading-none tracking-normal mb-6 md:mb-16">Related Products</h2>

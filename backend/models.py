@@ -51,6 +51,8 @@ class Product(Base):
     description_title = Column(String)
     description_points = Column(JSON)
     description_list_style = Column(String, default="checkmarks")
+    use_custom_related_products = Column(Boolean, default=False)
+    custom_related_products = Column(JSON, default=[])
     status = Column(String, default="active")
     sequence = Column(Integer, default=0)
     category = relationship("Category", back_populates="products")

@@ -69,9 +69,9 @@ def send_email(
 
         # Connect to the server
         if smtp_port == 465:
-            server = smtplib.SMTP_SSL(smtp_host, int(smtp_port))
+            server = smtplib.SMTP_SSL(smtp_host, int(smtp_port), timeout=5)
         else:
-            server = smtplib.SMTP(smtp_host, int(smtp_port))
+            server = smtplib.SMTP(smtp_host, int(smtp_port), timeout=5)
             server.starttls()
             
         server.login(smtp_user, smtp_pass)

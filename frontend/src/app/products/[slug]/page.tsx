@@ -33,11 +33,18 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     }
     product = await res.json();
     
-    // Fetch related products (same category)
+    // Fetch related products
     const catRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, { cache: 'no-store' });
     if (catRes.ok) {
       const allProducts = await catRes.json();
-      relatedProducts = allProducts.filter((p: any) => p.category_id === product.category_id && p.id !== product.id).slice(0, 3);
+      
+      if (product.use_custom_related_products && Array.isArray(product.custom_related_products) && product.custom_related_products.length > 0) {
+        // Use custom selected related products
+        relatedProducts = allProducts.filter((p: any) => product.custom_related_products.includes(p.id)).slice(0, 3);
+      } else {
+        // Fallback to default: same category
+        relatedProducts = allProducts.filter((p: any) => p.category_id === product.category_id && p.id !== product.id).slice(0, 3);
+      }
     }
     
     // Fetch settings for FAQ and Get In Touch

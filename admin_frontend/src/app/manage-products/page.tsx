@@ -32,6 +32,8 @@ interface Product {
     available_colors?: string[];
     available_sizes?: string[];
   };
+  use_custom_related_products?: boolean;
+  custom_related_products?: number[];
 }
 
 export default function ManageProductsPage() {
@@ -267,7 +269,7 @@ export default function ManageProductsPage() {
         </div>
         {!isEditing && (
           <button 
-            onClick={() => { setIsEditing(true); setCurrentProduct({ name: "", slug: "", short_description: "", hero_description: "", moq: "", price_from: "", status: "active", category_id: undefined, banner_images: [], banner_title: "", banner_subtitle: "" }); }}
+            onClick={() => { setIsEditing(true); setCurrentProduct({ name: "", slug: "", short_description: "", hero_description: "", moq: "", price_from: "", status: "active", category_id: undefined, banner_images: [], banner_title: "", banner_subtitle: "", use_custom_related_products: false, custom_related_products: [] }); }}
             className="bg-meewa-red text-white px-4 py-2 rounded font-medium hover:bg-red-700 transition"
           >
             + Add New Product
@@ -495,9 +497,54 @@ export default function ManageProductsPage() {
                 </button>
               </div>
             </div>
-          </div>
 
-          <div className="flex gap-4 pt-4 border-t">
+            <div className="border-t pt-4 mt-6">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Related Products Override</h3>
+            <p className="text-sm text-gray-500 mb-4">By default, related products will be automatically selected from the same category. You can override this to manually select specific products.</p>
+            
+            <div className="flex items-center gap-3 mb-4">
+              <input 
+                type="checkbox" 
+                id="use_custom_related_products"
+                checked={!!currentProduct.use_custom_related_products}
+                onChange={(e) => setCurrentProduct({...currentProduct, use_custom_related_products: e.target.checked})}
+                className="w-4 h-4 text-meewa-red focus:ring-meewa-red border-gray-300 rounded cursor-pointer"
+              />
+              <label htmlFor="use_custom_related_products" className="text-sm font-medium text-gray-700 cursor-pointer">Use Custom Related Products</label>
+            </div>
+
+            {currentProduct.use_custom_related_products && (
+              <div className="bg-gray-50 p-4 rounded border border-gray-200 mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Select Products (Max 3 recommended)</label>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-60 overflow-y-auto p-2 bg-white border rounded">
+                  {products.filter(p => p.id !== currentProduct.id).map(p => {
+                    const isSelected = (currentProduct.custom_related_products || []).includes(p.id);
+                    return (
+                      <label key={p.id} className={`flex items-center gap-2 p-2 rounded cursor-pointer text-sm ${isSelected ? 'bg-red-50 border border-red-200' : 'hover:bg-gray-50 border border-transparent'}`}>
+                        <input 
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={(e) => {
+                            const currentSelected = currentProduct.custom_related_products || [];
+                            if (e.target.checked) {
+                              setCurrentProduct({...currentProduct, custom_related_products: [...currentSelected, p.id]});
+                            } else {
+                              setCurrentProduct({...currentProduct, custom_related_products: currentSelected.filter(id => id !== p.id)});
+                            }
+                          }}
+                          className="text-meewa-red focus:ring-meewa-red rounded border-gray-300"
+                        />
+                        <span className="truncate">{p.name}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="flex gap-4 pt-4 border-t">
             <button type="submit" className="bg-meewa-red text-white px-4 py-2 rounded">Save</button>
             <button type="button" onClick={() => setIsEditing(false)} className="bg-gray-200 text-gray-800 px-4 py-2 rounded">Cancel</button>
           </div>

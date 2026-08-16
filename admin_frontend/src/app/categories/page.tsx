@@ -9,6 +9,9 @@ export default function CategoriesPageManagement() {
     categories_why_title: "",
     categories_why_subtitle: "",
     categories_custom_banner_title: "",
+    hide_pg_why: "false",
+    hide_pg_banner: "false",
+    hide_pg_contact: "false",
   });
   
   const [categoriesList, setCategoriesList] = useState<{title: string, subtitle: string, image_url: string}[]>([]);
@@ -44,6 +47,9 @@ export default function CategoriesPageManagement() {
           categories_why_title: data.categories_why_title || "",
           categories_why_subtitle: data.categories_why_subtitle || "",
           categories_custom_banner_title: data.categories_custom_banner_title || "",
+          hide_pg_why: data.hide_pg_why || "false",
+          hide_pg_banner: data.hide_pg_banner || "false",
+          hide_pg_contact: data.hide_pg_contact || "false",
         });
 
         const defaultCategories = [
@@ -213,14 +219,34 @@ export default function CategoriesPageManagement() {
     setBannerImages(bannerImages.filter((_, i) => i !== index));
   };
 
+  const handleToggle = (key: string) => {
+    setSettings(prev => ({
+      ...prev,
+      [key]: (prev as any)[key] === "true" ? "false" : "true"
+    }));
+  };
+
+
   if (loading) return <div className="p-8">Loading settings...</div>;
 
   return (
     <div className="max-w-4xl">
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Product Page Settings</h1>
       
-      <form onSubmit={handleSave} className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 space-y-12">
+      <form onSubmit={handleSave} className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 space-y-10">
         
+        {/* Component Visibility Settings */}
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">Component Visibility</h2>
+          <p className="text-sm text-gray-500">Toggle sections on or off for the Products Page.</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <ToggleOption label="Why Our Products" description="Features grid at the bottom." checked={settings.hide_pg_why !== "true"} onChange={() => handleToggle('hide_pg_why')} />
+            <ToggleOption label="Custom Packaging Banner" description="Bento grid of custom packaging images." checked={settings.hide_pg_banner !== "true"} onChange={() => handleToggle('hide_pg_banner')} />
+            <ToggleOption label="Contact & FAQs" description="Contact form and FAQ list." checked={settings.hide_pg_contact !== "true"} onChange={() => handleToggle('hide_pg_contact')} />
+          </div>
+        </div>
+
         {/* Page Header Settings */}
         <div className="space-y-6">
           <div className="border-b pb-2">
@@ -352,6 +378,21 @@ export default function CategoriesPageManagement() {
           </button>
         </div>
       </form>
+    </div>
+  );
+}
+
+function ToggleOption({ label, description, checked, onChange }: { label: string, description: string, checked: boolean, onChange: () => void }) {
+  return (
+    <div className="flex items-start justify-between p-4 border rounded-lg bg-gray-50">
+      <div className="pr-4">
+        <h3 className="font-medium text-gray-900">{label}</h3>
+        <p className="text-xs text-gray-500 mt-1">{description}</p>
+      </div>
+      <label className="relative inline-flex items-center cursor-pointer flex-shrink-0 mt-1">
+        <input type="checkbox" className="sr-only peer" checked={checked} onChange={onChange} />
+        <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-meewa-red"></div>
+      </label>
     </div>
   );
 }

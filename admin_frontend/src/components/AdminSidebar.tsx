@@ -86,6 +86,7 @@ export default function AdminSidebar() {
               <Link href="/landing" className={navDropdownItemClass("/landing")}>Landing Page</Link>
               <Link href="/about" className={navDropdownItemClass("/about")}>About Us Page</Link>
               <Link href="/categories" className={navDropdownItemClass("/categories")}>Products Page</Link>
+              <Link href="/product-details" className={navDropdownItemClass("/product-details")}>Product Detail Page</Link>
               <Link href="/contact" className={navDropdownItemClass("/contact")}>Contact Us</Link>
             </div>
           )}
