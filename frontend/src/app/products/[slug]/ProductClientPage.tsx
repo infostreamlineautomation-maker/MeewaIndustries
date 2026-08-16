@@ -84,7 +84,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
   }, [product]);
 
   // Desktop Keyframes — hero (top-right) -> settle A in banner (hold) -> gradual zoom -> settle B centered on marquee (hold)
-  const springConfig = { stiffness: 150, damping: 25, mass: 1 };
+  const springConfig = { stiffness: 60, damping: 25, mass: 1.2 };
   const smoothProgress = useSpring(scrollYProgress, springConfig);
 
   const dTop = useTransform(smoothProgress, dBreakpoints, ["50%", "50%", "50%", "50%", "50%", "50%", "50%"]);
@@ -93,8 +93,8 @@ export default function ProductClientPage({ product, relatedProducts, settings }
   const dScale = useTransform(smoothProgress, dBreakpoints, [1.1, 0.78, 1.3, 0.9, 0.5, 1.0, 1.0]);
 
   // Mobile Keyframes for the static cup
-  const mStaticY = useTransform(smoothProgress, dBreakpoints, ["0vh", "10vh", "25vh", "40vh", "55vh", "70vh", "70vh"]);
-  const mStaticScale = useTransform(smoothProgress, dBreakpoints, [1, 0.8, 0.6, 0.4, 0.8, 1.3, 1.3]);
+  const mStaticY = useTransform(smoothProgress, dBreakpoints, ["0vh", "10vh", "20vh", "35vh", "45vh", "55vh", "55vh"]);
+  const mStaticScale = useTransform(smoothProgress, dBreakpoints, [1, 0.8, 0.6, 0.4, 0.7, 0.85, 0.85]);
   const mStaticRotate = useTransform(smoothProgress, dBreakpoints, [0, 5, 10, 0, -5, 0, 0]);
 
   // Title Slide Up Animation (using absolute pixels for guaranteed fast fade)
@@ -270,10 +270,10 @@ export default function ProductClientPage({ product, relatedProducts, settings }
             <motion.section
               onViewportEnter={() => setActiveSection(3)}
               viewport={{ margin: "-20% 0px -20% 0px" }}
-              className="relative z-40 flex flex-col justify-center overflow-hidden pt-24 pb-16 md:py-[40vh]"
+              className="relative z-40 flex flex-col justify-center overflow-hidden pt-12 pb-16 md:py-[40vh]"
             >
               {/* Clockwise (Left to Right) */}
-              <div className="flex whitespace-nowrap mb-6 opacity-80">
+              <div className="flex whitespace-nowrap mb-2 md:mb-6 opacity-80">
                 <motion.div
                   className="flex gap-8 text-4xl md:text-7xl font-bold text-transparent [-webkit-text-stroke:2px_white]"
                   animate={{ x: [0, -1000] }}
