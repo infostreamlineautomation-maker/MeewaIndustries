@@ -228,7 +228,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                 viewport={{ margin: "-40% 0px -40% 0px" }}
                 className="relative h-auto pt-16 pb-32 md:py-0 md:h-[120vh] flex flex-col justify-start md:justify-center items-start md:items-end px-6 md:px-24 lg:px-32"
               >
-                <div className="max-w-xl text-left md:text-right z-40 flex flex-col items-start md:items-end gap-4 md:gap-6">
+                <div className="max-w-xl text-left md:text-right z-40 flex flex-col items-start md:items-end gap-4 md:gap-6 md:-mt-24 lg:-mt-32">
                   <motion.h2 
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -253,8 +253,8 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                     viewport={{ once: false, margin: "-50px" }}
                     transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
                   >
-                    <Link href="/contact" className="inline-flex items-center gap-2 font-bold bg-meewa-red text-white px-8 py-4 md:px-10 md:py-5 rounded-full hover:bg-red-700 transition-colors shadow-xl text-lg md:text-xl mt-4 md:mt-4">
-                      Order now <span className="text-xl md:text-2xl font-light">↗</span>
+                    <Link href="/contact" className="inline-flex items-center gap-2 font-bold bg-meewa-red text-white px-6 py-3 md:px-10 md:py-5 rounded-lg md:rounded-xl hover:bg-red-700 transition-colors shadow-xl text-base md:text-xl mt-4 md:mt-4">
+                      Order now <span className="text-lg md:text-2xl font-light">↗</span>
                     </Link>
                   </motion.div>
                 </div>
