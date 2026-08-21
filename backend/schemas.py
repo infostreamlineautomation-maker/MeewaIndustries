@@ -29,7 +29,7 @@ class CategoryResponse(CategoryBase):
 class ProductBase(BaseModel):
     name: str
     slug: str
-    category_id: int
+    category_id: Optional[int] = None
     short_description: Optional[str] = None
     hero_description: Optional[str] = None
     moq: Optional[str] = None
