@@ -50,34 +50,39 @@ export default async function FeaturedProducts() {
         </div>
 
         {/* Grid Section */}
-        <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-x-3 gap-y-6 md:gap-6 mb-8 lg:mb-0">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-6 md:gap-x-8 md:gap-y-12 mb-8 lg:mb-0">
 
           {displayProducts.map((prod, idx) => (
-            <Link href={`/products/${prod.slug}`} key={idx} className={`group block ${idx === 5 ? 'lg:hidden' : ''}`}>
-              <div className="relative aspect-square md:aspect-auto md:h-72 rounded-lg md:rounded-xl overflow-hidden shadow-sm bg-gray-100 border border-gray-200 mb-2 md:mb-3">
+            <Link href={`/products/${prod.slug}`} key={idx} className={`group block ${idx === 5 ? 'lg:hidden' : ''} flex flex-col cursor-pointer`}>
+              <div className="w-full aspect-[4/5] bg-gray-100 rounded-lg md:rounded-3xl overflow-hidden mb-2 md:mb-4 shadow-sm group-hover:shadow-lg transition-shadow border border-gray-200 relative">
                 <div
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
                   style={{ backgroundImage: `url('${prod.cover_image?.startsWith('http') ? prod.cover_image : process.env.NEXT_PUBLIC_API_URL + (prod.cover_image || '')}')` }}
                 ></div>
               </div>
-              <h3 className="text-gray-900 font-medium md:font-bold md:text-lg px-0.5 md:px-1 leading-tight group-hover:text-meewa-red transition-colors">{prod.name}</h3>
+              <h3 className="text-gray-900 font-bold text-[12px] md:text-2xl leading-tight text-center px-1 md:px-2 group-hover:text-meewa-red transition-colors">{prod.name}</h3>
             </Link>
           ))}
 
           {/* Desktop CTA Card - Integrated into grid (hidden on mobile) */}
-          <div className="hidden lg:flex w-full md:h-72">
-            <div className="w-full h-full rounded-xl bg-[#FDF2F3] p-8 flex flex-col justify-center border border-red-100 shadow-sm">
-              <h3 className="text-meewa-red text-[22px] font-medium mb-3 leading-snug pr-4">Need something specific?</h3>
-              <p className="text-gray-800 text-sm mb-6 leading-relaxed">
-                Share your sizes, artwork, and volumes — we quote within 48 hours with export-ready pricing.
-              </p>
+          {/* Desktop CTA Card - Integrated into grid (hidden on mobile) */}
+          <div className="hidden lg:flex flex-col">
+            <div className="w-full aspect-[4/5] rounded-3xl bg-[#FDF2F3] p-6 xl:p-8 flex flex-col justify-between border border-red-100 shadow-sm mb-4 group hover:shadow-lg transition-shadow">
               <div>
-                <Link href="/contact" className="bg-meewa-red text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-red-700 transition-colors inline-flex items-center">
+                <h3 className="text-meewa-red text-[22px] xl:text-[26px] font-medium mb-4 leading-tight text-left">Need something specific?</h3>
+                <p className="text-gray-800 text-[13px] xl:text-[15px] leading-relaxed text-left">
+                  Share your sizes, artwork, and volumes — we quote within 48 hours.
+                </p>
+              </div>
+              <div className="text-left mt-4">
+                <Link href="/contact" className="bg-meewa-red text-white px-5 py-3 rounded-full text-[13px] xl:text-sm font-medium hover:bg-red-700 transition-colors inline-flex items-center">
                   Request a Quote
                   <svg className="w-4 h-4 ml-1.5 transform -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                 </Link>
               </div>
             </div>
+            {/* Invisible text to perfectly match the height of the product cards below the image */}
+            <h3 className="opacity-0 font-bold text-[12px] md:text-2xl leading-tight text-center px-1 md:px-2">Placeholder</h3>
           </div>
 
         </div>
