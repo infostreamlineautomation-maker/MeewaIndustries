@@ -24,37 +24,6 @@ def save_upload_file(upload_file: UploadFile, destination_filename: str, remove_
     # Read the file contents
     contents = upload_file.file.read()
     upload_file.file.seek(0)
-    
-    if remove_bg:
-        try:
-            from rembg import remove
-            from io import BytesIO
-            from PIL import Image
-
-            print("Removing background using rembg...")
-            contents = remove(contents)
-            
-            # Compress and resize the massive raw PNG output from rembg to prevent WinError 10053
-            try:
-                img = Image.open(BytesIO(contents))
-                
-                # Resize if the image is too large (Cloudinary free tier limit is 10MB)
-                max_size = (2000, 2000)
-                img.thumbnail(max_size, Image.Resampling.LANCZOS)
-                
-                out_io = BytesIO()
-                # Save as optimized PNG to heavily reduce file size
-                img.save(out_io, format="PNG", optimize=True)
-                contents = out_io.getvalue()
-                print(f"Compressed and resized background-removed image size: {len(contents)} bytes")
-            except Exception as comp_e:
-                print(f"Failed to compress image, using original rembg output: {comp_e}")
-
-            # Ensure the destination filename has a .png extension since background removal produces transparent PNGs
-            if not destination_filename.lower().endswith(".png"):
-                destination_filename = destination_filename.rsplit('.', 1)[0] + '.png'
-        except Exception as e:
-            print(f"Background removal failed: {e}")
         
     if STORAGE_PROVIDER == "cloudinary":
         temp_file_path = None
