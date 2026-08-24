@@ -148,7 +148,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
               <img 
                 src={heroImage} 
                 alt={product?.name} 
-                className="w-full h-full object-contain drop-shadow-2xl mix-blend-multiply"
+                className="w-full h-full object-contain drop-shadow-[0_35px_35px_rgba(0,0,0,0.6)]"
               />
             </motion.div>
           )}
@@ -215,7 +215,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                 style={{ y: mStaticY, scale: mStaticScale, rotate: mStaticRotate }}
               >
                 {heroImage ? (
-                  <img src={heroImage} alt="Product" className="w-full h-auto drop-shadow-2xl mix-blend-multiply" />
+                  <img src={heroImage} alt="Product" className="w-full h-auto drop-shadow-[0_35px_35px_rgba(0,0,0,0.6)]" />
                 ) : (
                   <div className="w-full aspect-square opacity-0"></div>
                 )}

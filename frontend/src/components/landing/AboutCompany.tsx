@@ -31,7 +31,7 @@ export default async function AboutCompany() {
         </div>
 
         {/* Video / Map Display */}
-        <div className="relative w-full h-[250px] md:h-[439px] rounded-lg md:rounded-2xl overflow-hidden shadow-sm md:shadow-lg bg-gray-100">
+        <div className="relative w-full aspect-video rounded-lg md:rounded-2xl overflow-hidden shadow-sm md:shadow-lg bg-gray-100">
           
           {settings.about_media_url ? (
             <AboutMedia mediaUrl={settings.about_media_url} />
