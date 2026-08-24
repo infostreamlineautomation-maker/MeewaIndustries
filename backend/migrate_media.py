@@ -13,6 +13,10 @@ if not DATABASE_URL:
     print("ERROR: DATABASE_URL not found in .env")
     exit(1)
 
+# Ensure SQLAlchemy uses psycopg (v3) instead of psycopg2
+if DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+
 # Import models
 from models import Product, Category, Page, SiteSetting
 
