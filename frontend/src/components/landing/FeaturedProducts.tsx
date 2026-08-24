@@ -62,7 +62,7 @@ export default async function FeaturedProducts() {
               </div>
               <h3 className="text-gray-800 font-bold text-[12px] md:text-[20px] leading-tight text-center px-1 md:px-2 group-hover:text-meewa-red transition-colors">{prod.name}</h3>
               {prod.short_description && (
-                <p className="text-gray-500 font-normal text-[8px] md:text-[11px] lg:text-[12px] leading-snug text-center px-1 md:px-2 mt-1 md:mt-1.5 line-clamp-3">
+                <p className="text-gray-600 font-medium text-[10px] md:text-[13px] lg:text-[14px] leading-snug text-center px-1 md:px-2 mt-1 md:mt-1.5 line-clamp-2">
                   {prod.short_description}
                 </p>
               )}
@@ -88,7 +88,7 @@ export default async function FeaturedProducts() {
             {/* Invisible text to perfectly match the height of the product cards below the image */}
             <div className="opacity-0">
               <h3 className="font-bold text-[12px] md:text-[20px] leading-tight text-center px-1 md:px-2">Placeholder</h3>
-              <p className="text-[8px] md:text-[11px] lg:text-[12px] leading-snug text-center px-1 md:px-2 mt-1 md:mt-1.5">
+              <p className="text-[10px] md:text-[13px] lg:text-[14px] leading-snug text-center px-1 md:px-2 mt-1 md:mt-1.5 line-clamp-2">
                 Placeholder<br/>Placeholder
               </p>
             </div>

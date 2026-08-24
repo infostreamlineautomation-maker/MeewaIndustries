@@ -172,10 +172,10 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                 style={{ y: titleY, opacity: titleOpacity }}
                 className="w-full md:w-[calc(50vw-6rem)] lg:w-[calc(50vw-8rem)] pr-4 md:pr-8"
               >
-                <h1 className={`${getTitleSizeClass(titleText)} font-bold text-black leading-[1.1] tracking-tighter mb-4 md:mb-6 md:mt-0`}>
+                <h1 className={`${getTitleSizeClass(titleText)} font-bold text-gray-800 leading-[1.1] tracking-tighter mb-4 md:mb-6 md:mt-0`}>
                   {titleText}
                 </h1>
-                <h2 className="text-xl md:text-2xl font-semibold text-black leading-tight max-w-sm">
+                <h2 className="text-xl md:text-2xl font-semibold text-gray-700 leading-tight max-w-sm">
                   {product?.hero_description || "Discover premium quality of customizable cups"}
                 </h2>
 
@@ -183,22 +183,22 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                 {(product?.description_title || (Array.isArray(product?.description_points) && product.description_points.length > 0)) && (
                   <div className="mt-8 md:mt-12 max-w-sm lg:max-w-md">
                     {product?.description_title && (
-                      <h3 className="text-xl md:text-2xl font-bold text-black mb-4 tracking-tight drop-shadow-sm">
+                      <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 tracking-tight drop-shadow-sm">
                         {product.description_title}
                       </h3>
                     )}
                     {Array.isArray(product?.description_points) && product.description_points.length > 0 && (
                       <ul className="space-y-3">
                         {product.description_points.map((point: string, i: number) => (
-                          <li key={i} className="flex items-start gap-3 text-black/80 text-lg font-medium">
+                          <li key={i} className="flex items-start gap-3 text-gray-700 text-lg font-medium">
                             {(!product.description_list_style || product.description_list_style === "checkmarks") && (
                               <span className="text-meewa-red font-bold text-xl mt-[-2px]">✓</span>
                             )}
                             {product.description_list_style === "bullets" && (
-                              <span className="text-black font-bold text-xl mt-[-2px]">•</span>
+                              <span className="text-gray-800 font-bold text-xl mt-[-2px]">•</span>
                             )}
                             {product.description_list_style === "numbers" && (
-                              <span className="text-black font-bold text-lg">{i + 1}.</span>
+                              <span className="text-gray-800 font-bold text-lg">{i + 1}.</span>
                             )}
                             <span>{point}</span>
                           </li>
