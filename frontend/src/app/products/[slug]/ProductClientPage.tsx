@@ -93,7 +93,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
   const dScale = useTransform(smoothProgress, dBreakpoints, [1.1, 0.78, 1.3, 0.9, 0.5, 1.0, 1.0]);
 
   // Mobile Keyframes for the static cup
-  const mStaticY = useTransform(smoothProgress, dBreakpoints, ["0vh", "10vh", "20vh", "35vh", "45vh", "55vh", "55vh"]);
+  const mStaticY = useTransform(smoothProgress, dBreakpoints, ["0vh", "15vh", "25vh", "35vh", "45vh", "55vh", "55vh"]);
   const mStaticScale = useTransform(smoothProgress, dBreakpoints, [1, 0.8, 0.6, 0.4, 0.7, 0.85, 0.85]);
   const mStaticRotate = useTransform(smoothProgress, dBreakpoints, [0, 5, 10, 0, -5, 0, 0]);
 
@@ -214,8 +214,10 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                 className="block md:hidden mt-4 -mb-24 w-full max-w-[220px] mx-auto pointer-events-none relative z-30"
                 style={{ y: mStaticY, scale: mStaticScale, rotate: mStaticRotate }}
               >
-                {heroImage && (
+                {heroImage ? (
                   <img src={heroImage} alt="Product" className="w-full h-auto drop-shadow-2xl mix-blend-multiply" />
+                ) : (
+                  <div className="w-full aspect-square opacity-0"></div>
                 )}
               </motion.div>
             </div>
@@ -239,7 +241,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
               <motion.section 
                 onViewportEnter={() => setActiveSection(1)}
                 viewport={{ margin: "-40% 0px -40% 0px" }}
-                className="relative h-auto pt-16 pb-32 md:py-0 md:h-[120vh] flex flex-col justify-start md:justify-center items-start md:items-end px-6 md:px-24 lg:px-32"
+                className="relative min-h-[55vh] pt-28 pb-24 md:min-h-0 md:py-0 md:h-[120vh] flex flex-col justify-start md:justify-center items-start md:items-end px-6 md:px-24 lg:px-32"
               >
                 <div className="max-w-xl text-left md:text-right z-40 flex flex-col items-start md:items-end gap-4 md:gap-6 md:-mt-24 lg:-mt-32">
                   <motion.h2 
@@ -247,7 +249,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, margin: "-50px" }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg break-words"
+                    className="text-3xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg break-words"
                   >
                     {product?.banner_title || "Get your customized coffee cup"}
                   </motion.h2>
@@ -256,7 +258,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, margin: "-50px" }}
                     transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                    className="text-xl md:text-2xl text-white/90 font-medium drop-shadow-md max-w-lg"
+                    className="text-base md:text-2xl text-white/90 font-medium drop-shadow-md max-w-lg"
                   >
                     {product?.banner_subtitle || product?.short_description || "Hot, cold, frozen or fresh, our food service packaging works to keep every meal presentable and intact."}
                   </motion.p>
@@ -266,8 +268,8 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                     viewport={{ once: false, margin: "-50px" }}
                     transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
                   >
-                    <Link href="/contact" className="inline-flex items-center gap-2 font-bold bg-meewa-red text-white px-6 py-3 md:px-10 md:py-5 rounded-lg md:rounded-xl hover:bg-red-700 transition-colors shadow-xl text-base md:text-xl mt-4 md:mt-4">
-                      Order now <span className="text-lg md:text-2xl font-light">↗</span>
+                    <Link href="/contact" className="inline-flex items-center gap-2 font-bold bg-meewa-red text-white px-5 py-2.5 md:px-10 md:py-5 rounded-lg md:rounded-xl hover:bg-red-700 transition-colors shadow-xl text-sm md:text-xl mt-4 md:mt-4">
+                      Order now <span className="text-base md:text-2xl font-light">↗</span>
                     </Link>
                   </motion.div>
                 </div>
