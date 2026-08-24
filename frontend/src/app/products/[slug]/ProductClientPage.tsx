@@ -115,6 +115,16 @@ export default function ProductClientPage({ product, relatedProducts, settings }
   const handleNextRelPage = () => setRelatedPage((p) => (p + 1) % totalRelPages);
   const handlePrevRelPage = () => setRelatedPage((p) => (p - 1 + totalRelPages) % totalRelPages);
 
+  // Dynamically calculate font size class based on title length to keep it max 2 lines
+  const titleText = product?.name || "Food Service";
+  const getTitleSizeClass = (text: string) => {
+    const len = text.length;
+    if (len <= 15) return "text-5xl md:text-7xl lg:text-7xl"; // Reduced from 9xl to keep on one line
+    if (len <= 25) return "text-5xl md:text-6xl lg:text-7xl"; 
+    if (len <= 35) return "text-4xl md:text-5xl lg:text-6xl"; 
+    return "text-3xl md:text-5xl lg:text-6xl"; 
+  };
+
   return (
     <div className="bg-white min-h-screen text-gray-900 font-sans">
       
@@ -158,9 +168,12 @@ export default function ProductClientPage({ product, relatedProducts, settings }
           {settings.hide_pd_hero !== "true" && (
             <div className="w-full h-auto pb-0 md:pb-0 md:h-[calc(200vh-20rem)]">
             <div className="md:sticky top-0 pt-24 md:pt-[30vh] px-6 md:px-24 lg:px-32 md:h-screen flex flex-col justify-start">
-              <motion.div style={{ y: titleY, opacity: titleOpacity }}>
-                <h1 className="text-5xl md:text-7xl lg:text-9xl font-bold text-black leading-[1.1] tracking-tighter mb-4 md:mb-6 md:mt-0">
-                  {product?.name || "Food Service"}
+              <motion.div 
+                style={{ y: titleY, opacity: titleOpacity }}
+                className="w-full md:w-[calc(50vw-6rem)] lg:w-[calc(50vw-8rem)] pr-4 md:pr-8"
+              >
+                <h1 className={`${getTitleSizeClass(titleText)} font-bold text-black leading-[1.1] tracking-tighter mb-4 md:mb-6 md:mt-0`}>
+                  {titleText}
                 </h1>
                 <h2 className="text-xl md:text-2xl font-semibold text-black leading-tight max-w-sm">
                   {product?.hero_description || "Discover premium quality of customizable cups"}
@@ -335,7 +348,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                         <div className="w-full h-full bg-gray-200"></div>
                       )}
                     </div>
-                    <h3 className="text-gray-900 font-bold text-[12px] md:text-2xl leading-tight text-center px-1 md:px-2">{relProduct.name}</h3>
+                    <h3 className="text-gray-800 font-bold text-[12px] md:text-[20px] leading-tight text-center px-1 md:px-2 group-hover:text-meewa-red transition-colors">{relProduct.name}</h3>
                   </Link>
                 ))}
               </div>
