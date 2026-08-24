@@ -18,7 +18,8 @@ export default function AdminHeaderActions() {
   };
 
   const handlePreview = () => {
-    window.open('http://localhost:3000/api/preview', '_blank');
+    const frontendUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || 'http://localhost:3000';
+    window.open(`${frontendUrl}/api/preview`, '_blank');
   };
 
   return (
