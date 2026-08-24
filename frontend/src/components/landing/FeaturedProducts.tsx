@@ -61,10 +61,14 @@ export default async function FeaturedProducts() {
                 ></div>
               </div>
               <h3 className="text-gray-900 font-bold text-[12px] md:text-2xl leading-tight text-center px-1 md:px-2 group-hover:text-meewa-red transition-colors">{prod.name}</h3>
+              {prod.short_description && (
+                <p className="text-gray-500 font-normal text-[8px] md:text-[11px] lg:text-[12px] leading-snug text-center px-1 md:px-2 mt-1 md:mt-1.5 line-clamp-3">
+                  {prod.short_description}
+                </p>
+              )}
             </Link>
           ))}
 
-          {/* Desktop CTA Card - Integrated into grid (hidden on mobile) */}
           {/* Desktop CTA Card - Integrated into grid (hidden on mobile) */}
           <div className="hidden lg:flex flex-col">
             <div className="w-full aspect-[4/5] rounded-3xl bg-[#FDF2F3] p-6 xl:p-8 flex flex-col justify-between border border-red-100 shadow-sm mb-4 group hover:shadow-lg transition-shadow">
@@ -82,7 +86,12 @@ export default async function FeaturedProducts() {
               </div>
             </div>
             {/* Invisible text to perfectly match the height of the product cards below the image */}
-            <h3 className="opacity-0 font-bold text-[12px] md:text-2xl leading-tight text-center px-1 md:px-2">Placeholder</h3>
+            <div className="opacity-0">
+              <h3 className="font-bold text-[12px] md:text-2xl leading-tight text-center px-1 md:px-2">Placeholder</h3>
+              <p className="text-[8px] md:text-[11px] lg:text-[12px] leading-snug text-center px-1 md:px-2 mt-1 md:mt-1.5">
+                Placeholder<br/>Placeholder
+              </p>
+            </div>
           </div>
 
         </div>

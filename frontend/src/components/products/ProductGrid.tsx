@@ -37,6 +37,11 @@ export default function ProductGrid({ products, subheading }: { products: any[],
               )}
             </div>
             <h3 className="text-gray-900 font-bold text-[12px] md:text-2xl leading-tight text-center px-1 md:px-2">{prod.name}</h3>
+            {prod.short_description && (
+              <p className="text-gray-500 font-normal text-[8px] md:text-[11px] lg:text-[12px] leading-snug text-center px-1 md:px-2 mt-1 md:mt-1.5 line-clamp-3">
+                {prod.short_description}
+              </p>
+            )}
           </Link>
         ))}
       </div>
