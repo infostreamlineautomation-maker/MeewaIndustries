@@ -45,6 +45,7 @@ export default function LandingPageManagement() {
   
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState<string | null>(null);
+  const [heroBanners, setHeroBanners] = useState<{url: string, duration: number}[]>([]);
 
   useEffect(() => {
     Promise.all([
@@ -85,6 +86,12 @@ export default function LandingPageManagement() {
           hide_landing_about: data.hide_landing_about || "false",
           hide_landing_contact: data.hide_landing_contact || "false",
         });
+        
+        let initialBanners = data.hero_banners || [];
+        if (initialBanners.length === 0 && data.hero_image_url) {
+          initialBanners = [{ url: data.hero_image_url, duration: 5 }];
+        }
+        setHeroBanners(initialBanners);
 
         const defaultFeatures = [
           { title: "Food-Grade Quality", description: "Manufactured using safe and reliable materials suitable for food applications.", icon: "/icons/Shield.svg" },
@@ -163,6 +170,68 @@ export default function LandingPageManagement() {
     } finally {
       setUploading(null);
     }
+  };
+
+  const handleBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    
+    setUploading("hero_banners");
+    
+    const uploadedBanners = [...heroBanners];
+    let hasError = false;
+    
+    for (let i = 0; i < e.target.files.length; i++) {
+      const file = e.target.files[i];
+      const formData = new FormData();
+      formData.append("file", file);
+      
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings/upload`, {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        if (res.ok && data.url) {
+          uploadedBanners.push({ url: data.url, duration: 5 });
+        } else {
+          hasError = true;
+        }
+      } catch (err) {
+        console.error(err);
+        hasError = true;
+      }
+    }
+    
+    if (hasError) alert("Some files failed to upload.");
+    
+    setHeroBanners(uploadedBanners);
+    await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: "hero_banners", value: uploadedBanners })
+    });
+    setUploading(null);
+  };
+
+  const removeBanner = async (index: number) => {
+    const newBanners = heroBanners.filter((_, i) => i !== index);
+    setHeroBanners(newBanners);
+    await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: "hero_banners", value: newBanners })
+    });
+  };
+
+  const updateBannerDuration = async (index: number, duration: number) => {
+    const newBanners = [...heroBanners];
+    newBanners[index].duration = duration;
+    setHeroBanners(newBanners);
+    await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: "hero_banners", value: newBanners })
+    });
   };
 
   const handleFeatureIconUpload = async (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
@@ -359,21 +428,48 @@ export default function LandingPageManagement() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Hero Banner Image/Video</label>
-              {settings.hero_image_url && (
-                <div className="mb-4">
-                  {settings.hero_image_url.endsWith('.mp4') ? (
-                    <video src={(settings.hero_image_url)?.startsWith("http") ? (settings.hero_image_url) : `${process.env.NEXT_PUBLIC_API_URL}${settings.hero_image_url}`} autoPlay loop muted playsInline className="h-40 rounded border object-cover" />
-                  ) : (
-                    <img src={(settings.hero_image_url)?.startsWith("http") ? (settings.hero_image_url) : `${process.env.NEXT_PUBLIC_API_URL}${settings.hero_image_url}`} alt="Hero Banner Preview" className="h-40 rounded border object-cover" onError={(e) => { e.currentTarget.src = settings.hero_image_url }} />
-                  )}
-                </div>
-              )}
+              <label className="block text-sm font-medium text-gray-700 mb-1">Hero Banners (Images/Videos)</label>
+              <p className="text-xs text-gray-500 mb-3">Upload multiple banners to create a presentation slider. Set how many seconds each banner should stay on screen.</p>
+              
+              <div className="space-y-4 mb-4">
+                {heroBanners.map((banner, index) => (
+                  <div key={index} className="flex items-center gap-4 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                    <div className="w-32 h-20 shrink-0">
+                      {banner.url.endsWith('.mp4') ? (
+                        <video src={(banner.url)?.startsWith("http") ? banner.url : `${process.env.NEXT_PUBLIC_API_URL}${banner.url}`} autoPlay loop muted playsInline className="w-full h-full rounded border object-cover bg-black" />
+                      ) : (
+                        <img src={(banner.url)?.startsWith("http") ? banner.url : `${process.env.NEXT_PUBLIC_API_URL}${banner.url}`} alt={`Banner ${index + 1}`} className="w-full h-full rounded border object-cover" onError={(e) => { e.currentTarget.src = banner.url }} />
+                      )}
+                    </div>
+                    
+                    <div className="flex-1 flex flex-col justify-center gap-2">
+                      <label className="text-sm font-medium text-gray-700">Duration (Seconds)</label>
+                      <input 
+                        type="number" 
+                        min="1"
+                        value={banner.duration}
+                        onChange={(e) => updateBannerDuration(index, parseInt(e.target.value) || 5)}
+                        className="w-24 border-gray-300 rounded-md shadow-sm p-1 border text-gray-900 bg-white"
+                      />
+                    </div>
+                    
+                    <button 
+                      type="button" 
+                      onClick={() => removeBanner(index)}
+                      className="text-red-500 hover:text-red-700 px-3 py-1 bg-red-50 hover:bg-red-100 rounded text-sm transition-colors"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+              </div>
+
               <input 
                 type="file" 
+                multiple
                 accept="image/*,video/mp4"
-                onChange={(e) => handleFileUpload(e, "hero_image_url")}
-                disabled={uploading === "hero_image_url"}
+                onChange={handleBannerUpload}
+                disabled={uploading === "hero_banners"}
                 className="block w-full text-sm text-gray-500
                   file:mr-4 file:py-2 file:px-4
                   file:rounded-md file:border-0
@@ -381,7 +477,7 @@ export default function LandingPageManagement() {
                   file:bg-red-50 file:text-meewa-red
                   hover:file:bg-red-100"
               />
-              {uploading === "hero_image_url" && <p className="text-sm text-meewa-red mt-2">Uploading...</p>}
+              {uploading === "hero_banners" && <p className="text-sm text-meewa-red mt-2">Uploading banners...</p>}
             </div>
           </div>
 

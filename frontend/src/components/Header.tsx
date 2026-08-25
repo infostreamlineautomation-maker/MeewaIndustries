@@ -114,7 +114,7 @@ export default function Header() {
       <header className={`${isProductDetailPage ? 'fixed md:absolute' : 'fixed'} w-full z-50 pt-4 md:pt-8 top-0 left-0 transition-transform duration-300 ease-in-out pointer-events-none ${(isScrolling && !isMobileMenuOpen && window.scrollY > 50) ? '-translate-y-[150%] md:translate-y-0' : 'translate-y-0'}`}>
         <div className="max-w-4xl mx-auto px-4 relative flex justify-center">
           {/* Pill Background (Mobile & Desktop) */}
-          <div className="bg-meewa-red rounded-full flex items-center justify-between md:justify-center gap-4 md:gap-10 h-14 px-4 md:px-6 shadow-xl shadow-red-500/20 w-[92%] md:w-fit mx-auto pointer-events-auto relative">
+          <div className={`bg-meewa-red rounded-full flex items-center justify-between md:justify-center gap-4 md:gap-10 h-14 px-4 md:px-6 shadow-xl shadow-red-500/20 w-[92%] md:w-fit mx-auto pointer-events-auto relative transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-0 md:opacity-100 pointer-events-none md:pointer-events-auto' : 'opacity-100'}`}>
             
             {/* Left Spacer (Mobile) */}
             <div className="md:hidden w-8"></div>
@@ -177,8 +177,17 @@ export default function Header() {
       {/* Sidebar Content */}
       <div className={`fixed inset-y-0 right-0 z-50 w-64 bg-meewa-red/95 backdrop-blur-md shadow-2xl transform transition-transform duration-300 ease-in-out md:hidden flex flex-col p-6 pt-10 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         
+        <button 
+          className="absolute top-4 right-4 text-white p-2 focus:outline-none z-50"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
         {/* Horizontal Logo in Sidebar */}
-        <div className="mb-8">
+        <div className="mb-8 mt-2">
           {(hamburgerLogoUrl || footerLogoUrl || logoUrl) ? (
             <img src={(hamburgerLogoUrl || footerLogoUrl || logoUrl)!} alt="MEEWA Logo" className="h-10 object-contain" />
           ) : null}
