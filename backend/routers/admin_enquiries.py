@@ -67,45 +67,70 @@ async def reply_to_enquiry(
                 })
 
     # Build HTML Template
-    # We will format the original message to preserve newlines
     original_msg_html = enquiry.message.replace('\n', '<br>')
     reply_msg_html = message.replace('\n', '<br>')
     
+    site_logo_url = smtp_settings.get("site_logo_url", "")
+    if site_logo_url:
+        logo_src = site_logo_url if site_logo_url.startswith("http") else f"https://api.meewaindustries.com{site_logo_url}"
+        logo_html = f'<img src="{logo_src}" alt="{site_title} Logo">'
+    else:
+        logo_html = f'<h2>{site_title}</h2>'
+    
     html_template = f"""
+    <!DOCTYPE html>
     <html>
       <head>
+        <meta charset="utf-8">
         <style>
-          body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
-          .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
-          .header {{ text-align: center; margin-bottom: 30px; }}
-          .header img {{ max-width: 150px; }}
-          .reply-box {{ margin-bottom: 30px; font-size: 16px; }}
-          .original-msg {{ background: #f9f9f9; border-left: 4px solid #E30613; padding: 15px; margin-top: 30px; font-size: 14px; color: #555; }}
-          .footer {{ margin-top: 40px; font-size: 12px; color: #888; text-align: center; }}
+          body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333333; margin: 0; padding: 0; background-color: #f4f7f6; }}
+          .email-wrapper {{ width: 100%; background-color: #f4f7f6; padding: 40px 0; }}
+          .email-content {{ max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }}
+          .header {{ padding: 30px; text-align: center; border-bottom: 1px solid #eeeeee; }}
+          .header img {{ max-height: 60px; max-width: 250px; object-fit: contain; }}
+          .header h2 {{ margin: 0; color: #E30613; font-size: 24px; }}
+          .body-content {{ padding: 40px 30px; }}
+          .greeting {{ font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #111111; }}
+          .reply-box {{ font-size: 16px; margin-bottom: 40px; color: #333333; }}
+          .divider {{ height: 1px; background-color: #eeeeee; margin: 30px 0; }}
+          .original-msg-container {{ background-color: #f9fafb; border-radius: 6px; padding: 20px; border-left: 4px solid #E30613; }}
+          .original-msg-header {{ font-size: 13px; color: #6b7280; margin-bottom: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }}
+          .original-msg-body {{ font-size: 14px; color: #4b5563; font-style: italic; }}
+          .footer {{ background-color: #f9fafb; padding: 20px 30px; text-align: center; font-size: 13px; color: #6b7280; border-top: 1px solid #eeeeee; }}
         </style>
       </head>
       <body>
-        <div class="container">
-          <div class="header">
-            <img src="cid:logo" alt="{site_title} Logo">
-          </div>
-          <div class="reply-box">
-            {reply_msg_html}
-          </div>
-          <div class="original-msg">
-            <strong>On {enquiry.created_at.strftime('%B %d, %Y')}, {enquiry.name} wrote:</strong><br><br>
-            {original_msg_html}
-          </div>
-          <div class="footer">
-            &copy; {enquiry.created_at.year} {site_title}. All rights reserved.
+        <div class="email-wrapper">
+          <div class="email-content">
+            <div class="header">
+              {logo_html}
+            </div>
+            <div class="body-content">
+              <div class="greeting">Hi {enquiry.name},</div>
+              <div class="reply-box">
+                {reply_msg_html}
+              </div>
+              
+              <div class="divider"></div>
+              
+              <div class="original-msg-container">
+                <div class="original-msg-header">Your Original Enquiry ({enquiry.created_at.strftime('%b %d, %Y')})</div>
+                <div class="original-msg-body">
+                  "{original_msg_html}"
+                </div>
+              </div>
+            </div>
+            <div class="footer">
+              &copy; {enquiry.created_at.year} {site_title}. All rights reserved.<br>
+              This email was sent in response to your enquiry on our website.
+            </div>
           </div>
         </div>
       </body>
     </html>
     """
-
-    # We assume the logo is available in backend/static/logo.png
-    inline_images = {"logo": "static/logo.png"}
+    
+    inline_images = None
 
     success = await run_in_threadpool(
         send_email,
