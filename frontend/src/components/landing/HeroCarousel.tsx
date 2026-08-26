@@ -133,8 +133,7 @@ export default function HeroCarousel({ banners, fallbackUrl }: HeroCarouselProps
         </motion.div>
       </AnimatePresence>
 
-      {/* Subtle dark overlay */}
-      <div className="absolute inset-0 bg-black/30 z-10 pointer-events-none"></div>
+      {/* Overlay Removed for clear images */}
 
       {/* Manual Controls (Dots in Hover-Reveal Glass Container) */}
       {activeBanners.length > 1 && (
