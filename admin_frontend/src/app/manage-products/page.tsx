@@ -128,7 +128,7 @@ export default function ManageProductsPage() {
         alert("Error uploading file");
       } finally {
         setUploading(null);
-        inputElement.value = ""; // Reset input so same file can be selected again if needed
+        inputElement.value = ""; 
       }
     };
 
