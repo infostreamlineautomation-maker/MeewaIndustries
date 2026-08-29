@@ -133,19 +133,29 @@ export default function ManageProductsPage() {
     };
 
     if (fieldName === 'banner_images') {
-      const img = new window.Image();
-      const objectUrl = URL.createObjectURL(file);
-      img.onload = () => {
-        URL.revokeObjectURL(objectUrl);
-        // Ensure it is a long banner (e.g., width > 1000 and width is at least 2.5x height)
-        if (img.width < 1000 || (img.width / img.height) < 2.5) {
-          alert("Banner image must be a long landscape format (e.g. 1920x400) and at least 1000px wide. Your image is " + img.width + "x" + img.height + ".");
-          inputElement.value = "";
-          return;
-        }
+      if (file.type.startsWith('video/')) {
+        // Bypass image dimension check for videos
         performUpload();
-      };
-      img.src = objectUrl;
+      } else {
+        const img = new window.Image();
+        const objectUrl = URL.createObjectURL(file);
+        img.onload = () => {
+          URL.revokeObjectURL(objectUrl);
+          // Ensure it is a long banner (e.g., width > 1000 and width is at least 2.5x height)
+          if (img.width < 1000 || (img.width / img.height) < 2.5) {
+            alert("Banner image must be a long landscape format (e.g. 1920x400) and at least 1000px wide. Your image is " + img.width + "x" + img.height + ".");
+            inputElement.value = "";
+            return;
+          }
+          performUpload();
+        };
+        img.onerror = () => {
+          alert("Invalid image file.");
+          inputElement.value = "";
+          setUploading(null);
+        };
+        img.src = objectUrl;
+      }
     } else {
       performUpload();
     }
@@ -430,7 +440,11 @@ export default function ManageProductsPage() {
                     className="flex items-center gap-4 bg-gray-50 p-2 rounded border cursor-move hover:bg-gray-100 transition-colors"
                   >
                     <div className="text-gray-400 px-2 cursor-grab" title="Drag to reorder">⠿</div>
-                    <img src={(banner)?.startsWith("http") ? (banner) : `${process.env.NEXT_PUBLIC_API_URL}${banner}`} className="h-12 object-contain" />
+                    {banner?.toLowerCase().endsWith(".mp4") ? (
+                      <video src={(banner)?.startsWith("http") ? (banner) : `${process.env.NEXT_PUBLIC_API_URL}${banner}`} className="h-12 w-24 object-contain bg-black rounded" preload="metadata" />
+                    ) : (
+                      <img src={(banner)?.startsWith("http") ? (banner) : `${process.env.NEXT_PUBLIC_API_URL}${banner}`} className="h-12 object-contain" />
+                    )}
                     <button type="button" onClick={() => removeBanner(idx)} className="text-red-500 text-sm font-medium ml-auto">✕ Remove</button>
                   </div>
                 ))}

@@ -14,6 +14,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
   const [activeSection, setActiveSection] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [relatedPage, setRelatedPage] = useState(0);
+  const [fullScreenVideo, setFullScreenVideo] = useState<string | null>(null);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -135,7 +136,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
         <div className="sticky top-0 h-screen w-full overflow-hidden pointer-events-none z-30 hidden md:block">
           {heroImage && (
             <motion.div 
-              className="absolute w-[200px] h-[200px] md:w-[300px] md:h-[300px] lg:w-[400px] lg:h-[400px]"
+              className="absolute w-[200px] h-[200px] md:w-[25vw] md:h-[25vw] lg:w-[25vw] lg:h-[25vw] xl:w-[25vw] xl:h-[25vw] max-w-[600px] max-h-[600px] min-w-[300px] min-h-[300px]"
               style={{ 
                 x: "-50%", 
                 y: "-50%",
@@ -235,7 +236,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
               )}
               
               {/* Dark gradient overlay for text readability */}
-              <div className="absolute inset-0 bg-black/40" />
+              <div className="absolute inset-0 bg-black/20" />
               
               {/* Banner Content (Text on Right) */}
               <motion.section 
@@ -318,14 +319,46 @@ export default function ProductClientPage({ product, relatedProducts, settings }
         </div>
       </div>
 
-      {/* 3. Long Banners Section */}
+      {/* 3. Long Banners / Videos Section */}
       {settings.hide_pd_features !== "true" && bannerImages.length > 0 && (
-        <section className="bg-white relative z-20 flex flex-col">
-          {bannerImages.map((bannerUrl: string, idx: number) => (
-            <div key={idx} className="w-full">
-              <img src={`${bannerUrl?.startsWith('http') ? bannerUrl : process.env.NEXT_PUBLIC_API_URL + bannerUrl}`} alt="Product Banner" className="w-full h-auto object-cover" />
-            </div>
-          ))}
+        <section className="bg-white relative z-20 flex flex-col items-center">
+          {bannerImages.map((bannerUrl: string, idx: number) => {
+            const isVideo = bannerUrl?.toLowerCase().endsWith('.mp4');
+            const url = bannerUrl?.startsWith('http') ? bannerUrl : process.env.NEXT_PUBLIC_API_URL + bannerUrl;
+
+            return (
+              <div key={idx} className="w-full">
+                {isVideo ? (
+                  <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+                    <div className="relative w-full aspect-video rounded-lg md:rounded-2xl overflow-hidden shadow-sm md:shadow-lg bg-black group">
+                      <video 
+                        src={url} 
+                        autoPlay 
+                        loop 
+                        muted 
+                        playsInline 
+                        className="w-full h-full object-contain" 
+                      />
+                      {/* Full Screen Expand Button Overlay (Top Right, Hover Only) */}
+                      <div 
+                        className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                        onClick={() => setFullScreenVideo(url)}
+                        title="View Fullscreen"
+                      >
+                        <div className="bg-black/40 hover:bg-meewa-red text-white rounded-lg p-2 backdrop-blur-sm transition-all transform hover:scale-105 shadow-sm">
+                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <img src={url} alt="Product Banner" className="w-full h-auto object-cover" />
+                )}
+              </div>
+            );
+          })}
         </section>
       )}
 
@@ -382,7 +415,27 @@ export default function ProductClientPage({ product, relatedProducts, settings }
       {/* 5. Contact & FAQ Section */}
       <div className="relative z-20">
         <ContactFaqSection isProductPage={true} productName={product.name} />
-      </div>
+        {/* Full Screen Video Modal */}
+      {fullScreenVideo && (
+        <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center">
+          <button 
+            className="absolute top-6 right-6 text-white hover:text-gray-300 z-50 bg-black/50 p-2 rounded-full"
+            onClick={() => setFullScreenVideo(null)}
+          >
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <video 
+            src={fullScreenVideo} 
+            controls 
+            autoPlay 
+            className="w-[90vw] h-[90vh] object-contain outline-none" 
+          />
+        </div>
+      )}
+
+    </div>
 
     </div>
   );
