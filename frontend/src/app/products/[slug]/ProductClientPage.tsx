@@ -136,7 +136,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
         <div className="sticky top-0 h-screen w-full overflow-hidden pointer-events-none z-30 hidden md:block">
           {heroImage && (
             <motion.div 
-              className="absolute w-[200px] h-[200px] md:w-[25vw] md:h-[25vw] lg:w-[25vw] lg:h-[25vw] xl:w-[25vw] xl:h-[25vw] max-w-[600px] max-h-[600px] min-w-[300px] min-h-[300px]"
+              className="absolute w-[150px] h-[150px] md:w-[25vw] md:h-[25vw] max-w-[600px] max-h-[600px] md:min-w-[200px] md:min-h-[200px] lg:min-w-[300px] lg:min-h-[300px]"
               style={{ 
                 x: "-50%", 
                 y: "-50%",
@@ -212,7 +212,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
 
               {/* Mobile Static Image (Top) - Bridging the gap */}
               <motion.div 
-                className="block md:hidden mt-4 -mb-24 w-full max-w-[220px] mx-auto pointer-events-none relative z-30"
+                className="block md:hidden mt-4 -mb-24 w-full max-w-[160px] mx-auto pointer-events-none relative z-30"
                 style={{ y: mStaticY, scale: mStaticScale, rotate: mStaticRotate }}
               >
                 {heroImage ? (
