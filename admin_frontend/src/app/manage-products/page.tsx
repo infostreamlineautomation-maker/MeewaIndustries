@@ -141,9 +141,9 @@ export default function ManageProductsPage() {
         const objectUrl = URL.createObjectURL(file);
         img.onload = () => {
           URL.revokeObjectURL(objectUrl);
-          // Ensure it is a long banner (e.g., width > 1000 and width is at least 2.5x height)
-          if (img.width < 1000 || (img.width / img.height) < 2.5) {
-            alert("Banner image must be a long landscape format (e.g. 1920x400) and at least 1000px wide. Your image is " + img.width + "x" + img.height + ".");
+          // Ensure it is a long banner (e.g., width > 1000 and width is at least 2.0x height)
+          if (img.width < 1000 || (img.width / img.height) < 2.0) {
+            alert("Banner image must be a landscape format and at least 1000px wide. Your image is " + img.width + "x" + img.height + ".");
             inputElement.value = "";
             return;
           }
