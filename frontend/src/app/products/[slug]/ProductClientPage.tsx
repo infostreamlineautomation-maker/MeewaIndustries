@@ -149,7 +149,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
               <img 
                 src={heroImage} 
                 alt={product?.name} 
-                className="w-full h-full object-contain drop-shadow-[0_35px_35px_rgba(0,0,0,0.6)]"
+                className="w-full h-full object-contain drop-shadow-[0_35px_35px_rgba(0,0,0,0.05)]"
               />
             </motion.div>
           )}
@@ -216,7 +216,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                 style={{ y: mStaticY, scale: mStaticScale, rotate: mStaticRotate }}
               >
                 {heroImage ? (
-                  <img src={heroImage} alt="Product" className="w-full h-auto drop-shadow-[0_35px_35px_rgba(0,0,0,0.6)]" />
+                  <img src={heroImage} alt="Product" className="w-full h-auto drop-shadow-[0_35px_35px_rgba(0,0,0,0.05)]" />
                 ) : (
                   <div className="w-full aspect-square opacity-0"></div>
                 )}
@@ -228,15 +228,17 @@ export default function ProductClientPage({ product, relatedProducts, settings }
           {/* Banner Image Container */}
           {settings.hide_pd_banner !== "true" && (
           <>
-            <div id="banner-container" ref={bannerRef} className="relative w-full overflow-hidden shadow-2xl bg-black z-20 md:-mt-[calc(100vh-12rem)]">
+            <div id="banner-container" ref={bannerRef} className="relative w-full overflow-hidden bg-transparent z-20 md:-mt-[calc(100vh-12rem)]">
               {product?.section1_image ? (
                 <img src={`${product.section1_image?.startsWith('http') ? product.section1_image : process.env.NEXT_PUBLIC_API_URL + product.section1_image}`} alt="Banner" className="absolute inset-0 w-full h-full object-cover" />
               ) : (
                 <div className="absolute inset-0 w-full h-full bg-gray-900" />
               )}
               
-              {/* Dark gradient overlay for text readability */}
-              <div className="absolute inset-0 bg-black/20" />
+              {/* Smooth white gradient at the top to blend the image perfectly with the white section above */}
+              <div className="absolute top-0 inset-x-0 h-24 md:h-48 bg-gradient-to-b from-white to-transparent pointer-events-none z-10" />
+              
+              {/* Dark gradient overlay removed per request */}
               
               {/* Banner Content (Text on Right) */}
               <motion.section 
@@ -250,7 +252,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, margin: "-50px" }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="text-3xl md:text-6xl lg:text-7xl font-bold text-white leading-tight drop-shadow-lg break-words"
+                    className="text-3xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight break-words"
                   >
                     {product?.banner_title || "Get your customized coffee cup"}
                   </motion.h2>
@@ -259,7 +261,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, margin: "-50px" }}
                     transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                    className="text-base md:text-2xl text-white/90 font-medium drop-shadow-md max-w-lg"
+                    className="text-base md:text-2xl text-gray-700 font-medium max-w-lg"
                   >
                     {product?.banner_subtitle || product?.short_description || "Hot, cold, frozen or fresh, our food service packaging works to keep every meal presentable and intact."}
                   </motion.p>
