@@ -325,6 +325,7 @@ export default function AboutPageManagement() {
               </div>
             )}
             <input type="file" accept="image/*,video/mp4" onChange={(e) => handleFileUpload(e, "about_hero_media")} disabled={uploading === "about_hero_media"} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red" />
+            <p className="text-xs text-gray-500 mt-1">Min: 1920x1080 px, Max: 3840x2160 px</p>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Hero Video Overlay Subtitle</label>
@@ -376,6 +377,7 @@ export default function AboutPageManagement() {
                     )}
                   </div>
                   <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, "about_vision_icon")} disabled={uploading === "about_vision_icon"} className="block w-full text-xs text-gray-500 file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red" />
+                  <p className="text-[10px] text-gray-500 mt-1">Min: 100x100 px (Square), Max: 512x512 px</p>
                 </div>
               </div>
               <div>
@@ -405,6 +407,7 @@ export default function AboutPageManagement() {
                     )}
                   </div>
                   <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, "about_mission_icon")} disabled={uploading === "about_mission_icon"} className="block w-full text-xs text-gray-500 file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red" />
+                  <p className="text-[10px] text-gray-500 mt-1">Min: 100x100 px (Square), Max: 512x512 px</p>
                 </div>
               </div>
               <div>
@@ -437,6 +440,7 @@ export default function AboutPageManagement() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Upload Client Logos (Multiple)</label>
             <input type="file" multiple accept="image/*" onChange={handleClientLogoUpload} disabled={uploading === 'clients'} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red" />
+            <p className="text-xs text-gray-500 mt-1">Min: 200x100 px, Max: 800x800 px</p>
             {uploading === 'clients' && <p className="text-sm text-meewa-red mt-2">Uploading logos...</p>}
           </div>
         </div>
@@ -462,6 +466,7 @@ export default function AboutPageManagement() {
               </div>
             )}
             <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, "about_how_we_work_media")} className="block w-full text-sm text-gray-500 file:mr-4 file:bg-red-50 file:text-meewa-red" />
+            <p className="text-xs text-gray-500 mt-1">Min: 1920x1080 px, Max: 3840x2160 px</p>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Video Overlay Subtitle</label>
@@ -515,6 +520,7 @@ export default function AboutPageManagement() {
                         )}
                       </div>
                       <input type="file" accept="image/*" onChange={(e) => handleFeatureIconUpload(idx, e)} className="text-xs" />
+                      <p className="text-[10px] text-gray-500 mt-1">Min: 100x100 px (Square)</p>
                     </div>
                   </div>
                   <div className="md:col-span-2">

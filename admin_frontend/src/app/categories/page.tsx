@@ -69,7 +69,11 @@ export default function CategoriesPageManagement() {
 
         setCategoriesList(data.categories_list?.length > 0 ? data.categories_list : defaultCategories);
         setWhyFeatures(data.categories_why_features?.length > 0 ? data.categories_why_features : defaultWhyFeatures);
-        setBannerImages(data.categories_custom_banner_images || []);
+        let savedBanners = data.categories_custom_banner_images || [];
+        while (savedBanners.length < 4) {
+          savedBanners.push({ image_url: '' });
+        }
+        setBannerImages(savedBanners.slice(0, 4));
         
         setLoading(false);
       })
@@ -192,31 +196,32 @@ export default function CategoriesPageManagement() {
   };
 
   // Banner Images Handlers
-  const handleBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSpecificBannerUpload = async (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
-    const files = Array.from(e.target.files);
-    setUploading('banners');
+    const file = e.target.files[0];
+    setUploading(`banner_${index}`);
     
     try {
-      const newBanners = [...bannerImages];
-      for (const file of files) {
-        const formData = new FormData();
-        formData.append("file", file);
-        const res = await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings/upload`, { method: 'POST', body: formData });
-        const data = await res.json();
-        if (res.ok && data.url) {
-          newBanners.push({ image_url: data.url });
-        }
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings/upload`, { method: 'POST', body: formData });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        const newBanners = [...bannerImages];
+        newBanners[index] = { image_url: data.url };
+        setBannerImages(newBanners);
       }
-      setBannerImages(newBanners);
     } catch (err) {
       console.error(err);
     } finally {
       setUploading(null);
     }
   };
+
   const removeBanner = (index: number) => {
-    setBannerImages(bannerImages.filter((_, i) => i !== index));
+    const newBanners = [...bannerImages];
+    newBanners[index] = { image_url: '' };
+    setBannerImages(newBanners);
   };
 
   const handleToggle = (key: string) => {
@@ -342,6 +347,7 @@ export default function CategoriesPageManagement() {
                       <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-red-500 text-xs">✓</div>
                     )}
                     <input type="file" accept="image/*" onChange={(e) => handleFeatureIconUpload(idx, e)} className="text-xs w-24" />
+                    <p className="text-[10px] text-gray-500 mt-1">Min: 100x100 px</p>
                   </div>
                 </div>
               </div>
@@ -357,19 +363,45 @@ export default function CategoriesPageManagement() {
             <input type="text" name="categories_custom_banner_title" value={settings.categories_custom_banner_title} onChange={handleChange} placeholder="Custom Packaging Banner" className="w-full border-gray-300 rounded-md p-2 border" />
           </div>
           
-          <div className="flex flex-wrap gap-4 mb-4 mt-4">
-            {bannerImages.map((banner, idx) => (
-              <div key={idx} className="relative border p-2 rounded bg-gray-50 w-32 h-32">
-                <button type="button" onClick={() => removeBanner(idx)} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 text-xs flex items-center justify-center">✕</button>
-                <img src={(banner.image_url)?.startsWith("http") ? (banner.image_url) : `${process.env.NEXT_PUBLIC_API_URL}${banner.image_url}`} className="w-full h-full object-cover rounded" />
-              </div>
-            ))}
+          <div className="grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-6 mb-4 mt-4">
+            {bannerImages.map((banner, idx) => {
+              let colSpanClass = "col-span-2 md:col-span-6"; 
+              let heightClass = "h-48 md:h-[340px]";
+              
+              if (idx === 0) {
+                colSpanClass = "col-span-2 md:col-span-7";
+                heightClass = "h-[180px] sm:h-64 md:h-[340px]";
+              } else if (idx === 1) {
+                colSpanClass = "col-span-1 md:col-span-5";
+                heightClass = "h-40 sm:h-56 md:h-[340px]";
+              } else if (idx === 2) {
+                colSpanClass = "col-span-1 md:col-span-5";
+                heightClass = "h-40 sm:h-56 md:h-[340px]";
+              } else if (idx === 3) {
+                colSpanClass = "col-span-2 md:col-span-7";
+                heightClass = "h-[180px] sm:h-64 md:h-[340px]";
+              }
+
+              return (
+                <div key={idx} className={`relative w-full bg-gray-100 rounded-2xl md:rounded-3xl overflow-hidden shadow-sm group border border-gray-200 ${colSpanClass} ${heightClass}`}>
+                  {banner.image_url ? (
+                    <>
+                      <button type="button" onClick={() => removeBanner(idx)} className="absolute top-4 right-4 z-10 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-600 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
+                      <img src={(banner.image_url)?.startsWith("http") ? (banner.image_url) : `${process.env.NEXT_PUBLIC_API_URL}${banner.image_url}`} className="w-full h-full object-cover" />
+                    </>
+                  ) : (
+                    <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer hover:bg-gray-200 transition-colors">
+                      <svg className="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
+                      <span className="text-sm font-medium text-gray-500">Upload Image</span>
+                      {uploading === `banner_${idx}` && <span className="text-xs text-meewa-red mt-1">Uploading...</span>}
+                      <input type="file" className="hidden" accept="image/*" onChange={(e) => handleSpecificBannerUpload(idx, e)} disabled={!!uploading} />
+                    </label>
+                  )}
+                </div>
+              );
+            })}
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Upload Banner Images (Multiple)</label>
-            <input type="file" multiple accept="image/*" onChange={handleBannerUpload} disabled={uploading === 'banners'} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red" />
-            {uploading === 'banners' && <p className="text-sm text-meewa-red mt-2">Uploading banners...</p>}
-          </div>
+          <p className="text-xs text-gray-500 mt-1 mb-6">Recommended: 1920x400 px or 800x800 px depending on the box shape.</p>
         </div>
 
         <div className="mt-10 pt-6 border-t">

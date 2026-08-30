@@ -477,6 +477,7 @@ export default function LandingPageManagement() {
                   file:bg-red-50 file:text-meewa-red
                   hover:file:bg-red-100"
               />
+              <p className="text-xs text-gray-500 mt-1">Min: 1920x1080 px (Landscape), Max: 3840x2160 px</p>
               {uploading === "hero_banners" && <p className="text-sm text-meewa-red mt-2">Uploading banners...</p>}
             </div>
           </div>
@@ -609,6 +610,7 @@ export default function LandingPageManagement() {
                           )}
                         </div>
                         <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, key)} disabled={uploading === key} className="block w-full text-[10px] text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red cursor-pointer" />
+                        <p className="text-[10px] text-gray-500 mt-1">Min: 800x600 px, Max: 1920x1080 px</p>
                         {uploading === key && <p className="text-[10px] text-meewa-red mt-2">Uploading...</p>}
                       </div>
                     );
@@ -627,6 +629,7 @@ export default function LandingPageManagement() {
                       )}
                     </div>
                     <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, "industries_image_3")} disabled={uploading === "industries_image_3"} className="block w-full text-[10px] text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red cursor-pointer" />
+                    <p className="text-[10px] text-gray-500 mt-1">Min: 800x600 px, Max: 1920x1080 px</p>
                     {uploading === "industries_image_3" && <p className="text-[10px] text-meewa-red mt-2">Uploading...</p>}
                   </div>
                 </div>
@@ -648,6 +651,7 @@ export default function LandingPageManagement() {
                           )}
                         </div>
                         <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, key)} disabled={uploading === key} className="block w-full text-[10px] text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red cursor-pointer" />
+                        <p className="text-[10px] text-gray-500 mt-1">Min: 800x600 px, Max: 1920x1080 px</p>
                         {uploading === key && <p className="text-[10px] text-meewa-red mt-2">Uploading...</p>}
                       </div>
                     );
@@ -713,6 +717,7 @@ export default function LandingPageManagement() {
                   file:bg-red-50 file:text-meewa-red
                   hover:file:bg-red-100"
               />
+              <p className="text-xs text-gray-500 mt-1">Min: 800x600 px, Max: 1920x1080 px</p>
               {uploading === "export_process_media_url" && <p className="text-sm text-meewa-red mt-2">Uploading...</p>}
             </div>
 
@@ -797,6 +802,7 @@ export default function LandingPageManagement() {
                           onChange={(e) => handleFeatureIconUpload(idx, e)}
                           className="text-xs"
                         />
+                        <p className="text-[10px] text-gray-500 mt-1">Min: 100x100 px</p>
                       </div>
                     </div>
                     <div className="md:col-span-2">
@@ -877,6 +883,7 @@ export default function LandingPageManagement() {
                   file:bg-red-50 file:text-meewa-red
                   hover:file:bg-red-100"
               />
+              <p className="text-xs text-gray-500 mt-1">Min: 1920x1080 px, Max: 3840x2160 px</p>
               {uploading === "about_media_url" && <p className="text-sm text-meewa-red mt-2">Uploading...</p>}
             </div>
           </div>

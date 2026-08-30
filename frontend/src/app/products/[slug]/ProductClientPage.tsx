@@ -230,7 +230,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
           <>
             <div id="banner-container" ref={bannerRef} className="relative w-full overflow-hidden bg-transparent z-20 md:-mt-[calc(100vh-12rem)]">
               {product?.section1_image ? (
-                <img src={`${product.section1_image?.startsWith('http') ? product.section1_image : process.env.NEXT_PUBLIC_API_URL + product.section1_image}`} alt="Banner" className="absolute inset-0 w-full h-full object-cover" />
+                <img src={`${product.section1_image?.startsWith('http') ? product.section1_image : process.env.NEXT_PUBLIC_API_URL + product.section1_image}`} alt="Banner" className="absolute inset-0 w-full h-full object-contain" />
               ) : (
                 <div className="absolute inset-0 w-full h-full bg-gray-900" />
               )}

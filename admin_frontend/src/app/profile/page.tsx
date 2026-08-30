@@ -141,7 +141,7 @@ export default function ProfilePage() {
                   disabled={uploadingLogo} 
                   className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" 
                 />
-                <p className="text-xs text-gray-500 mt-2">Recommended: Square image, transparent background (PNG).</p>
+                <p className="text-xs text-gray-500 mt-2">Min: 200x200 px, Max: 1024x1024 px</p>
                 {uploadingLogo && <p className="text-xs text-meewa-red mt-1">Uploading...</p>}
               </div>
             </div>

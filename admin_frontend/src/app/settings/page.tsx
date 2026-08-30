@@ -213,6 +213,7 @@ export default function SettingsPage() {
                 file:bg-red-50 file:text-meewa-red
                 hover:file:bg-red-100"
             />
+            <p className="text-xs text-gray-500 mt-1">Min: 200x200 px, Max: 1024x1024 px</p>
             {uploading && <p className="text-sm text-meewa-red mt-2">Uploading...</p>}
           </div>
 
@@ -235,6 +236,7 @@ export default function SettingsPage() {
                 file:bg-red-50 file:text-meewa-red
                 hover:file:bg-red-100"
             />
+            <p className="text-xs text-gray-500 mt-1">Min: 200x200 px, Max: 1024x1024 px</p>
           </div>
 
           <div>
@@ -256,6 +258,7 @@ export default function SettingsPage() {
                 file:bg-red-50 file:text-meewa-red
                 hover:file:bg-red-100"
             />
+            <p className="text-xs text-gray-500 mt-1">Min: 200x200 px, Max: 1024x1024 px</p>
           </div>
 
 
@@ -312,6 +315,7 @@ export default function SettingsPage() {
                   file:bg-red-50 file:text-meewa-red
                   hover:file:bg-red-100"
               />
+              <p className="text-xs text-gray-500 mt-1">Min: 200x200 px, Max: 1024x1024 px</p>
             </div>
 
             <div className="space-y-4">

@@ -349,6 +349,7 @@ export default function ManageProductsPage() {
                   </div>
                 )}
                 <input type="file" onChange={(e) => handleFileUpload(e, 'cover_image')} className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" />
+                <p className="text-xs text-gray-500 mt-1">Min: 800x800 px (Square), Max: 2000x2000 px</p>
                 {uploading === 'cover_image' && <span className="block text-sm text-red-500 mt-2">Uploading...</span>}
               </div>
               
@@ -386,7 +387,10 @@ export default function ManageProductsPage() {
                     </div>
                   </div>
                 ) : (
-                  <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'hero_animated_image')} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" />
+                  <>
+                    <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'hero_animated_image')} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" />
+                    <p className="text-xs text-gray-500 mt-1">Min: 800x800 px (Square, transparent), Max: 2000x2000 px</p>
+                  </>
                 )}
               </div>
             </div>
@@ -403,6 +407,7 @@ export default function ManageProductsPage() {
                   </div>
                 )}
                 <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'section1_image')} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"/>
+                <p className="text-xs text-gray-500 mt-1">Min: 1200x800 px, Max: 2500x1500 px</p>
               </div>
             </div>
 
