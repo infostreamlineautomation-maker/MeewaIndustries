@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Terms and Conditions | MEEWA Industries',
+  title: 'Terms and Conditions',
 };
 
 export default function TermsPage() {

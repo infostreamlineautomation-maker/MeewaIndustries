@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     if (!res.ok) return { title: 'Product Not Found' };
     const product = await res.json();
     return {
-      title: `${product.name} | MEEWA Industries`,
+      title: product.name,
       description: product.short_description,
     };
   } catch {

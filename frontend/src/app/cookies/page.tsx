@@ -2,8 +2,8 @@ import { fetchServerSettings } from '@/lib/fetchSettings';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Cookies Policy | MEEWA Industries',
-  description: 'Cookies Policy for MEEWA Industries',
+  title: 'Cookies Policy',
+  description: 'Cookies Policy for MEEWA Industries Private Limited',
 };
 
 export default async function CookiesPage() {

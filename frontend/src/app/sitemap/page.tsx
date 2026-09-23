@@ -2,8 +2,8 @@ import { fetchServerSettings } from '@/lib/fetchSettings';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Sitemap | MEEWA Industries',
-  description: 'Sitemap for MEEWA Industries',
+  title: 'Sitemap',
+  description: 'Sitemap for MEEWA Industries Private Limited',
 };
 
 export default async function SitemapPage() {

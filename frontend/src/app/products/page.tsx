@@ -4,8 +4,8 @@ import ProductGrid from '@/components/products/ProductGrid';
 import ContactFaqSection from '@/components/landing/ContactFaqSection';
 
 export const metadata: Metadata = {
-  title: 'Our Products | MEEWA Industries',
-  description: 'Explore our wide range of premium food packaging products.',
+  title: 'Our Products',
+  description: 'Explore our comprehensive range of premium printing and packaging solutions, including high-quality paper cups and bagasse tableware for global export.',
 };
 
 export default async function ProductsPage() {

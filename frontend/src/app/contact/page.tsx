@@ -4,8 +4,8 @@ import ContactForm from '@/components/ContactForm';
 import { Phone, Mail, MapPin, MessageCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Contact Us | MEEWA Industries',
-  description: 'Get in touch with MEEWA Industries for your B2B export requirements.',
+  title: 'Contact Us',
+  description: 'Get in touch with MEEWA Industries Private Limited for global trade inquiries, bulk orders, and premium printing and packaging solutions.',
 };
 
 export default async function ContactPage() {

@@ -2,8 +2,8 @@ import { fetchServerSettings } from '@/lib/fetchSettings';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Terms and Conditions | MEEWA Industries',
-  description: 'Terms and Conditions for MEEWA Industries',
+  title: 'Terms and Conditions',
+  description: 'Terms and Conditions for MEEWA Industries Private Limited',
 };
 
 export default async function TermsPage() {

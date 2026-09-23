@@ -8,12 +8,12 @@ import PreviewBanner from "@/components/PreviewBanner";
 export const metadata: Metadata = {
   title: {
     template: '%s | MEEWA Industries',
-    default: 'MEEWA Industries - B2B Export Platform',
+    default: 'MEEWA Industries Private Limited | Exporter Of Premium Printing & Packaging Solutions.',
   },
   description: "Premium Quality Export For Global Markets. Manufacturer and supplier of high quality paper cups, bagasse tableware, and packaging.",
   openGraph: {
-    title: 'MEEWA Industries',
-    description: 'Premium Quality Export For Global Markets',
+    title: 'MEEWA Industries Private Limited',
+    description: 'Exporter Of Premium Printing & Packaging Solutions.',
     url: 'https://meewaindustries.com',
     siteName: 'MEEWA Industries',
     locale: 'en_US',
@@ -30,14 +30,14 @@ export default function RootLayout({
   const orgSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "MEEWA Industries",
+    "name": "MEEWA Industries Private Limited",
     "url": "https://meewaindustries.com",
     "logo": "https://meewaindustries.com/logo.png",
     "contactPoint": {
       "@type": "ContactPoint",
       "telephone": "+91-98765-43210",
       "contactType": "customer service",
-      "email": "info@meewaindustries.com"
+      "email": "[EMAIL_ADDRESS]"
     }
   };
 

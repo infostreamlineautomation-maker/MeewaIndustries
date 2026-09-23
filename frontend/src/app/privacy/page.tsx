@@ -2,8 +2,8 @@ import { fetchServerSettings } from '@/lib/fetchSettings';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | MEEWA Industries',
-  description: 'Privacy Policy for MEEWA Industries',
+  title: 'Privacy Policy',
+  description: 'Privacy Policy for MEEWA Industries Private Limited',
 };
 
 export default async function PrivacyPolicyPage() {

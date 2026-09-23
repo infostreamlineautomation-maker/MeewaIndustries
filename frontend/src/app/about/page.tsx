@@ -3,8 +3,8 @@ import { Metadata } from 'next';
 import ContactFaqSection from '@/components/landing/ContactFaqSection';
 
 export const metadata: Metadata = {
-  title: 'About Us | MEEWA Industries',
-  description: 'Learn more about MEEWA Industries, our values, and our commitment to quality export.',
+  title: 'About Us',
+  description: 'Discover the values and infrastructure behind MEEWA Industries Private Limited, your trusted exporter of premium printing and packaging solutions.',
 };
 
 export default async function AboutPage() {

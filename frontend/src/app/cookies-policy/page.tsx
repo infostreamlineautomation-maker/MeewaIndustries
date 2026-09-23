@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Cookies Policy | MEEWA Industries',
+  title: 'Cookies Policy',
 };
 
 export default function CookiesPage() {
