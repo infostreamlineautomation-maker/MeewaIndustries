@@ -167,7 +167,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
 
           {/* Section 0: Title (Behind Banner) */}
           {settings.hide_pd_hero !== "true" && (
-            <div className="w-full h-auto pb-0 md:pb-0 md:h-[calc(200vh-20rem)]">
+            <div className="relative z-30 md:z-auto w-full h-auto pb-0 md:pb-0 md:h-[calc(200vh-20rem)]">
             <div className="md:sticky top-0 pt-24 md:pt-[30vh] px-6 md:px-24 lg:px-32 md:h-screen flex flex-col justify-start">
               <motion.div 
                 style={{ y: titleY, opacity: titleOpacity }}
@@ -177,7 +177,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                   {titleText}
                 </h1>
                 <h2 className="text-xl md:text-2xl font-semibold text-gray-700 leading-tight max-w-sm">
-                  {product?.hero_description || "Discover premium quality of customizable cups"}
+                  {product?.hero_description || product?.short_description || "Discover premium quality customizable solutions"}
                 </h2>
 
                 {/* Description Component (Moved from Banner) */}
@@ -210,17 +210,19 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                 )}
               </motion.div>
 
-              {/* Mobile Static Image (Top) - Bridging the gap */}
-              <motion.div 
-                className="block md:hidden mt-4 -mb-24 w-full max-w-[160px] mx-auto pointer-events-none relative z-30"
-                style={{ y: mStaticY, scale: mStaticScale, rotate: mStaticRotate }}
-              >
-                {heroImage ? (
-                  <img src={heroImage} alt="Product" className="w-full h-auto drop-shadow-[0_35px_35px_rgba(0,0,0,0.05)]" />
-                ) : (
-                  <div className="w-full aspect-square opacity-0"></div>
-                )}
-              </motion.div>
+              {/* Mobile Animated Image (Top) */}
+              {heroImage && (
+                <motion.div 
+                  className="block md:hidden mt-6 mb-8 w-full max-w-[220px] mx-auto pointer-events-none relative z-30"
+                  style={{ y: mStaticY, scale: mStaticScale, rotate: mStaticRotate }}
+                >
+                  <img 
+                    src={heroImage} 
+                    alt={product?.name || "Product"} 
+                    className="w-full h-auto object-contain mx-auto drop-shadow-[0_20px_25px_rgba(0,0,0,0.06)]" 
+                  />
+                </motion.div>
+              )}
             </div>
           </div>
           )}
@@ -230,48 +232,50 @@ export default function ProductClientPage({ product, relatedProducts, settings }
           <>
             <div id="banner-container" ref={bannerRef} className="relative w-full overflow-hidden bg-transparent z-20 md:-mt-[calc(100vh-12rem)]">
               {product?.section1_image ? (
-                <img src={`${product.section1_image?.startsWith('http') ? product.section1_image : process.env.NEXT_PUBLIC_API_URL + product.section1_image}`} alt="Banner" className="absolute inset-0 w-full h-full object-contain" />
+                <img 
+                  src={`${product.section1_image?.startsWith('http') ? product.section1_image : process.env.NEXT_PUBLIC_API_URL + product.section1_image}`} 
+                  alt="Banner" 
+                  className="absolute inset-0 w-full h-full object-cover md:object-contain" 
+                />
               ) : (
-                <div className="absolute inset-0 w-full h-full bg-gray-900" />
+                <div className="absolute inset-0 w-full h-full bg-slate-100" />
               )}
               
-              {/* Smooth white gradient at the top to blend the image perfectly with the white section above */}
-              <div className="absolute top-0 inset-x-0 h-24 md:h-48 bg-gradient-to-b from-white to-transparent pointer-events-none z-10" />
-              
-              {/* Dark gradient overlay removed per request */}
+              {/* Smooth white gradient at the top (Desktop only to blend with white section above) */}
+              <div className="hidden md:block absolute top-0 inset-x-0 h-24 md:h-48 bg-gradient-to-b from-white to-transparent pointer-events-none z-10" />
               
               {/* Banner Content (Text on Right) */}
               <motion.section 
                 onViewportEnter={() => setActiveSection(1)}
                 viewport={{ margin: "-40% 0px -40% 0px" }}
-                className="relative min-h-[55vh] pt-28 pb-24 md:min-h-0 md:py-0 md:h-[120vh] flex flex-col justify-start md:justify-center items-start md:items-end px-6 md:px-24 lg:px-32"
+                className="relative py-16 md:py-0 md:min-h-0 md:h-[120vh] flex flex-col justify-center items-start md:items-end px-6 md:px-24 lg:px-32"
               >
-                <div className="max-w-xl text-left md:text-right z-40 flex flex-col items-start md:items-end gap-4 md:gap-6 md:-mt-24 lg:-mt-32">
+                <div className="max-w-xl text-left md:text-right z-40 flex flex-col items-start md:items-end gap-3 md:gap-6 md:-mt-24 lg:-mt-32">
                   <motion.h2 
-                    initial={{ opacity: 0, y: 50 }}
+                    initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, margin: "-50px" }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="text-3xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight break-words"
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    className="text-2xl sm:text-3xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight break-words"
                   >
-                    {product?.banner_title || "Get your customized coffee cup"}
+                    {product?.banner_title || (product?.name ? `Get your customized ${product.name.toLowerCase()}` : "Get your customized products")}
                   </motion.h2>
                   <motion.p 
-                    initial={{ opacity: 0, y: 50 }}
+                    initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, margin: "-50px" }}
-                    transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                    className="text-base md:text-2xl text-gray-700 font-medium max-w-lg"
+                    transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+                    className="text-sm sm:text-base md:text-2xl text-gray-700 font-medium max-w-lg"
                   >
                     {product?.banner_subtitle || product?.short_description || "Hot, cold, frozen or fresh, our food service packaging works to keep every meal presentable and intact."}
                   </motion.p>
                   <motion.div
-                    initial={{ opacity: 0, y: 50 }}
+                    initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, margin: "-50px" }}
-                    transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                    transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
                   >
-                    <Link href="/contact" className="inline-flex items-center gap-2 font-bold bg-meewa-red text-white px-5 py-2.5 md:px-10 md:py-5 rounded-lg md:rounded-xl hover:bg-red-700 transition-colors shadow-xl text-sm md:text-xl mt-4 md:mt-4">
+                    <Link href="/contact" className="inline-flex items-center gap-2 font-bold bg-meewa-red text-white px-5 py-2.5 md:px-10 md:py-5 rounded-lg md:rounded-xl hover:bg-red-700 transition-colors shadow-lg text-sm md:text-xl mt-2 md:mt-4">
                       Order now <span className="text-base md:text-2xl font-light">↗</span>
                     </Link>
                   </motion.div>
@@ -283,7 +287,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
 
           {/* Section 3: Solid Theme Color Section with Marquee */}
           {settings.hide_pd_marquee !== "true" && (
-          <div ref={marqueeWrapperRef} className="relative -mt-[5vh] md:-mt-[15vh]">
+          <div ref={marqueeWrapperRef} className="relative mt-0 md:-mt-[15vh]">
             <div className="absolute inset-0 bg-meewa-red z-[25]"></div>
             <motion.section
               onViewportEnter={() => setActiveSection(3)}
