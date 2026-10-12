@@ -94,8 +94,9 @@ export default function ProductClientPage({ product, relatedProducts, settings }
   const dScale = useTransform(smoothProgress, dBreakpoints, [1.1, 0.78, 1.3, 0.9, 0.5, 1.0, 1.0]);
 
   // Mobile Keyframes for the static cup
+  const mStaticX = useTransform(smoothProgress, dBreakpoints, ["0%", "20%", "25%", "25%", "12%", "0%", "0%"]);
   const mStaticY = useTransform(smoothProgress, dBreakpoints, ["0vh", "15vh", "25vh", "35vh", "45vh", "55vh", "55vh"]);
-  const mStaticScale = useTransform(smoothProgress, dBreakpoints, [1, 0.8, 0.6, 0.4, 0.7, 0.85, 0.85]);
+  const mStaticScale = useTransform(smoothProgress, dBreakpoints, [1, 0.5, 0.4, 0.4, 0.65, 0.85, 0.85]);
   const mStaticRotate = useTransform(smoothProgress, dBreakpoints, [0, 5, 10, 0, -5, 0, 0]);
 
   // Title Slide Up Animation (using absolute pixels for guaranteed fast fade)
@@ -213,8 +214,8 @@ export default function ProductClientPage({ product, relatedProducts, settings }
               {/* Mobile Animated Image (Top) */}
               {heroImage && (
                 <motion.div 
-                  className="block md:hidden mt-6 mb-8 w-full max-w-[220px] mx-auto pointer-events-none relative z-30"
-                  style={{ y: mStaticY, scale: mStaticScale, rotate: mStaticRotate }}
+                  className="block md:hidden mt-6 mb-8 w-full max-w-[160px] mx-auto pointer-events-none relative z-30"
+                  style={{ x: mStaticX, y: mStaticY, scale: mStaticScale, rotate: mStaticRotate }}
                 >
                   <img 
                     src={heroImage} 
