@@ -9,12 +9,14 @@ export default function ProductClientPage({ product, relatedProducts, settings }
   const containerRef = useRef<HTMLDivElement>(null);
   const bannerRef = useRef<HTMLDivElement>(null);
   const marqueeWrapperRef = useRef<HTMLDivElement>(null);
+  const mobileImageAnchorRef = useRef<HTMLDivElement>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [relatedPage, setRelatedPage] = useState(0);
   const [fullScreenVideo, setFullScreenVideo] = useState<string | null>(null);
+  const [mFinalY, setMFinalY] = useState<number>(650);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -78,10 +80,25 @@ export default function ProductClientPage({ product, relatedProducts, settings }
         if (next[i] <= next[i - 1]) next[i] = next[i - 1] + 0.001;
       }
       setDBreakpoints(next);
+
+      // Dynamically measure the exact distance to the vertical center of the marquee (carousel) component on mobile
+      if (mobileImageAnchorRef.current) {
+        const anchorRect = mobileImageAnchorRef.current.getBoundingClientRect();
+        const anchorCenter = anchorRect.top + window.scrollY + anchorRect.height / 2;
+        const marqueeCenter = marqueeRect.top + window.scrollY + marqueeRect.height / 2;
+        const dist = marqueeCenter - anchorCenter;
+        if (dist > 50) {
+          setMFinalY(Math.round(dist));
+        }
+      }
     }
     measure();
+    const timer = setTimeout(measure, 350);
     window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', measure);
+    };
   }, [product]);
 
   // Desktop Keyframes — hero (top-right) -> settle A in banner (hold) -> gradual zoom -> settle B centered on marquee (hold)
@@ -95,7 +112,15 @@ export default function ProductClientPage({ product, relatedProducts, settings }
 
   // Mobile Keyframes for the static cup
   const mStaticX = useTransform(smoothProgress, dBreakpoints, ["0%", "20%", "25%", "25%", "12%", "0%", "0%"]);
-  const mStaticY = useTransform(smoothProgress, dBreakpoints, ["0vh", "15vh", "25vh", "35vh", "45vh", "55vh", "55vh"]);
+  const mStaticY = useTransform(smoothProgress, dBreakpoints, [
+    0,
+    Math.round(mFinalY * 0.2),
+    Math.round(mFinalY * 0.4),
+    Math.round(mFinalY * 0.65),
+    Math.round(mFinalY * 0.88),
+    mFinalY,
+    mFinalY
+  ]);
   const mStaticScale = useTransform(smoothProgress, dBreakpoints, [1, 0.5, 0.4, 0.4, 0.65, 0.85, 0.85]);
   const mStaticRotate = useTransform(smoothProgress, dBreakpoints, [0, 5, 10, 0, -5, 0, 0]);
 
@@ -213,16 +238,21 @@ export default function ProductClientPage({ product, relatedProducts, settings }
 
               {/* Mobile Animated Image (Top) */}
               {heroImage && (
-                <motion.div 
-                  className="block md:hidden mt-6 mb-8 w-full max-w-[160px] mx-auto pointer-events-none relative z-30"
-                  style={{ x: mStaticX, y: mStaticY, scale: mStaticScale, rotate: mStaticRotate }}
+                <div 
+                  ref={mobileImageAnchorRef}
+                  className="block md:hidden mt-6 mb-8 w-full max-w-[160px] mx-auto relative z-30"
                 >
-                  <img 
-                    src={heroImage} 
-                    alt={product?.name || "Product"} 
-                    className="w-full h-auto object-contain mx-auto drop-shadow-[0_20px_25px_rgba(0,0,0,0.06)]" 
-                  />
-                </motion.div>
+                  <motion.div 
+                    className="w-full pointer-events-none"
+                    style={{ x: mStaticX, y: mStaticY, scale: mStaticScale, rotate: mStaticRotate }}
+                  >
+                    <img 
+                      src={heroImage} 
+                      alt={product?.name || "Product"} 
+                      className="w-full h-auto object-contain mx-auto drop-shadow-[0_20px_25px_rgba(0,0,0,0.06)]" 
+                    />
+                  </motion.div>
+                </div>
               )}
             </div>
           </div>
@@ -249,15 +279,15 @@ export default function ProductClientPage({ product, relatedProducts, settings }
               <motion.section 
                 onViewportEnter={() => setActiveSection(1)}
                 viewport={{ margin: "-40% 0px -40% 0px" }}
-                className="relative py-16 md:py-0 md:min-h-0 md:h-[120vh] flex flex-col justify-center items-start md:items-end px-6 md:px-24 lg:px-32"
+                className="relative py-16 md:py-0 md:min-h-0 md:h-[120vh] flex flex-col justify-center items-start md:items-end px-6 md:pl-16 md:pr-8 lg:pl-20 lg:pr-12 xl:pr-16"
               >
-                <div className="max-w-xl text-left md:text-right z-40 flex flex-col items-start md:items-end gap-3 md:gap-6 md:-mt-24 lg:-mt-32">
+                <div className="w-full md:w-auto md:max-w-2xl lg:max-w-3xl md:ml-auto text-left md:text-right z-40 flex flex-col items-start md:items-end gap-4 md:gap-6 md:-mt-24 lg:-mt-32">
                   <motion.h2 
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, margin: "-50px" }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
-                    className="text-2xl sm:text-3xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight break-words"
+                    className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-[1.15] break-words text-left md:text-right"
                   >
                     {product?.banner_title || (product?.name ? `Get your customized ${product.name.toLowerCase()}` : "Get your customized products")}
                   </motion.h2>
@@ -266,18 +296,22 @@ export default function ProductClientPage({ product, relatedProducts, settings }
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, margin: "-50px" }}
                     transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-                    className="text-sm sm:text-base md:text-2xl text-gray-700 font-medium max-w-lg"
+                    className="text-sm sm:text-base md:text-xl lg:text-2xl text-gray-700 font-medium max-w-xl text-left md:text-right"
                   >
-                    {product?.banner_subtitle || product?.short_description || "Hot, cold, frozen or fresh, our food service packaging works to keep every meal presentable and intact."}
+                    {product?.banner_subtitle || 
+                      (product?.short_description && product.short_description.toLowerCase().trim() !== product.name?.toLowerCase().trim() 
+                        ? product.short_description 
+                        : "Hot, cold, frozen or fresh, our food service packaging works to keep every meal presentable and intact.")}
                   </motion.p>
                   <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, margin: "-50px" }}
                     transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+                    className="hidden md:block self-end"
                   >
-                    <Link href="/contact" className="inline-flex items-center gap-2 font-bold bg-meewa-red text-white px-5 py-2.5 md:px-10 md:py-5 rounded-lg md:rounded-xl hover:bg-red-700 transition-colors shadow-lg text-sm md:text-xl mt-2 md:mt-4">
-                      Order now <span className="text-base md:text-2xl font-light">↗</span>
+                    <Link href="/contact" className="inline-flex items-center gap-2 font-bold bg-meewa-red text-white px-8 py-4 rounded-xl hover:bg-red-700 transition-colors shadow-lg text-lg mt-2">
+                      Order now <span className="text-xl font-light">↗</span>
                     </Link>
                   </motion.div>
                 </div>
