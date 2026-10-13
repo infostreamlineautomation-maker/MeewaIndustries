@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import MediaPickerButton from "@/components/MediaPickerButton";
 
 function DynamicLinkList({ label, items, onChange }: { label: string, items: {label: string, href: string}[], onChange: (items: any) => void }) {
   const addItem = () => onChange([...(items || []), { label: "", href: "" }]);
@@ -213,6 +214,7 @@ export default function SettingsPage() {
                 file:bg-red-50 file:text-meewa-red
                 hover:file:bg-red-100"
             />
+            <div className="mt-2"><MediaPickerButton onSelect={(urls) => setSettings((prev: any) => ({ ...prev, site_logo_url: urls[0] }))} disabled={uploading} /></div>
             <p className="text-xs text-gray-500 mt-1">Min: 200x200 px, Max: 1024x1024 px</p>
             {uploading && <p className="text-sm text-meewa-red mt-2">Uploading...</p>}
           </div>
@@ -236,6 +238,7 @@ export default function SettingsPage() {
                 file:bg-red-50 file:text-meewa-red
                 hover:file:bg-red-100"
             />
+            <div className="mt-2"><MediaPickerButton onSelect={(urls) => setSettings((prev: any) => ({ ...prev, mobile_logo_url: urls[0] }))} disabled={uploading} /></div>
             <p className="text-xs text-gray-500 mt-1">Min: 200x200 px, Max: 1024x1024 px</p>
           </div>
 
@@ -258,6 +261,7 @@ export default function SettingsPage() {
                 file:bg-red-50 file:text-meewa-red
                 hover:file:bg-red-100"
             />
+            <div className="mt-2"><MediaPickerButton onSelect={(urls) => setSettings((prev: any) => ({ ...prev, hamburger_logo_url: urls[0] }))} disabled={uploading} /></div>
             <p className="text-xs text-gray-500 mt-1">Min: 200x200 px, Max: 1024x1024 px</p>
           </div>
 
@@ -315,6 +319,7 @@ export default function SettingsPage() {
                   file:bg-red-50 file:text-meewa-red
                   hover:file:bg-red-100"
               />
+              <div className="mt-2"><MediaPickerButton onSelect={(urls) => setSettings((prev: any) => ({ ...prev, footer_logo_url: urls[0] }))} disabled={uploading} /></div>
               <p className="text-xs text-gray-500 mt-1">Min: 200x200 px, Max: 1024x1024 px</p>
             </div>
 

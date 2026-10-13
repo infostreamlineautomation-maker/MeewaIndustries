@@ -93,6 +93,19 @@ class AdminUser(Base):
     password_hash = Column(String)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
+class Media(Base):
+    __tablename__ = "media"
+    id = Column(Integer, primary_key=True, index=True)
+    url = Column(String, unique=True, index=True)
+    filename = Column(String)
+    original_name = Column(String, nullable=True)
+    alt_text = Column(String, nullable=True)
+    mime_type = Column(String, nullable=True)
+    size = Column(Integer, nullable=True)
+    width = Column(Integer, nullable=True)
+    height = Column(Integer, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
 class AuditLog(Base):
     __tablename__ = "audit_logs"
     id = Column(Integer, primary_key=True, index=True)

@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import MediaPickerButton from "@/components/MediaPickerButton";
 
 export default function ProfilePage() {
   const [username, setUsername] = useState("");
@@ -141,6 +142,7 @@ export default function ProfilePage() {
                   disabled={uploadingLogo} 
                   className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" 
                 />
+                <div className="mt-2"><MediaPickerButton onSelect={(urls) => setAdminLogoUrl(urls[0])} disabled={uploadingLogo} /></div>
                 <p className="text-xs text-gray-500 mt-2">Min: 200x200 px, Max: 1024x1024 px</p>
                 {uploadingLogo && <p className="text-xs text-meewa-red mt-1">Uploading...</p>}
               </div>

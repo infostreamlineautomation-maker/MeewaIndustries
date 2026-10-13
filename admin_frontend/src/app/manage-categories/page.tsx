@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import MediaPickerButton from "@/components/MediaPickerButton";
 
 interface Category {
   id: number;
@@ -230,6 +231,7 @@ export default function ManageCategoriesPage() {
                 <img src={(currentCategory.cover_image)?.startsWith("http") ? (currentCategory.cover_image) : `${process.env.NEXT_PUBLIC_API_URL}${currentCategory.cover_image}`} className="w-16 h-16 object-cover border rounded" />
               )}
               <input type="file" accept="image/*" onChange={handleFileUpload} disabled={uploading} className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" />
+              <MediaPickerButton onSelect={(urls) => setCurrentCategory(prev => ({ ...prev, cover_image: urls[0] }))} disabled={uploading} />
               <p className="text-xs text-gray-500 mt-1">Min: 800x800 px (Square), Max: 2000x2000 px</p>
             </div>
           </div>

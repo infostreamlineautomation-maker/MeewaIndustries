@@ -7,13 +7,10 @@ from typing import Dict, Any, List
 from sqlalchemy.orm import Session
 from database import get_db
 import models
-from utils.storage import save_upload_file
+from utils.media import store_upload
 from utils.audit import log_audit
 # pyrefly: ignore [missing-import]
 from fastapi import Form
-import os
-import time
-import re
 
 router = APIRouter(
     prefix="/settings",
@@ -21,26 +18,10 @@ router = APIRouter(
 )
 
 @router.post("/upload")
-def upload_asset(file: UploadFile = File(...), remove_bg: bool = False, seo_name: str = Form(None)):
-    original_filename = file.filename if file.filename else "uploaded_asset"
-    name, ext = os.path.splitext(original_filename)
-    
-    def slugify(text: str) -> str:
-        text = text.lower()
-        text = re.sub(r'[^a-z0-9]+', '-', text)
-        return text.strip('-')
-
-    base_name = slugify(seo_name) if seo_name else slugify(name)
-    if not base_name:
-        base_name = "asset"
-        
-    timestamp = int(time.time())
-    new_filename = f"{base_name}-{timestamp}{ext.lower()}"
-    
-    file_url = save_upload_file(file, new_filename, remove_bg=remove_bg)
-    if not file_url:
-        raise HTTPException(status_code=500, detail="Failed to upload file")
-    return {"url": file_url}
+def upload_asset(file: UploadFile = File(...), remove_bg: bool = False, seo_name: str = Form(None), db: Session = Depends(get_db)):
+    # Every upload is recorded in the media library so it can be reused later
+    media = store_upload(db, file, seo_name=seo_name, remove_bg=remove_bg)
+    return {"url": media.url, "id": media.id}
 
 class SiteSettingUpdate(BaseModel):
     key: str

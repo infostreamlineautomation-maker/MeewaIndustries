@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import MediaPickerButton from "@/components/MediaPickerButton";
 
 export default function AboutPageManagement() {
   const [settings, setSettings] = useState({
@@ -107,6 +108,36 @@ export default function AboutPageManagement() {
     setSettings({ ...settings, [e.target.name]: value });
   };
 
+  const applyFieldUrl = async (fieldName: string, url: string) => {
+    setSettings(prev => ({ ...prev, [fieldName]: url }));
+    await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: fieldName, value: url })
+    });
+  };
+
+  const addClientLogosFromLibrary = async (urls: string[]) => {
+    const newClients = [...clients, ...urls.map(url => ({ logo_url: url }))];
+    setClients(newClients);
+    await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: 'about_clients', value: newClients })
+    });
+  };
+
+  const applyFeatureIcon = async (index: number, url: string) => {
+    const newFeatures = [...features];
+    newFeatures[index].icon = url;
+    setFeatures(newFeatures);
+    await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: 'about_features', value: newFeatures })
+    });
+  };
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, fieldName: string) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const file = e.target.files[0];
@@ -122,12 +153,7 @@ export default function AboutPageManagement() {
       });
       const data = await res.json();
       if (res.ok && data.url) {
-        setSettings(prev => ({ ...prev, [fieldName]: data.url }));
-        await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ key: fieldName, value: data.url })
-        });
+        await applyFieldUrl(fieldName, data.url);
       } else {
         alert("Upload failed: " + JSON.stringify(data));
       }
@@ -254,15 +280,7 @@ export default function AboutPageManagement() {
       });
       const data = await res.json();
       if (res.ok && data.url) {
-        const newFeatures = [...features];
-        newFeatures[index].icon = data.url;
-        setFeatures(newFeatures);
-        
-        await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ key: 'about_features', value: newFeatures })
-        });
+        await applyFeatureIcon(index, data.url);
       }
     } catch (err) {
       console.error(err);
@@ -325,6 +343,7 @@ export default function AboutPageManagement() {
               </div>
             )}
             <input type="file" accept="image/*,video/mp4" onChange={(e) => handleFileUpload(e, "about_hero_media")} disabled={uploading === "about_hero_media"} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red" />
+            <div className="mt-2"><MediaPickerButton accept="all" onSelect={(urls) => applyFieldUrl("about_hero_media", urls[0])} /></div>
             <p className="text-xs text-gray-500 mt-1">Min: 1920x1080 px, Max: 3840x2160 px</p>
           </div>
           <div>
@@ -377,6 +396,7 @@ export default function AboutPageManagement() {
                     )}
                   </div>
                   <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, "about_vision_icon")} disabled={uploading === "about_vision_icon"} className="block w-full text-xs text-gray-500 file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red" />
+                  <div className="mt-2"><MediaPickerButton onSelect={(urls) => applyFieldUrl("about_vision_icon", urls[0])} /></div>
                   <p className="text-[10px] text-gray-500 mt-1">Min: 100x100 px (Square), Max: 512x512 px</p>
                 </div>
               </div>
@@ -407,6 +427,7 @@ export default function AboutPageManagement() {
                     )}
                   </div>
                   <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, "about_mission_icon")} disabled={uploading === "about_mission_icon"} className="block w-full text-xs text-gray-500 file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red" />
+                  <div className="mt-2"><MediaPickerButton onSelect={(urls) => applyFieldUrl("about_mission_icon", urls[0])} /></div>
                   <p className="text-[10px] text-gray-500 mt-1">Min: 100x100 px (Square), Max: 512x512 px</p>
                 </div>
               </div>
@@ -440,6 +461,7 @@ export default function AboutPageManagement() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Upload Client Logos (Multiple)</label>
             <input type="file" multiple accept="image/*" onChange={handleClientLogoUpload} disabled={uploading === 'clients'} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red" />
+            <div className="mt-2"><MediaPickerButton multiple onSelect={addClientLogosFromLibrary} disabled={uploading === 'clients'} /></div>
             <p className="text-xs text-gray-500 mt-1">Min: 200x100 px, Max: 800x800 px</p>
             {uploading === 'clients' && <p className="text-sm text-meewa-red mt-2">Uploading logos...</p>}
           </div>
@@ -466,6 +488,7 @@ export default function AboutPageManagement() {
               </div>
             )}
             <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, "about_how_we_work_media")} className="block w-full text-sm text-gray-500 file:mr-4 file:bg-red-50 file:text-meewa-red" />
+            <div className="mt-2"><MediaPickerButton onSelect={(urls) => applyFieldUrl("about_how_we_work_media", urls[0])} /></div>
             <p className="text-xs text-gray-500 mt-1">Min: 1920x1080 px, Max: 3840x2160 px</p>
           </div>
           <div>
@@ -520,6 +543,7 @@ export default function AboutPageManagement() {
                         )}
                       </div>
                       <input type="file" accept="image/*" onChange={(e) => handleFeatureIconUpload(idx, e)} className="text-xs" />
+                      <MediaPickerButton label="Library" onSelect={(urls) => applyFeatureIcon(idx, urls[0])} />
                       <p className="text-[10px] text-gray-500 mt-1">Min: 100x100 px (Square)</p>
                     </div>
                   </div>

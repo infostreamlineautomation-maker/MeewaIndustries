@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import MediaPickerButton from "@/components/MediaPickerButton";
 
 export default function LandingPageManagement() {
   const [settings, setSettings] = useState({
@@ -139,6 +140,39 @@ export default function LandingPageManagement() {
     setSettings({ ...settings, [e.target.name]: e.target.value });
   };
 
+  const applyFieldUrl = async (fieldName: string, url: string) => {
+    setSettings(prev => ({ ...prev, [fieldName]: url }));
+    // Auto-save the image to the DB immediately
+    await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: fieldName, value: url })
+    });
+  };
+
+  const addBannersFromLibrary = async (urls: string[]) => {
+    const newBanners = [...heroBanners, ...urls.map(url => ({ url, duration: 5 }))];
+    setHeroBanners(newBanners);
+    await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: "hero_banners", value: newBanners })
+    });
+  };
+
+  const applyFeatureIcon = async (index: number, url: string) => {
+    const newFeatures = [...features];
+    newFeatures[index].icon = url;
+    setFeatures(newFeatures);
+
+    // Auto-save features array
+    await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: 'landing_features', value: newFeatures })
+    });
+  };
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, fieldName: string) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const file = e.target.files[0];
@@ -154,13 +188,7 @@ export default function LandingPageManagement() {
       });
       const data = await res.json();
       if (res.ok && data.url) {
-        setSettings(prev => ({ ...prev, [fieldName]: data.url }));
-        // Auto-save the image to the DB immediately
-        await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ key: fieldName, value: data.url })
-        });
+        await applyFieldUrl(fieldName, data.url);
       } else {
         alert("Upload failed: " + JSON.stringify(data));
       }
@@ -248,16 +276,7 @@ export default function LandingPageManagement() {
       });
       const data = await res.json();
       if (res.ok && data.url) {
-        const newFeatures = [...features];
-        newFeatures[index].icon = data.url;
-        setFeatures(newFeatures);
-        
-        // Auto-save features array
-        await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ key: 'landing_features', value: newFeatures })
-        });
+        await applyFeatureIcon(index, data.url);
       } else {
         alert("Upload failed: " + JSON.stringify(data));
       }
@@ -477,6 +496,7 @@ export default function LandingPageManagement() {
                   file:bg-red-50 file:text-meewa-red
                   hover:file:bg-red-100"
               />
+              <div className="mt-2"><MediaPickerButton multiple accept="all" onSelect={addBannersFromLibrary} disabled={uploading === "hero_banners"} /></div>
               <p className="text-xs text-gray-500 mt-1">Min: 1920x1080 px (Landscape), Max: 3840x2160 px</p>
               {uploading === "hero_banners" && <p className="text-sm text-meewa-red mt-2">Uploading banners...</p>}
             </div>
@@ -610,6 +630,7 @@ export default function LandingPageManagement() {
                           )}
                         </div>
                         <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, key)} disabled={uploading === key} className="block w-full text-[10px] text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red cursor-pointer" />
+                        <div className="mt-2"><MediaPickerButton onSelect={(urls) => applyFieldUrl(key, urls[0])} /></div>
                         <p className="text-[10px] text-gray-500 mt-1">Min: 800x600 px, Max: 1920x1080 px</p>
                         {uploading === key && <p className="text-[10px] text-meewa-red mt-2">Uploading...</p>}
                       </div>
@@ -629,6 +650,7 @@ export default function LandingPageManagement() {
                       )}
                     </div>
                     <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, "industries_image_3")} disabled={uploading === "industries_image_3"} className="block w-full text-[10px] text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red cursor-pointer" />
+                    <div className="mt-2"><MediaPickerButton onSelect={(urls) => applyFieldUrl("industries_image_3", urls[0])} /></div>
                     <p className="text-[10px] text-gray-500 mt-1">Min: 800x600 px, Max: 1920x1080 px</p>
                     {uploading === "industries_image_3" && <p className="text-[10px] text-meewa-red mt-2">Uploading...</p>}
                   </div>
@@ -651,6 +673,7 @@ export default function LandingPageManagement() {
                           )}
                         </div>
                         <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, key)} disabled={uploading === key} className="block w-full text-[10px] text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red cursor-pointer" />
+                        <div className="mt-2"><MediaPickerButton onSelect={(urls) => applyFieldUrl(key, urls[0])} /></div>
                         <p className="text-[10px] text-gray-500 mt-1">Min: 800x600 px, Max: 1920x1080 px</p>
                         {uploading === key && <p className="text-[10px] text-meewa-red mt-2">Uploading...</p>}
                       </div>
@@ -717,6 +740,7 @@ export default function LandingPageManagement() {
                   file:bg-red-50 file:text-meewa-red
                   hover:file:bg-red-100"
               />
+              <div className="mt-2"><MediaPickerButton accept="all" onSelect={(urls) => applyFieldUrl("export_process_media_url", urls[0])} /></div>
               <p className="text-xs text-gray-500 mt-1">Min: 800x600 px, Max: 1920x1080 px</p>
               {uploading === "export_process_media_url" && <p className="text-sm text-meewa-red mt-2">Uploading...</p>}
             </div>
@@ -802,6 +826,7 @@ export default function LandingPageManagement() {
                           onChange={(e) => handleFeatureIconUpload(idx, e)}
                           className="text-xs"
                         />
+                        <MediaPickerButton label="Library" onSelect={(urls) => applyFeatureIcon(idx, urls[0])} />
                         <p className="text-[10px] text-gray-500 mt-1">Min: 100x100 px</p>
                       </div>
                     </div>
@@ -883,6 +908,7 @@ export default function LandingPageManagement() {
                   file:bg-red-50 file:text-meewa-red
                   hover:file:bg-red-100"
               />
+              <div className="mt-2"><MediaPickerButton accept="all" onSelect={(urls) => applyFieldUrl("about_media_url", urls[0])} /></div>
               <p className="text-xs text-gray-500 mt-1">Min: 1920x1080 px, Max: 3840x2160 px</p>
               {uploading === "about_media_url" && <p className="text-sm text-meewa-red mt-2">Uploading...</p>}
             </div>

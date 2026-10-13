@@ -13,13 +13,13 @@ from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 
 # Import Admin Routers
-from routers import admin_settings, admin_products, admin_categories, admin_dashboard, admin_enquiries, admin_auth, admin_audit
+from routers import admin_settings, admin_products, admin_categories, admin_dashboard, admin_enquiries, admin_auth, admin_audit, admin_media
 from utils.dependencies import verify_admin
 
 app = FastAPI(title="MEEWA Admin API")
 
 # Ensure tables exist
-# models.Base.metadata.create_all(bind=engine)
+models.Base.metadata.create_all(bind=engine)
 
 import os
 
@@ -46,6 +46,7 @@ app.include_router(admin_categories.router, dependencies=protected_deps)
 app.include_router(admin_dashboard.router, dependencies=protected_deps)
 app.include_router(admin_enquiries.router, dependencies=protected_deps)
 app.include_router(admin_audit.router, dependencies=protected_deps)
+app.include_router(admin_media.router, dependencies=protected_deps)
 
 @app.get("/")
 def read_root():

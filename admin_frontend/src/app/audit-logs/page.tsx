@@ -40,6 +40,7 @@ export default function AuditLogsPage() {
           <option value="product">Products</option>
           <option value="category">Categories</option>
           <option value="settings">Settings</option>
+          <option value="media">Media</option>
         </select>
       </div>
       

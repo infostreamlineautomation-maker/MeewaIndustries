@@ -74,6 +74,9 @@ export default function AdminSidebar() {
         <Link href="/enquiries" className={navItemClass("/enquiries")}>
           Enquiries
         </Link>
+        <Link href="/media" className={navItemClass("/media")}>
+          Media Library
+        </Link>
 
         {/* Page Settings Dropdown */}
         <div>

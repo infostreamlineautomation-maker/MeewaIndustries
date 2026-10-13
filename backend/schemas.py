@@ -136,3 +136,17 @@ class AuditLogResponse(BaseModel):
     admin: AdminUserResponse
     class Config:
         from_attributes = True
+
+class MediaResponse(BaseModel):
+    id: int
+    url: str
+    filename: Optional[str] = None
+    original_name: Optional[str] = None
+    alt_text: Optional[str] = None
+    mime_type: Optional[str] = None
+    size: Optional[int] = None
+    width: Optional[int] = None
+    height: Optional[int] = None
+    created_at: Optional[datetime] = None
+    class Config:
+        from_attributes = True

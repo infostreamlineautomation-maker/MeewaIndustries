@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import MediaPickerButton from "@/components/MediaPickerButton";
+import { MediaItem } from "@/lib/media";
 
 interface Category {
   id: number;
@@ -158,6 +160,20 @@ export default function ManageProductsPage() {
       }
     } else {
       performUpload();
+    }
+  };
+
+  const handleMediaSelect = (fieldName: string, urls: string[], items: MediaItem[]) => {
+    if (fieldName === 'banner_images') {
+      const tooSmall = items.filter(i => !i.mime_type?.startsWith('video/') && i.width && i.height && (i.width < 1000 || i.width / i.height < 2.0));
+      if (tooSmall.length > 0) {
+        alert("Banner image must be a landscape format and at least 1000px wide. Skipped: " + tooSmall.map(i => `${i.filename} (${i.width}x${i.height})`).join(", "));
+      }
+      const valid = items.filter(i => !tooSmall.includes(i)).map(i => i.url);
+      const currentBanners = Array.isArray(currentProduct.banner_images) ? currentProduct.banner_images : [];
+      setCurrentProduct({ ...currentProduct, banner_images: [...currentBanners, ...valid] });
+    } else {
+      setCurrentProduct({ ...currentProduct, [fieldName]: urls[0] });
     }
   };
 
@@ -348,7 +364,10 @@ export default function ManageProductsPage() {
                     </button>
                   </div>
                 )}
-                <input type="file" onChange={(e) => handleFileUpload(e, 'cover_image')} className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" />
+                <div className="flex items-center gap-3 flex-wrap">
+                  <input type="file" onChange={(e) => handleFileUpload(e, 'cover_image')} className="block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" />
+                  <MediaPickerButton onSelect={(urls, items) => handleMediaSelect('cover_image', urls, items)} />
+                </div>
                 <p className="text-xs text-gray-500 mt-1">Min: 800x800 px (Square), Max: 2000x2000 px</p>
                 {uploading === 'cover_image' && <span className="block text-sm text-red-500 mt-2">Uploading...</span>}
               </div>
@@ -389,6 +408,7 @@ export default function ManageProductsPage() {
                 ) : (
                   <>
                     <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'hero_animated_image')} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" />
+                    <div className="mt-2"><MediaPickerButton onSelect={(urls, items) => handleMediaSelect('hero_animated_image', urls, items)} /></div>
                     <p className="text-xs text-gray-500 mt-1">Min: 800x800 px (Square, transparent), Max: 2000x2000 px</p>
                   </>
                 )}
@@ -400,13 +420,16 @@ export default function ManageProductsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Section 1 Banner Image (Parallax Background)</label>
                 {currentProduct.section1_image && (
                   <div className="relative inline-block mb-2 group">
-                    <img src={`${currentProduct.section1_image?.startsWith('http') ? currentProduct.section1_image : process.env.NEXT_PUBLIC_ADMIN_API_URL + currentProduct.section1_image}`} alt="Preview" className="h-16 object-contain rounded-md border" />
+                    <img src={`${currentProduct.section1_image?.startsWith('http') ? currentProduct.section1_image : process.env.NEXT_PUBLIC_API_URL + currentProduct.section1_image}`} alt="Preview" className="h-16 object-contain rounded-md border" />
                     <button type="button" onClick={() => setCurrentProduct({ ...currentProduct, section1_image: '' })} className="absolute -top-2 -right-2 bg-white text-red-500 rounded-full p-1 shadow border border-gray-200 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity" title="Remove image">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
                     </button>
                   </div>
                 )}
-                <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'section1_image')} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"/>
+                <div className="flex items-center gap-3">
+                  <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, 'section1_image')} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"/>
+                  <MediaPickerButton onSelect={(urls, items) => handleMediaSelect('section1_image', urls, items)} />
+                </div>
                 <p className="text-xs text-gray-500 mt-1">Min: 1200x800 px, Max: 2500x1500 px</p>
               </div>
             </div>
@@ -432,6 +455,7 @@ export default function ManageProductsPage() {
               <p className="text-xs text-gray-500 mb-2 mt-[-2px]">Required dimensions: Minimum 1000 x 400 px, Maximum 3000 x 1200 px</p>
               <div className="flex items-center gap-4 mb-2">
                 <input type="file" onChange={(e) => handleFileUpload(e, 'banner_images')} className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-meewa-red hover:file:bg-red-100 cursor-pointer" />
+                <MediaPickerButton multiple accept="all" onSelect={(urls, items) => handleMediaSelect('banner_images', urls, items)} />
                 {uploading === 'banner_images' && <span className="text-sm text-red-500">Uploading...</span>}
               </div>
               <div className="space-y-2">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import MediaPickerButton from "@/components/MediaPickerButton";
 
 export default function CategoriesPageManagement() {
   const [settings, setSettings] = useState({
@@ -178,6 +179,11 @@ export default function CategoriesPageManagement() {
     newList[index][field] = value;
     setWhyFeatures(newList);
   };
+  const applyFeatureIcon = (index: number, url: string) => {
+    const newList = [...whyFeatures];
+    newList[index].icon_url = url;
+    setWhyFeatures(newList);
+  };
   const handleFeatureIconUpload = async (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const formData = new FormData();
@@ -186,9 +192,7 @@ export default function CategoriesPageManagement() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings/upload`, { method: 'POST', body: formData });
       const data = await res.json();
       if (res.ok && data.url) {
-        const newList = [...whyFeatures];
-        newList[index].icon_url = data.url;
-        setWhyFeatures(newList);
+        applyFeatureIcon(index, data.url);
       }
     } catch (err) {
       console.error(err);
@@ -196,6 +200,11 @@ export default function CategoriesPageManagement() {
   };
 
   // Banner Images Handlers
+  const applyBanner = (index: number, url: string) => {
+    const newBanners = [...bannerImages];
+    newBanners[index] = { image_url: url };
+    setBannerImages(newBanners);
+  };
   const handleSpecificBannerUpload = async (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const file = e.target.files[0];
@@ -207,9 +216,7 @@ export default function CategoriesPageManagement() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings/upload`, { method: 'POST', body: formData });
       const data = await res.json();
       if (res.ok && data.url) {
-        const newBanners = [...bannerImages];
-        newBanners[index] = { image_url: data.url };
-        setBannerImages(newBanners);
+        applyBanner(index, data.url);
       }
     } catch (err) {
       console.error(err);
@@ -347,6 +354,7 @@ export default function CategoriesPageManagement() {
                       <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-red-500 text-xs">✓</div>
                     )}
                     <input type="file" accept="image/*" onChange={(e) => handleFeatureIconUpload(idx, e)} className="text-xs w-24" />
+                    <MediaPickerButton label="Library" onSelect={(urls) => applyFeatureIcon(idx, urls[0])} />
                     <p className="text-[10px] text-gray-500 mt-1">Min: 100x100 px</p>
                   </div>
                 </div>
@@ -390,12 +398,17 @@ export default function CategoriesPageManagement() {
                       <img src={(banner.image_url)?.startsWith("http") ? (banner.image_url) : `${process.env.NEXT_PUBLIC_API_URL}${banner.image_url}`} className="w-full h-full object-cover" />
                     </>
                   ) : (
+                    <>
                     <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer hover:bg-gray-200 transition-colors">
                       <svg className="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
                       <span className="text-sm font-medium text-gray-500">Upload Image</span>
                       {uploading === `banner_${idx}` && <span className="text-xs text-meewa-red mt-1">Uploading...</span>}
                       <input type="file" className="hidden" accept="image/*" onChange={(e) => handleSpecificBannerUpload(idx, e)} disabled={!!uploading} />
                     </label>
+                    <div className="absolute bottom-4 inset-x-0 flex justify-center">
+                      <MediaPickerButton onSelect={(urls) => applyBanner(idx, urls[0])} disabled={!!uploading} />
+                    </div>
+                    </>
                   )}
                 </div>
               );
