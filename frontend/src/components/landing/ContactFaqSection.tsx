@@ -2,7 +2,8 @@
 import { fetchClientSettings } from '@/lib/fetchClientSettings';
 
 import { useState, useEffect } from 'react';
-import { Phone, Mail, MapPin, MessageCircle, Globe } from 'lucide-react';
+import Link from 'next/link';
+import { Phone, Mail, MapPin, Globe } from 'lucide-react';
 
 const defaultFaqs = [
   { question: "What products do you manufacture?", answer: "Detailed answer for \"What products do you manufacture?\" will be added here. Our team is always ready to provide comprehensive support for your specific needs." },
@@ -54,70 +55,72 @@ export default function ContactFaqSection({
   return (
     <section className="pt-4 md:pt-4 pb-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row gap-16">
+        <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
           
           {/* Left: Get In Touch */}
-          <div className="w-full lg:w-5/12 bg-[#F1F1F1] rounded-2xl md:rounded-3xl p-6 md:p-10 text-gray-900 shadow-sm md:shadow-xl border border-gray-200">
-            <h2 className="text-[28px] md:text-[40px] font-medium text-meewa-red leading-none tracking-normal mb-3 md:mb-4">Get In Touch</h2>
-            <p className="text-gray-600 text-[10px] md:text-sm mb-6 md:mb-10 leading-tight">
-              Get product details, pricing, samples, and export support. We'll respond within 24 hours.
+          <div className="w-full lg:w-5/12 bg-[#F1F1F1] rounded-2xl md:rounded-3xl p-6 md:p-8 text-gray-900 shadow-sm md:shadow-xl border border-gray-200 self-start h-fit">
+            <h2 className="text-[28px] md:text-[38px] font-medium text-meewa-red leading-none tracking-normal mb-3 md:mb-4">
+              {settings.get_in_touch_title || "Get In Touch"}
+            </h2>
+            <p className="text-gray-600 text-[10px] md:text-sm mb-6 md:mb-8 leading-tight">
+              {settings.get_in_touch_subtitle || "Get product details, pricing, samples, and export support. We'll respond within 24 hours."}
             </p>
 
-            <div className="space-y-3 md:space-y-4 mb-8 md:mb-12">
-              <div className="flex items-center p-3 md:p-4 border border-gray-300 md:border-gray-200 rounded-md md:rounded-xl bg-[#EBEBEB] md:bg-white shadow-sm hover:shadow-md transition-shadow">
+            <div className="space-y-3 md:space-y-3.5 mb-6 md:mb-8">
+              <div className="flex items-center p-3 md:p-3.5 border border-gray-300 md:border-gray-200 rounded-md md:rounded-xl bg-[#EBEBEB] md:bg-white shadow-sm hover:shadow-md transition-shadow">
                 <div className="w-8 md:w-10 flex-shrink-0 flex justify-center text-gray-600 md:text-meewa-red">
                   <Phone size={16} className="md:w-5 md:h-5" />
                 </div>
                 <div>
-                  <h4 className="text-[11px] md:text-sm font-bold md:font-bold text-gray-900 leading-tight">Call Us</h4>
-                  <p className="text-[9px] md:text-xs text-gray-600 leading-tight">{settings.contact_phone || "Speak directly with our export team."}</p>
+                  <h4 className="text-[11px] md:text-sm font-bold text-gray-900 leading-tight">Call Us</h4>
+                  <p className="text-[9px] md:text-xs text-gray-600 leading-tight">{settings.contact_phone || "+91 99786 44533"}</p>
                 </div>
               </div>
               
-              <div className="flex items-center p-3 md:p-4 border border-gray-300 md:border-gray-200 rounded-md md:rounded-xl bg-[#EBEBEB] md:bg-white shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center p-3 md:p-3.5 border border-gray-300 md:border-gray-200 rounded-md md:rounded-xl bg-[#EBEBEB] md:bg-white shadow-sm hover:shadow-md transition-shadow">
                 <div className="w-8 md:w-10 flex-shrink-0 flex justify-center text-gray-400 md:text-meewa-red">
                   <Mail size={16} className="md:w-5 md:h-5" />
                 </div>
                 <div>
-                  <h4 className="text-[11px] md:text-sm font-bold md:font-bold text-gray-900 leading-tight">Email Us</h4>
-                  <p className="text-[9px] md:text-xs text-gray-600 leading-tight">{settings.contact_email || "Send your product requirements anytime."}</p>
+                  <h4 className="text-[11px] md:text-sm font-bold text-gray-900 leading-tight">Email Us</h4>
+                  <p className="text-[9px] md:text-xs text-gray-600 leading-tight">{settings.contact_email || "sales@meewaindustries.com"}</p>
                 </div>
               </div>
 
-              <div className="flex items-center p-3 md:p-4 border border-gray-300 md:border-gray-200 rounded-md md:rounded-xl bg-[#EBEBEB] md:bg-white shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center p-3 md:p-3.5 border border-gray-300 md:border-gray-200 rounded-md md:rounded-xl bg-[#EBEBEB] md:bg-white shadow-sm hover:shadow-md transition-shadow">
                 <div className="w-8 md:w-10 flex-shrink-0 flex justify-center text-red-500 md:text-meewa-red">
                   <MapPin size={16} className="md:w-5 md:h-5" />
                 </div>
                 <div>
-                  <h4 className="text-[11px] md:text-sm font-bold md:font-bold text-gray-900 leading-tight">Office Address</h4>
-                  <p className="text-[9px] md:text-xs text-gray-600 leading-tight">{settings.contact_address || "Your Company Address, Gujarat, India"}</p>
+                  <h4 className="text-[11px] md:text-sm font-bold text-gray-900 leading-tight">Office Address</h4>
+                  <p className="text-[9px] md:text-xs text-gray-600 leading-tight">{settings.contact_address || "LG-04, Hiral Arcade, opp. New Court Building, Meghdoot Society, Athwalines, Athwa, Surat, Gujarat 395007"}</p>
                 </div>
               </div>
 
-              <div className="flex items-center p-3 md:p-4 border border-gray-300 md:border-gray-200 rounded-md md:rounded-xl bg-[#EBEBEB] md:bg-white shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center p-3 md:p-3.5 border border-gray-300 md:border-gray-200 rounded-md md:rounded-xl bg-[#EBEBEB] md:bg-white shadow-sm hover:shadow-md transition-shadow">
                 <div className="w-8 md:w-10 flex-shrink-0 flex justify-center text-blue-500 md:text-green-600">
                   <Globe size={16} className="md:w-5 md:h-5" />
                 </div>
                 <div>
-                  <h4 className="text-[11px] md:text-sm font-bold md:font-bold text-gray-900 leading-tight">Website</h4>
-                  <p className="text-[9px] md:text-xs text-gray-600 leading-tight">{settings.contact_website || "Visit our website for more details."}</p>
+                  <h4 className="text-[11px] md:text-sm font-bold text-gray-900 leading-tight">Website</h4>
+                  <p className="text-[9px] md:text-xs text-gray-600 leading-tight">{settings.contact_website || "www.meewaindustries.com"}</p>
                 </div>
               </div>
             </div>
 
             <div className="border-t border-gray-300 pt-4">
-              <p className="text-[8px] md:text-xs font-semibold text-gray-500 mb-2 md:mb-4 tracking-wide">Connect with us</p>
+              <p className="text-[8px] md:text-xs font-semibold text-gray-500 mb-2 md:mb-3 tracking-wide">Connect with us</p>
               <div className="flex space-x-5 text-gray-500">
-                <a href="#" className="hover:text-meewa-red transition-colors" aria-label="LinkedIn">
+                <a href={settings.social_linkedin || "#"} target={settings.social_linkedin ? "_blank" : undefined} rel="noopener noreferrer" className="hover:text-meewa-red transition-colors" aria-label="LinkedIn">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
                 </a>
-                <a href="#" className="hover:text-meewa-red transition-colors" aria-label="Facebook">
+                <a href={settings.social_facebook || "#"} target={settings.social_facebook ? "_blank" : undefined} rel="noopener noreferrer" className="hover:text-meewa-red transition-colors" aria-label="Facebook">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
                 </a>
-                <a href="#" className="hover:text-meewa-red transition-colors" aria-label="Instagram">
+                <a href={settings.social_instagram || "#"} target={settings.social_instagram ? "_blank" : undefined} rel="noopener noreferrer" className="hover:text-meewa-red transition-colors" aria-label="Instagram">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
                 </a>
-                <a href="#" className="hover:text-meewa-red transition-colors" aria-label="YouTube">
+                <a href={settings.social_youtube || "#"} target={settings.social_youtube ? "_blank" : undefined} rel="noopener noreferrer" className="hover:text-meewa-red transition-colors" aria-label="YouTube">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 7.17c.1-1.37 1.2-2.47 2.57-2.57 2.13-.16 4.96-.27 6.93-.27s4.8.11 6.93.27c1.37.1 2.47 1.2 2.57 2.57.17 2.24.27 4.54.27 4.83 0 .29-.1 2.59-.27 4.83-.1 1.37-1.2 2.47-2.57 2.57-2.13.16-4.96.27-6.93.27s-4.8-.11-6.93-.27c-1.37-.1-2.47-1.2-2.57-2.57-.17-2.24-.27-4.54-.27-4.83 0-.29.1-2.59.27-4.83z"/><polygon points="9.5 15.02 15.5 12 9.5 8.98 9.5 15.02"/></svg>
                 </a>
               </div>
@@ -153,18 +156,26 @@ export default function ContactFaqSection({
             </div>
 
             {/* Promo Box rendered after all FAQs */}
-            <div className="bg-meewa-red rounded-lg md:rounded-xl p-8 md:p-10 text-center text-white mt-4 md:mt-8 shadow-md">
-              <h3 className="text-lg md:text-3xl font-bold mb-3 md:mb-4 leading-tight">Looking for a Reliable Packaging Partner?</h3>
-              <p className="text-[11px] md:text-base mb-6 md:mb-8 text-white/90 md:px-8 leading-tight">
-                Whether you're sourcing standard products or custom packaging, our team is ready to help.
-              </p>
-              <button className="bg-[#D9D9D9] text-gray-900 px-6 py-2.5 md:px-8 md:py-3 rounded-[5px] md:rounded-md text-[11px] md:text-sm font-semibold hover:bg-white transition-colors">
-                Request Quote
-              </button>
-            </div>
+            {settings.hide_reliable_partner !== "true" && (
+              <div className="bg-meewa-red rounded-lg md:rounded-xl p-8 md:p-10 text-center text-white mt-4 md:mt-8 shadow-md">
+                <h3 className="text-lg md:text-3xl font-bold mb-3 md:mb-4 leading-tight">
+                  {settings.reliable_partner_title || "Looking for a Reliable Packaging Partner?"}
+                </h3>
+                <p className="text-[11px] md:text-base mb-6 md:mb-8 text-white/90 md:px-8 leading-tight">
+                  {settings.reliable_partner_subtitle || "Whether you're sourcing standard products or custom packaging, our team is ready to help."}
+                </p>
+                <Link
+                  href={settings.reliable_partner_btn_link || "/contact"}
+                  className="inline-block bg-[#D9D9D9] text-gray-900 px-6 py-2.5 md:px-8 md:py-3 rounded-[5px] md:rounded-md text-[11px] md:text-sm font-semibold hover:bg-white hover:text-meewa-red transition-all shadow-sm"
+                >
+                  {settings.reliable_partner_btn_text || "Request Quote"}
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </section>
   );
 }
+

@@ -156,6 +156,17 @@ export default function ContactSettingsPage() {
                 className="w-full border border-gray-300 rounded-lg p-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-meewa-red focus:border-meewa-red"
               />
             </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Website</label>
+              <input
+                type="text"
+                name="contact_website"
+                value={settings.contact_website || ""}
+                onChange={handleChange}
+                placeholder="www.meewaindustries.com"
+                className="w-full border border-gray-300 rounded-lg p-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-meewa-red focus:border-meewa-red"
+              />
+            </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">Office Address</label>
               <textarea
@@ -166,6 +177,33 @@ export default function ContactSettingsPage() {
                 placeholder="Your Company Address, Gujarat, India"
                 className="w-full border border-gray-300 rounded-lg p-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-meewa-red focus:border-meewa-red"
               />
+            </div>
+            <div className="md:col-span-2 pt-4 border-t border-gray-200">
+              <h3 className="text-base font-semibold text-gray-800 mb-4">Get In Touch Card (Header & Subtitle)</h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Get In Touch Title</label>
+                  <input
+                    type="text"
+                    name="get_in_touch_title"
+                    value={settings.get_in_touch_title || ""}
+                    onChange={handleChange}
+                    placeholder="Get In Touch"
+                    className="w-full border border-gray-300 rounded-lg p-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-meewa-red focus:border-meewa-red"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Get In Touch Subtitle</label>
+                  <textarea
+                    name="get_in_touch_subtitle"
+                    value={settings.get_in_touch_subtitle || ""}
+                    onChange={handleChange}
+                    rows={2}
+                    placeholder="Get product details, pricing, samples, and export support. We'll respond within 24 hours."
+                    className="w-full border border-gray-300 rounded-lg p-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-meewa-red focus:border-meewa-red"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

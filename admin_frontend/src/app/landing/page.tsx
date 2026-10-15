@@ -22,6 +22,18 @@ export default function LandingPageManagement() {
     contact_email: "",
     contact_address: "",
     contact_whatsapp: "",
+    contact_website: "",
+    get_in_touch_title: "",
+    get_in_touch_subtitle: "",
+    social_linkedin: "",
+    social_facebook: "",
+    social_instagram: "",
+    social_youtube: "",
+    reliable_partner_title: "",
+    reliable_partner_subtitle: "",
+    reliable_partner_btn_text: "",
+    reliable_partner_btn_link: "",
+    hide_reliable_partner: "false",
     industries_title: "",
     industries_subtitle: "",
     export_title: "",
@@ -73,6 +85,18 @@ export default function LandingPageManagement() {
           contact_email: data.contact_email || "",
           contact_address: data.contact_address || "",
           contact_whatsapp: data.contact_whatsapp || "",
+          contact_website: data.contact_website || "",
+          get_in_touch_title: data.get_in_touch_title || "",
+          get_in_touch_subtitle: data.get_in_touch_subtitle || "",
+          social_linkedin: data.social_linkedin || "",
+          social_facebook: data.social_facebook || "",
+          social_instagram: data.social_instagram || "",
+          social_youtube: data.social_youtube || "",
+          reliable_partner_title: data.reliable_partner_title || "",
+          reliable_partner_subtitle: data.reliable_partner_subtitle || "",
+          reliable_partner_btn_text: data.reliable_partner_btn_text || "",
+          reliable_partner_btn_link: data.reliable_partner_btn_link || "",
+          hide_reliable_partner: data.hide_reliable_partner || "false",
           industries_title: data.industries_title || "",
           industries_subtitle: data.industries_subtitle || "",
           export_title: data.export_title || "",
@@ -953,19 +977,133 @@ export default function LandingPageManagement() {
             </div>
           </div>
 
-          {/* Contact & Support Section */}
+          {/* Reliable Packaging Partner Promo Card */}
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">Contact & Support Section</h2>
+            <div className="flex justify-between items-center border-b pb-2">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-800">Reliable Packaging Partner Card</h2>
+                <p className="text-xs text-gray-500 mt-0.5">The call-to-action banner shown below FAQs on landing and product pages.</p>
+              </div>
+              <ToggleOption 
+                label="Show Promo Card" 
+                description="" 
+                checked={settings.hide_reliable_partner !== "true"} 
+                onChange={() => handleToggle('hide_reliable_partner')} 
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1 text-gray-900">Card Title</label>
+                <input 
+                  type="text" 
+                  name="reliable_partner_title"
+                  value={settings.reliable_partner_title}
+                  onChange={handleChange}
+                  placeholder="Looking for a Reliable Packaging Partner?"
+                  className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
+                />
+              </div>
+
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1 text-gray-900">Card Subtitle / Description</label>
+                <textarea 
+                  name="reliable_partner_subtitle"
+                  value={settings.reliable_partner_subtitle}
+                  onChange={handleChange}
+                  rows={2}
+                  placeholder="Whether you're sourcing standard products or custom packaging, our team is ready to help."
+                  className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red"
+                ></textarea>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1 text-gray-900">Button Text</label>
+                <input 
+                  type="text" 
+                  name="reliable_partner_btn_text"
+                  value={settings.reliable_partner_btn_text}
+                  onChange={handleChange}
+                  placeholder="Request Quote"
+                  className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1 text-gray-900">Button Link URL</label>
+                <input 
+                  type="text" 
+                  name="reliable_partner_btn_link"
+                  value={settings.reliable_partner_btn_link}
+                  onChange={handleChange}
+                  placeholder="/contact"
+                  className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Contact & Support Section (Get In Touch Box) */}
+          <div className="space-y-6">
+            <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">Get In Touch Box Settings</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1 text-gray-900">Box Heading / Title</label>
+                <input 
+                  type="text" 
+                  name="get_in_touch_title"
+                  value={settings.get_in_touch_title}
+                  onChange={handleChange}
+                  placeholder="Get In Touch"
+                  className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
+                />
+              </div>
+
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1 text-gray-900">Box Subtitle / Description</label>
+                <textarea 
+                  name="get_in_touch_subtitle"
+                  value={settings.get_in_touch_subtitle}
+                  onChange={handleChange}
+                  rows={2}
+                  placeholder="Get product details, pricing, samples, and export support. We'll respond within 24 hours."
+                  className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red"
+                ></textarea>
+              </div>
+
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1 text-gray-900">Contact Phone</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1 text-gray-900">Contact Phone (Call Us)</label>
                 <input 
                   type="text" 
                   name="contact_phone"
                   value={settings.contact_phone}
                   onChange={handleChange}
-                  placeholder="e.g. +91-98765-43210"
+                  placeholder="e.g. +91 99786 44533"
+                  className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1 text-gray-900">Contact Email (Email Us)</label>
+                <input 
+                  type="email" 
+                  name="contact_email"
+                  value={settings.contact_email}
+                  onChange={handleChange}
+                  placeholder="e.g. sales@meewaindustries.com"
+                  className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1 text-gray-900">Website</label>
+                <input 
+                  type="text" 
+                  name="contact_website"
+                  value={settings.contact_website}
+                  onChange={handleChange}
+                  placeholder="e.g. www.meewaindustries.com"
                   className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
                 />
               </div>
@@ -977,19 +1115,7 @@ export default function LandingPageManagement() {
                   name="contact_whatsapp"
                   value={settings.contact_whatsapp}
                   onChange={handleChange}
-                  placeholder="e.g. +91-98765-43210"
-                  className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
-                />
-              </div>
-
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1 text-gray-900">Contact Email</label>
-                <input 
-                  type="email" 
-                  name="contact_email"
-                  value={settings.contact_email}
-                  onChange={handleChange}
-                  placeholder="e.g. info@meewaindustries.com"
+                  placeholder="e.g. +91 99786 44533"
                   className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
                 />
               </div>
@@ -1001,9 +1127,59 @@ export default function LandingPageManagement() {
                   value={settings.contact_address}
                   onChange={handleChange}
                   rows={2}
-                  placeholder="e.g. 123 Industry Hub, Gujarat, India"
+                  placeholder="e.g. LG-04, Hiral Arcade, opp. New Court Building, Meghdoot Society, Athwalines, Athwa, Surat, Gujarat 395007"
                   className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red"
                 ></textarea>
+              </div>
+
+              <div className="md:col-span-2 pt-2 border-t border-gray-200">
+                <h3 className="text-sm font-semibold text-gray-800 mb-3">Connect With Us (Social Links)</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">LinkedIn URL</label>
+                    <input 
+                      type="text" 
+                      name="social_linkedin"
+                      value={settings.social_linkedin}
+                      onChange={handleChange}
+                      placeholder="https://linkedin.com/company/meewa"
+                      className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-sm text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">Facebook URL</label>
+                    <input 
+                      type="text" 
+                      name="social_facebook"
+                      value={settings.social_facebook}
+                      onChange={handleChange}
+                      placeholder="https://facebook.com/meewa"
+                      className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-sm text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">Instagram URL</label>
+                    <input 
+                      type="text" 
+                      name="social_instagram"
+                      value={settings.social_instagram}
+                      onChange={handleChange}
+                      placeholder="https://instagram.com/meewa"
+                      className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-sm text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-600 mb-1">YouTube URL</label>
+                    <input 
+                      type="text" 
+                      name="social_youtube"
+                      value={settings.social_youtube}
+                      onChange={handleChange}
+                      placeholder="https://youtube.com/@meewa"
+                      className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-sm text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red focus:ring-meewa-red" 
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
