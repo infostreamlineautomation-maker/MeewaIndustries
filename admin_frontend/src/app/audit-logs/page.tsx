@@ -41,6 +41,7 @@ export default function AuditLogsPage() {
           <option value="category">Categories</option>
           <option value="settings">Settings</option>
           <option value="media">Media</option>
+          <option value="faq">FAQs</option>
         </select>
       </div>
       

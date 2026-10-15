@@ -20,6 +20,9 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     """Upgrade schema."""
+    # The table may already exist if the app created it via Base.metadata.create_all()
+    if sa.inspect(op.get_bind()).has_table('media'):
+        return
     op.create_table(
         'media',
         sa.Column('id', sa.Integer(), nullable=False),

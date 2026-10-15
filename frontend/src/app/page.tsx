@@ -26,7 +26,7 @@ export default async function Home() {
       {settings.hide_landing_export !== "true" && <ExportProcess />}
       {settings.hide_landing_industries !== "true" && <IndustriesWeServe />}
       {settings.hide_landing_about !== "true" && <AboutCompany />}
-      {settings.hide_landing_contact !== "true" && <ContactFaqSection />}
+      {settings.hide_landing_contact !== "true" && <ContactFaqSection faqLocation="landing" />}
     </div>
   );
 }

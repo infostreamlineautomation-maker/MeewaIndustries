@@ -77,6 +77,9 @@ export default function AdminSidebar() {
         <Link href="/media" className={navItemClass("/media")}>
           Media Library
         </Link>
+        <Link href="/faqs" className={navItemClass("/faqs")}>
+          FAQ Bank
+        </Link>
 
         {/* Page Settings Dropdown */}
         <div>

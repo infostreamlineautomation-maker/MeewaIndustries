@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import MediaPickerButton from "@/components/MediaPickerButton";
 import { MediaItem } from "@/lib/media";
+import FaqPlacementEditor from "@/components/FaqPlacementEditor";
 
 interface Category {
   id: number;
@@ -585,6 +586,19 @@ export default function ManageProductsPage() {
               </div>
             )}
           </div>
+        </div>
+
+        <div className="border-t pt-4 mt-4">
+          {currentProduct.id ? (
+            <FaqPlacementEditor
+              location={`product:${currentProduct.id}`}
+              title="Product FAQs"
+              description="FAQs only for this product. Leave empty to show the default product FAQs (Product Detail Page settings). Changes save automatically."
+              emptyHint="No product-specific FAQs. This product shows the default product FAQs."
+            />
+          ) : (
+            <p className="text-sm text-gray-500">Save the product first to add product-specific FAQs.</p>
+          )}
         </div>
 
         <div className="flex gap-4 pt-4 border-t">

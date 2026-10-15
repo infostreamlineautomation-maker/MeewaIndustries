@@ -115,7 +115,7 @@ export default async function ProductsPage() {
       )}
 
       {/* 5. Contact & FAQs (Added for Products Page) */}
-      {settings.hide_pg_contact !== "true" && <ContactFaqSection />}
+      {settings.hide_pg_contact !== "true" && <ContactFaqSection faqLocation="products" />}
 
     </div>
   );

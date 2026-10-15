@@ -455,7 +455,7 @@ export default function ProductClientPage({ product, relatedProducts, settings }
 
       {/* 5. Contact & FAQ Section */}
       <div className="relative z-20">
-        <ContactFaqSection isProductPage={true} productName={product.name} />
+        <ContactFaqSection faqLocation={`product:${product.id}`} fallbackLocation="product_default" />
         {/* Full Screen Video Modal */}
       {fullScreenVideo && (
         <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import FaqPlacementEditor from "@/components/FaqPlacementEditor";
 
 export default function ProductDetailSettings() {
   const [settings, setSettings] = useState({
@@ -77,7 +78,7 @@ export default function ProductDetailSettings() {
       <div className="mb-8 flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Product Detail Page</h1>
-          <p className="text-gray-500 mt-2">Manage the visibility of components on all product detail pages globally.</p>
+          <p className="text-gray-500 mt-2">Manage the visibility of components and FAQs on all product detail pages globally.</p>
         </div>
       </div>
       
@@ -126,6 +127,14 @@ export default function ProductDetailSettings() {
             />
           </div>
         </div>
+
+        {/* Product FAQs Section */}
+        <FaqPlacementEditor
+          location="product_default"
+          title="Default Product FAQs"
+          description="Shown on every product page that has no FAQs of its own (set per product in Manage Products). Changes save automatically."
+          emptyHint="No default product FAQs. Product pages without their own FAQs will show no FAQ list."
+        />
         
         <div className="pt-6 border-t flex justify-end">
           <button 

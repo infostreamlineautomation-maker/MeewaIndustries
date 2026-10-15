@@ -15,7 +15,7 @@ load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 # Relative imports
 from database import engine, get_db
 import models, schemas
-from routers import enquiries, settings, admin_auth, admin_categories, admin_products, admin_dashboard, admin_audit, admin_settings, admin_enquiries, admin_media
+from routers import enquiries, settings, faqs, admin_auth, admin_categories, admin_products, admin_dashboard, admin_audit, admin_settings, admin_enquiries, admin_media, admin_faqs
 from utils.dependencies import verify_admin
 # pyrefly: ignore [missing-import]
 from fastapi import Depends
@@ -57,6 +57,7 @@ app.mount("/uploads", StaticFiles(directory=LOCAL_UPLOAD_DIR), name="uploads")
 # Include routers
 app.include_router(enquiries.router)
 app.include_router(settings.router)
+app.include_router(faqs.router)
 
 # Include Admin Routers (Auth is unprotected)
 app.include_router(admin_auth.router, prefix="/admin")
@@ -70,6 +71,7 @@ app.include_router(admin_audit.router, prefix="/admin", dependencies=protected_d
 app.include_router(admin_settings.router, prefix="/admin", dependencies=protected_deps)
 app.include_router(admin_enquiries.router, prefix="/admin", dependencies=protected_deps)
 app.include_router(admin_media.router, prefix="/admin", dependencies=protected_deps)
+app.include_router(admin_faqs.router, prefix="/admin", dependencies=protected_deps)
 
 
 @app.get("/")

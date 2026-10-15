@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import MediaPickerButton from "@/components/MediaPickerButton";
+import FaqPlacementEditor from "@/components/FaqPlacementEditor";
 
 export default function LandingPageManagement() {
   const [settings, setSettings] = useState({
@@ -51,7 +52,6 @@ export default function LandingPageManagement() {
   
   const [products, setProducts] = useState<any[]>([]);
   
-  const [faqs, setFaqs] = useState<{question: string, answer: string}[]>([]);
   const [features, setFeatures] = useState<{title: string, description: string, icon: string}[]>([]);
   const [industries, setIndustries] = useState<string[]>([]);
   const [exportSteps, setExportSteps] = useState<{num: string, title: string, desc: string}[]>([]);
@@ -140,15 +140,7 @@ export default function LandingPageManagement() {
           { num: "06", title: "Global Shipping", desc: "Orders are packed and delivered worldwide." },
         ];
 
-        const defaultFaqs = [
-          { question: "What products do you manufacture?", answer: "Detailed answer for \"What products do you manufacture?\" will be added here. Our team is always ready to provide comprehensive support for your specific needs." },
-          { question: "Do you offer custom printing?", answer: "Yes, we offer custom printing on many of our packaging products to help your brand stand out." },
-          { question: "What is your minimum order quantity?", answer: "Our minimum order quantity varies by product. Please contact our sales team for detailed information." },
-          { question: "Which countries do you export to?", answer: "We export globally to many countries across North America, Europe, Asia, and the Middle East." },
-          { question: "Can I request product samples?", answer: "Yes, product samples are available upon request to ensure quality meets your standards before bulk ordering." }
-        ];
 
-        setFaqs(data.landing_faqs?.length > 0 ? data.landing_faqs : defaultFaqs);
         setFeatures(data.landing_features?.length > 0 ? data.landing_features : defaultFeatures);
         setIndustries(data.landing_industries?.length > 0 ? data.landing_industries : defaultIndustries);
         setExportSteps(data.landing_export_steps?.length > 0 ? data.landing_export_steps : defaultExportSteps);
@@ -324,7 +316,6 @@ export default function LandingPageManagement() {
     try {
       const bulkData = [
         ...Object.entries(settings).map(([key, value]) => ({ key, value })),
-        { key: "landing_faqs", value: faqs },
         { key: "landing_features", value: features },
         { key: "landing_industries", value: industries },
         { key: "landing_export_steps", value: exportSteps }
@@ -346,14 +337,6 @@ export default function LandingPageManagement() {
     }
   };
 
-  // FAQ Handlers
-  const addFaq = () => setFaqs([...faqs, { question: "", answer: "" }]);
-  const removeFaq = (index: number) => setFaqs(faqs.filter((_, i) => i !== index));
-  const updateFaq = (index: number, field: 'question' | 'answer', value: string) => {
-    const newFaqs = [...faqs];
-    newFaqs[index][field] = value;
-    setFaqs(newFaqs);
-  };
 
   // Feature Handlers
   const addFeature = () => setFeatures([...features, { title: "", description: "", icon: "" }]);
@@ -940,42 +923,7 @@ export default function LandingPageManagement() {
 
 
           {/* FAQs Section */}
-          <div className="space-y-6">
-            <div className="flex justify-between items-center border-b pb-2">
-              <h2 className="text-xl font-semibold text-gray-800">FAQs</h2>
-              <button type="button" onClick={addFaq} className="text-sm bg-meewa-red text-white px-3 py-1 rounded hover:bg-red-700">+ Add FAQ</button>
-            </div>
-            
-            {faqs.length === 0 && <p className="text-gray-500 text-sm">No FAQs added yet.</p>}
-            
-            <div className="space-y-4">
-              {faqs.map((faq, idx) => (
-                <div key={idx} className="p-4 border rounded-lg bg-gray-50 relative">
-                  <button type="button" onClick={() => removeFaq(idx)} className="absolute top-4 right-4 text-red-500 hover:text-red-700 text-sm font-bold">✕ Remove</button>
-                  <div className="grid grid-cols-1 gap-4 mr-16">
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1 text-gray-900">Question</label>
-                      <input 
-                        type="text" 
-                        value={faq.question}
-                        onChange={(e) => updateFaq(idx, 'question', e.target.value)}
-                        className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red text-sm" 
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1 text-gray-900">Answer</label>
-                      <textarea 
-                        value={faq.answer}
-                        onChange={(e) => updateFaq(idx, 'answer', e.target.value)}
-                        rows={2}
-                        className="w-full border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white placeholder-gray-400 focus:border-meewa-red text-sm"
-                      ></textarea>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <FaqPlacementEditor location="landing" title="FAQs" />
 
           {/* Reliable Packaging Partner Promo Card */}
           <div className="space-y-6">

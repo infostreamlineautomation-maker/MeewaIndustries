@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import MediaPickerButton from "@/components/MediaPickerButton";
+import FaqPlacementEditor from "@/components/FaqPlacementEditor";
 
 export default function CategoriesPageManagement() {
   const [settings, setSettings] = useState({
@@ -416,6 +417,9 @@ export default function CategoriesPageManagement() {
           </div>
           <p className="text-xs text-gray-500 mt-1 mb-6">Recommended: 1920x400 px or 800x800 px depending on the box shape.</p>
         </div>
+
+        {/* FAQs */}
+        <FaqPlacementEditor location="products" title="FAQs" description="Shown in the Contact & FAQs block at the bottom of the Products page. Changes save automatically." />
 
         <div className="mt-10 pt-6 border-t">
           <button type="submit" className="bg-meewa-red text-white px-6 py-3 rounded-lg font-bold hover:bg-red-700 transition-colors">

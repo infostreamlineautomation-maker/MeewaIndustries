@@ -5,48 +5,37 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Phone, Mail, MapPin, Globe } from 'lucide-react';
 
-const defaultFaqs = [
-  { question: "What products do you manufacture?", answer: "Detailed answer for \"What products do you manufacture?\" will be added here. Our team is always ready to provide comprehensive support for your specific needs." },
-  { question: "Do you offer custom printing?", answer: "Yes, we offer custom printing on many of our packaging products to help your brand stand out." },
-  { question: "What is your minimum order quantity?", answer: "Our minimum order quantity varies by product. Please contact our sales team for detailed information." },
-  { question: "Which countries do you export to?", answer: "We export globally to many countries across North America, Europe, Asia, and the Middle East." },
-  { question: "Can I request product samples?", answer: "Yes, product samples are available upon request to ensure quality meets your standards before bulk ordering." },
-  { question: "How long does production take?", answer: "Production time typically ranges from 15 to 30 days depending on the product, customization, and order volume." },
-  { question: "How can I request a quote?", answer: "You can request a quote by filling out the form on our Contact Us page or by directly emailing our sales team." }
-];
+type Faq = { id: number; question: string; answer: string };
 
-const productFaqs = [
-  { question: "Can I customize products?", answer: "Yes, we offer full customization including size, printing, and material specifications for most products." },
-  { question: "What is MOQ?", answer: "The Minimum Order Quantity depends on the specific product. Please contact us for the exact MOQ for this item." },
-  { question: "Do you provide samples?", answer: "Yes, we provide samples for quality checking before you place a bulk order." }
-];
-
-export default function ContactFaqSection({ 
-  isProductPage = false, 
-  productName = "Paper Cups" 
-}: { 
-  isProductPage?: boolean, 
-  productName?: string 
+export default function ContactFaqSection({
+  faqLocation = "landing",
+  fallbackLocation,
+}: {
+  // Which FAQ placement to show, managed in the admin FAQ Bank:
+  // "landing" | "about" | "products" | "product:<id>"
+  faqLocation?: string,
+  // Used when faqLocation has no FAQs (e.g. a product without its own FAQs -> "product_default")
+  fallbackLocation?: string,
 }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [settings, setSettings] = useState<any>({});
-  const [faqs, setFaqs] = useState<any[]>(defaultFaqs);
+  const [faqs, setFaqs] = useState<Faq[]>([]);
 
   useEffect(() => {
     fetchClientSettings()
       .then(res => res.json())
-      .then(data => {
-        setSettings(data);
-        if (!isProductPage && data.landing_faqs && data.landing_faqs.length > 0) {
-          setFaqs(data.landing_faqs);
-        } else if (isProductPage) {
-          setFaqs(productFaqs);
-        } else {
-          setFaqs(defaultFaqs);
-        }
-      })
+      .then(data => setSettings(data))
       .catch(err => console.error(err));
   }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams({ location: faqLocation });
+    if (fallbackLocation) params.set("fallback", fallbackLocation);
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/faqs?${params.toString()}`)
+      .then(res => (res.ok ? res.json() : []))
+      .then(data => setFaqs(Array.isArray(data) ? data : []))
+      .catch(err => console.error(err));
+  }, [faqLocation, fallbackLocation]);
 
   const toggleFaq = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -129,10 +118,26 @@ export default function ContactFaqSection({
 
           {/* Right: FAQs & Promo Box */}
           <div className="w-full lg:w-7/12 flex flex-col">
+            {faqs.length > 0 && (
+            <>
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  mainEntity: faqs.map(faq => ({
+                    "@type": "Question",
+                    name: faq.question,
+                    acceptedAnswer: { "@type": "Answer", text: faq.answer },
+                  })),
+                }),
+              }}
+            />
             <h2 className="text-[28px] md:text-[40px] font-medium text-meewa-red leading-none tracking-normal mb-6 md:mb-10">FAQs</h2>
             <div className="space-y-4 mb-8 md:mb-auto">
               {faqs.map((faq, index) => (
-                <div key={index} className="border border-gray-300 rounded-md md:rounded-xl overflow-hidden transition-all duration-200 bg-white">
+                <div key={faq.id} className="border border-gray-300 rounded-md md:rounded-xl overflow-hidden transition-all duration-200 bg-white">
                   <button 
                     onClick={() => toggleFaq(index)}
                     className="w-full flex items-center justify-between p-3 md:p-6 text-left focus:outline-none hover:bg-gray-50"
@@ -154,6 +159,8 @@ export default function ContactFaqSection({
                 </div>
               ))}
             </div>
+            </>
+            )}
 
             {/* Promo Box rendered after all FAQs */}
             {settings.hide_reliable_partner !== "true" && (

@@ -28,6 +28,7 @@ class SiteSettingUpdate(BaseModel):
     value: Any
     
 @router.get("")
+@router.get("/")
 def get_all_settings(db: Session = Depends(get_db)):
     settings = db.query(models.SiteSetting).all()
     res = {}
@@ -49,6 +50,7 @@ def get_setting(key: str, db: Session = Depends(get_db)):
     return {"key": setting.key, "value": val}
 
 @router.post("")
+@router.post("/")
 def update_setting(data: SiteSettingUpdate, db: Session = Depends(get_db)):
     setting = db.query(models.SiteSetting).filter(models.SiteSetting.key == data.key).first()
     if setting:

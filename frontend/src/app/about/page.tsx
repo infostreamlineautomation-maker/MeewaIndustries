@@ -280,7 +280,7 @@ export default async function AboutPage() {
 
       {/* 7. Contact / FAQs Section (Reused from Landing Page) */}
       {showFaqs && (
-        <ContactFaqSection />
+        <ContactFaqSection faqLocation="about" />
       )}
 
     </div>

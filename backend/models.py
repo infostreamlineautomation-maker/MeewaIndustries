@@ -93,6 +93,25 @@ class AdminUser(Base):
     password_hash = Column(String)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
+class Faq(Base):
+    __tablename__ = "faqs"
+    id = Column(Integer, primary_key=True, index=True)
+    question = Column(String)
+    answer = Column(String)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    placements = relationship("FaqPlacement", back_populates="faq", cascade="all, delete-orphan")
+
+class FaqPlacement(Base):
+    __tablename__ = "faq_placements"
+    id = Column(Integer, primary_key=True, index=True)
+    faq_id = Column(Integer, ForeignKey("faqs.id", ondelete="CASCADE"), index=True)
+    # "landing", "about", "products", "product_default" or "product:<id>"
+    location = Column(String, index=True)
+    sequence = Column(Integer, default=0)
+    faq = relationship("Faq", back_populates="placements")
+
 class Media(Base):
     __tablename__ = "media"
     id = Column(Integer, primary_key=True, index=True)

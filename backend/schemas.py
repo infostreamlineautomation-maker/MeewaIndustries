@@ -150,3 +150,22 @@ class MediaResponse(BaseModel):
     created_at: Optional[datetime] = None
     class Config:
         from_attributes = True
+
+class FaqCreate(BaseModel):
+    question: str
+    answer: str
+    is_active: bool = True
+    locations: Optional[List[str]] = None
+
+class FaqUpdate(BaseModel):
+    question: Optional[str] = None
+    answer: Optional[str] = None
+    is_active: Optional[bool] = None
+    locations: Optional[List[str]] = None
+
+class FaqResponse(BaseModel):
+    id: int
+    question: str
+    answer: str
+    is_active: bool = True
+    locations: List[str] = []

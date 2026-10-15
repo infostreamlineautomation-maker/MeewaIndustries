@@ -10,6 +10,7 @@ router = APIRouter(
     tags=["settings"],
 )
 
+@router.get("")
 @router.get("/")
 def get_public_settings(preview: bool = False, db: Session = Depends(get_db)):
     settings = db.query(models.SiteSetting).all()

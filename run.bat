@@ -19,5 +19,12 @@ if not exist "backend\venv\Scripts\uvicorn.exe" (
     cd ..
 )
 
+:: Clean up any stale processes holding the required ports
+for /f "tokens=5" %%a in ('netstat -aon ^| findstr :8000 ^| findstr LISTENING') do taskkill /f /pid %%a >nul 2>&1
+for /f "tokens=5" %%a in ('netstat -aon ^| findstr :8001 ^| findstr LISTENING') do taskkill /f /pid %%a >nul 2>&1
+for /f "tokens=5" %%a in ('netstat -aon ^| findstr :3000 ^| findstr LISTENING') do taskkill /f /pid %%a >nul 2>&1
+for /f "tokens=5" %%a in ('netstat -aon ^| findstr :3001 ^| findstr LISTENING') do taskkill /f /pid %%a >nul 2>&1
+
 echo Starting MEEWA services concurrently...
 call npx -y concurrently "cd backend && call venv\Scripts\activate.bat && python -m uvicorn main:app --reload --reload-exclude venv --port 8000" "cd frontend && npm run dev -- -p 3000" "cd backend && call venv\Scripts\activate.bat && python -m uvicorn admin_main:app --reload --reload-exclude venv --port 8001" "cd admin_frontend && npm run dev -- -p 3001" --kill-others --names "API,WEB,ADMIN_API,ADMIN_WEB" --prefix-colors "blue,green,magenta,yellow"
+

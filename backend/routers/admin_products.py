@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 # pyrefly: ignore [missing-import]
 from sqlalchemy.orm import Session
 from database import get_db
-from models import Product
+from models import Product, FaqPlacement
 from schemas import ProductResponse, ProductCreate, ProductUpdate
 from utils.audit import log_audit
 
@@ -49,6 +49,7 @@ def delete_product(product_id: int, request: Request, db: Session = Depends(get_
     db_prod = db.query(Product).filter(Product.id == product_id).first()
     if not db_prod:
         raise HTTPException(status_code=404, detail="Product not found")
+    db.query(FaqPlacement).filter(FaqPlacement.location == f"product:{product_id}").delete(synchronize_session=False)
     db.delete(db_prod)
     db.commit()
     log_audit(db, request, "Deleted", "product", product_id, f"Deleted product: {db_prod.name}")
