@@ -10,6 +10,7 @@ const BANNER_BOX_CONFIG = [
     name: "Box 1 (Top Left • Wide)",
     colSpan: "col-span-2 md:col-span-7",
     aspect: "md:aspect-[700/340]",
+    heightClass: "h-[180px] sm:h-64 md:h-[340px]",
     desktopDim: "700 × 340 px",
     recommendedDim: "1400 × 680 px",
     aspectRatio: "2.06 : 1",
@@ -21,6 +22,7 @@ const BANNER_BOX_CONFIG = [
     name: "Box 2 (Top Right • Standard)",
     colSpan: "col-span-1 md:col-span-5",
     aspect: "md:aspect-[492/340]",
+    heightClass: "h-40 sm:h-56 md:h-[340px]",
     desktopDim: "492 × 340 px",
     recommendedDim: "984 × 680 px",
     aspectRatio: "1.45 : 1",
@@ -32,6 +34,7 @@ const BANNER_BOX_CONFIG = [
     name: "Box 3 (Bottom Left • Standard)",
     colSpan: "col-span-1 md:col-span-5",
     aspect: "md:aspect-[492/340]",
+    heightClass: "h-40 sm:h-56 md:h-[340px]",
     desktopDim: "492 × 340 px",
     recommendedDim: "984 × 680 px",
     aspectRatio: "1.45 : 1",
@@ -43,6 +46,7 @@ const BANNER_BOX_CONFIG = [
     name: "Box 4 (Bottom Right • Wide)",
     colSpan: "col-span-2 md:col-span-7",
     aspect: "md:aspect-[700/340]",
+    heightClass: "h-[180px] sm:h-64 md:h-[340px]",
     desktopDim: "700 × 340 px",
     recommendedDim: "1400 × 680 px",
     aspectRatio: "2.06 : 1",
@@ -485,7 +489,7 @@ export default function CategoriesPageManagement() {
                   </div>
 
                   {/* Image Container with exact aspect ratio matching user site */}
-                  <div className={`relative w-full bg-gray-100 rounded-2xl md:rounded-3xl overflow-hidden shadow-sm group border-2 border-gray-200 hover:border-meewa-red transition-all ${cfg.aspect} h-[180px] sm:h-64 md:h-[340px]`}>
+                  <div className={`relative w-full bg-gray-100 rounded-2xl md:rounded-3xl overflow-hidden shadow-sm group border-2 border-gray-200 hover:border-meewa-red transition-all ${cfg.aspect} ${cfg.heightClass}`}>
                     {/* Persistent Dimension Watermark at Top-Left */}
                     <div className="absolute top-3 left-3 z-10 bg-black/75 backdrop-blur-md text-white text-[11px] px-2.5 py-1 rounded-md font-medium shadow flex items-center gap-1.5 pointer-events-none">
                       <span className="w-1.5 h-1.5 rounded-full bg-green-400"></span>
