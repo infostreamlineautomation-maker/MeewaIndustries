@@ -15,6 +15,37 @@ export default async function ContactPage() {
     settings = await res.json();
   } catch(e) {}
 
+  // Helper to resolve social URLs from either specific keys or footer_socials array
+  const getSocialLink = (platform: string, directKey: string) => {
+    const direct = settings[directKey];
+    if (direct && typeof direct === 'string' && direct.trim() !== '') {
+      return direct.trim();
+    }
+    if (Array.isArray(settings.footer_socials)) {
+      const match = settings.footer_socials.find(
+        (s: any) => s?.label && s.label.toLowerCase() === platform.toLowerCase()
+      );
+      if (match?.href && match.href.trim() !== '' && match.href !== '#') {
+        return match.href.trim();
+      }
+    }
+    return null;
+  };
+
+  const formatSocialUrl = (url?: string | null) => {
+    if (!url || url === '#') return '#';
+    const trimmed = url.trim();
+    if (!trimmed || trimmed === '#') return '#';
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+    return `https://${trimmed}`;
+  };
+
+  const linkedinUrl = formatSocialUrl(getSocialLink('linkedin', 'social_linkedin'));
+  const facebookUrl = formatSocialUrl(getSocialLink('facebook', 'social_facebook'));
+  const instagramUrl = formatSocialUrl(getSocialLink('instagram', 'social_instagram'));
+  const youtubeUrl = formatSocialUrl(getSocialLink('youtube', 'social_youtube'));
+  const twitterUrl = formatSocialUrl(getSocialLink('twitter', 'social_twitter') || getSocialLink('x', 'social_x'));
+
   return (
     <div className="bg-white min-h-screen pb-24">
       
@@ -47,7 +78,13 @@ export default async function ContactPage() {
                 </div>
                 <div>
                   <h4 className="text-gray-900 font-semibold text-sm">Call Us</h4>
-                  <p className="text-gray-600 text-sm mt-0.5">{settings.contact_phone || "Speak directly with our export team."}</p>
+                  {settings.contact_phone ? (
+                    <a href={`tel:${settings.contact_phone.replace(/\s+/g, '')}`} className="text-gray-600 text-sm mt-0.5 hover:text-meewa-red hover:underline transition-colors block">
+                      {settings.contact_phone}
+                    </a>
+                  ) : (
+                    <p className="text-gray-600 text-sm mt-0.5">Speak directly with our export team.</p>
+                  )}
                 </div>
               </div>
 
@@ -58,7 +95,13 @@ export default async function ContactPage() {
                 </div>
                 <div>
                   <h4 className="text-gray-900 font-semibold text-sm">Email Us</h4>
-                  <p className="text-gray-600 text-sm mt-0.5">{settings.contact_email || "Send your product requirements anytime."}</p>
+                  {settings.contact_email ? (
+                    <a href={`mailto:${settings.contact_email}`} className="text-gray-600 text-sm mt-0.5 hover:text-meewa-red hover:underline transition-colors block">
+                      {settings.contact_email}
+                    </a>
+                  ) : (
+                    <p className="text-gray-600 text-sm mt-0.5">Send your product requirements anytime.</p>
+                  )}
                 </div>
               </div>
 
@@ -81,7 +124,14 @@ export default async function ContactPage() {
                   </div>
                   <div>
                     <h4 className="text-gray-900 font-semibold text-sm">WhatsApp</h4>
-                    <p className="text-gray-600 text-sm mt-0.5">{settings.contact_whatsapp}</p>
+                    <a 
+                      href={`https://wa.me/${settings.contact_whatsapp.replace(/[^0-9]/g, '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 text-sm mt-0.5 hover:text-green-600 hover:underline transition-colors block"
+                    >
+                      {settings.contact_whatsapp}
+                    </a>
                   </div>
                 </div>
               )}
@@ -91,22 +141,57 @@ export default async function ContactPage() {
             <div className="mt-10">
               <div className="flex items-center space-x-4 mb-6">
                 <div className="h-px bg-gray-300 flex-grow"></div>
-                <span className="text-sm text-gray-500 font-medium">Connect with us</span>
+                <span className="text-sm text-gray-500 font-medium">{settings.connect_with_us_title || "Connect with us"}</span>
                 <div className="h-px bg-gray-300 flex-grow"></div>
               </div>
               <div className="flex justify-center space-x-4">
-                <a href="#" className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-meewa-red hover:text-white hover:border-meewa-red transition-all" aria-label="LinkedIn">
+                <a 
+                  href={linkedinUrl} 
+                  target={linkedinUrl !== '#' ? '_blank' : undefined} 
+                  rel={linkedinUrl !== '#' ? 'noopener noreferrer' : undefined}
+                  className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-meewa-red hover:text-white hover:border-meewa-red transition-all shadow-sm" 
+                  aria-label="LinkedIn"
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
                 </a>
-                <a href="#" className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-meewa-red hover:text-white hover:border-meewa-red transition-all" aria-label="Facebook">
+                <a 
+                  href={facebookUrl} 
+                  target={facebookUrl !== '#' ? '_blank' : undefined} 
+                  rel={facebookUrl !== '#' ? 'noopener noreferrer' : undefined}
+                  className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-meewa-red hover:text-white hover:border-meewa-red transition-all shadow-sm" 
+                  aria-label="Facebook"
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
                 </a>
-                <a href="#" className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-meewa-red hover:text-white hover:border-meewa-red transition-all" aria-label="Instagram">
+                <a 
+                  href={instagramUrl} 
+                  target={instagramUrl !== '#' ? '_blank' : undefined} 
+                  rel={instagramUrl !== '#' ? 'noopener noreferrer' : undefined}
+                  className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-meewa-red hover:text-white hover:border-meewa-red transition-all shadow-sm" 
+                  aria-label="Instagram"
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
                 </a>
-                <a href="#" className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-meewa-red hover:text-white hover:border-meewa-red transition-all" aria-label="YouTube">
+                <a 
+                  href={youtubeUrl} 
+                  target={youtubeUrl !== '#' ? '_blank' : undefined} 
+                  rel={youtubeUrl !== '#' ? 'noopener noreferrer' : undefined}
+                  className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-meewa-red hover:text-white hover:border-meewa-red transition-all shadow-sm" 
+                  aria-label="YouTube"
+                >
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 7.17c.1-1.37 1.2-2.47 2.57-2.57 2.13-.16 4.96-.27 6.93-.27s4.8.11 6.93.27c1.37.1 2.47 1.2 2.57 2.57.17 2.24.27 4.54.27 4.83 0 .29-.1 2.59-.27 4.83-.1 1.37-1.2 2.47-2.57 2.57-2.13.16-4.96.27-6.93.27s-4.8-.11-6.93-.27c-1.37-.1-2.47-1.2-2.57-2.57-.17-2.24-.27-4.54-.27-4.83 0-.29.1-2.59.27-4.83z"/><polygon points="9.5 15.02 15.5 12 9.5 8.98 9.5 15.02"/></svg>
                 </a>
+                {twitterUrl !== '#' && (
+                  <a 
+                    href={twitterUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-meewa-red hover:text-white hover:border-meewa-red transition-all shadow-sm" 
+                    aria-label="X / Twitter"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  </a>
+                )}
               </div>
             </div>
 

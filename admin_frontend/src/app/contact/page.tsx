@@ -12,7 +12,21 @@ export default function ContactSettingsPage() {
     fetch(`${process.env.NEXT_PUBLIC_ADMIN_API_URL}/settings`)
       .then((res) => res.json())
       .then((data) => {
-        setSettings(data);
+        const footerSocials = Array.isArray(data.footer_socials) ? data.footer_socials : [];
+        const findHref = (label: string) => {
+          const item = footerSocials.find((s: any) => (s?.label || "").toLowerCase() === label.toLowerCase());
+          return item?.href && item.href !== '#' ? item.href : '';
+        };
+
+        setSettings({
+          ...data,
+          connect_with_us_title: data.connect_with_us_title || "Connect with us",
+          social_linkedin: data.social_linkedin || findHref('linkedin'),
+          social_facebook: data.social_facebook || findHref('facebook'),
+          social_instagram: data.social_instagram || findHref('instagram'),
+          social_youtube: data.social_youtube || findHref('youtube'),
+          social_twitter: data.social_twitter || findHref('x') || findHref('twitter'),
+        });
         setLoading(false);
       })
       .catch((err) => {
@@ -32,7 +46,29 @@ export default function ContactSettingsPage() {
     setSaving(true);
     setMessage("");
     try {
-      const payload = Object.entries(settings).map(([key, value]) => ({
+      const currentFooterSocials = Array.isArray(settings.footer_socials) ? [...settings.footer_socials] : [];
+      const updatedFooterSocials = [
+        { label: "LinkedIn", href: settings.social_linkedin || "#" },
+        { label: "Facebook", href: settings.social_facebook || "#" },
+        { label: "Instagram", href: settings.social_instagram || "#" },
+        { label: "YouTube", href: settings.social_youtube || "#" },
+      ];
+      if (settings.social_twitter) {
+        updatedFooterSocials.push({ label: "X", href: settings.social_twitter });
+      }
+
+      const labelsUpdated = ["linkedin", "facebook", "instagram", "youtube", "x", "twitter"];
+      const customSocials = currentFooterSocials.filter(
+        (s: any) => !labelsUpdated.includes((s.label || "").toLowerCase())
+      );
+      const mergedFooterSocials = [...updatedFooterSocials, ...customSocials];
+
+      const newSettings = {
+        ...settings,
+        footer_socials: mergedFooterSocials,
+      };
+
+      const payload = Object.entries(newSettings).map(([key, value]) => ({
         key,
         value,
       }));
@@ -46,6 +82,7 @@ export default function ContactSettingsPage() {
       });
 
       if (response.ok) {
+        setSettings(newSettings);
         setMessage("Settings saved successfully!");
       } else {
         setMessage("Failed to save settings.");
@@ -203,6 +240,86 @@ export default function ContactSettingsPage() {
                     className="w-full border border-gray-300 rounded-lg p-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-meewa-red focus:border-meewa-red"
                   />
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Connect With Us (Social Media Links) */}
+        <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+          <div className="border-b pb-4 mb-6">
+            <h2 className="text-xl font-bold text-gray-800">Connect With Us (Social Links)</h2>
+            <p className="text-sm text-gray-500 mt-1">
+              Configure the social media links displayed on the Contact Us page, Landing page, and Footer globally.
+            </p>
+          </div>
+          <div className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Connect Card Section Title</label>
+              <input
+                type="text"
+                name="connect_with_us_title"
+                value={settings.connect_with_us_title || ""}
+                onChange={handleChange}
+                placeholder="Connect with us"
+                className="w-full border border-gray-300 rounded-lg p-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-meewa-red focus:border-meewa-red"
+              />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">LinkedIn URL</label>
+                <input
+                  type="text"
+                  name="social_linkedin"
+                  value={settings.social_linkedin || ""}
+                  onChange={handleChange}
+                  placeholder="https://linkedin.com/company/meewa"
+                  className="w-full border border-gray-300 rounded-lg p-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-meewa-red focus:border-meewa-red"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Facebook URL</label>
+                <input
+                  type="text"
+                  name="social_facebook"
+                  value={settings.social_facebook || ""}
+                  onChange={handleChange}
+                  placeholder="https://facebook.com/meewa"
+                  className="w-full border border-gray-300 rounded-lg p-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-meewa-red focus:border-meewa-red"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Instagram URL</label>
+                <input
+                  type="text"
+                  name="social_instagram"
+                  value={settings.social_instagram || ""}
+                  onChange={handleChange}
+                  placeholder="https://instagram.com/meewa"
+                  className="w-full border border-gray-300 rounded-lg p-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-meewa-red focus:border-meewa-red"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">YouTube URL</label>
+                <input
+                  type="text"
+                  name="social_youtube"
+                  value={settings.social_youtube || ""}
+                  onChange={handleChange}
+                  placeholder="https://youtube.com/@meewa"
+                  className="w-full border border-gray-300 rounded-lg p-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-meewa-red focus:border-meewa-red"
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">X / Twitter URL (Optional)</label>
+                <input
+                  type="text"
+                  name="social_twitter"
+                  value={settings.social_twitter || ""}
+                  onChange={handleChange}
+                  placeholder="https://x.com/meewa"
+                  className="w-full border border-gray-300 rounded-lg p-3 text-gray-900 bg-white placeholder-gray-400 focus:ring-meewa-red focus:border-meewa-red"
+                />
               </div>
             </div>
           </div>

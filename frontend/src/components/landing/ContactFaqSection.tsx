@@ -98,20 +98,53 @@ export default function ContactFaqSection({
             </div>
 
             <div className="border-t border-gray-300 pt-4">
-              <p className="text-[8px] md:text-xs font-semibold text-gray-500 mb-2 md:mb-3 tracking-wide">Connect with us</p>
+              <p className="text-[8px] md:text-xs font-semibold text-gray-500 mb-2 md:mb-3 tracking-wide">
+                {settings.connect_with_us_title || "Connect with us"}
+              </p>
               <div className="flex space-x-5 text-gray-500">
-                <a href={settings.social_linkedin || "#"} target={settings.social_linkedin ? "_blank" : undefined} rel="noopener noreferrer" className="hover:text-meewa-red transition-colors" aria-label="LinkedIn">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
-                </a>
-                <a href={settings.social_facebook || "#"} target={settings.social_facebook ? "_blank" : undefined} rel="noopener noreferrer" className="hover:text-meewa-red transition-colors" aria-label="Facebook">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-                </a>
-                <a href={settings.social_instagram || "#"} target={settings.social_instagram ? "_blank" : undefined} rel="noopener noreferrer" className="hover:text-meewa-red transition-colors" aria-label="Instagram">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-                </a>
-                <a href={settings.social_youtube || "#"} target={settings.social_youtube ? "_blank" : undefined} rel="noopener noreferrer" className="hover:text-meewa-red transition-colors" aria-label="YouTube">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 7.17c.1-1.37 1.2-2.47 2.57-2.57 2.13-.16 4.96-.27 6.93-.27s4.8.11 6.93.27c1.37.1 2.47 1.2 2.57 2.57.17 2.24.27 4.54.27 4.83 0 .29-.1 2.59-.27 4.83-.1 1.37-1.2 2.47-2.57 2.57-2.13.16-4.96.27-6.93.27s-4.8-.11-6.93-.27c-1.37-.1-2.47-1.2-2.57-2.57-.17-2.24-.27-4.54-.27-4.83 0-.29.1-2.59.27-4.83z"/><polygon points="9.5 15.02 15.5 12 9.5 8.98 9.5 15.02"/></svg>
-                </a>
+                {(() => {
+                  const formatUrl = (url?: string | null) => {
+                    if (!url || url === '#') return '#';
+                    const trimmed = url.trim();
+                    if (!trimmed || trimmed === '#') return '#';
+                    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+                    return `https://${trimmed}`;
+                  };
+
+                  const getSocial = (platform: string, directKey: string) => {
+                    const direct = settings[directKey];
+                    if (direct && typeof direct === 'string' && direct.trim() !== '') return direct.trim();
+                    if (Array.isArray(settings.footer_socials)) {
+                      const match = settings.footer_socials.find(
+                        (s: any) => s?.label && s.label.toLowerCase() === platform.toLowerCase()
+                      );
+                      if (match?.href && match.href.trim() !== '' && match.href !== '#') return match.href.trim();
+                    }
+                    return null;
+                  };
+
+                  const li = formatUrl(getSocial('linkedin', 'social_linkedin'));
+                  const fb = formatUrl(getSocial('facebook', 'social_facebook'));
+                  const ig = formatUrl(getSocial('instagram', 'social_instagram'));
+                  const yt = formatUrl(getSocial('youtube', 'social_youtube'));
+
+                  return (
+                    <>
+                      <a href={li} target={li !== '#' ? "_blank" : undefined} rel={li !== '#' ? "noopener noreferrer" : undefined} className="hover:text-meewa-red transition-colors" aria-label="LinkedIn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                      </a>
+                      <a href={fb} target={fb !== '#' ? "_blank" : undefined} rel={fb !== '#' ? "noopener noreferrer" : undefined} className="hover:text-meewa-red transition-colors" aria-label="Facebook">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                      </a>
+                      <a href={ig} target={ig !== '#' ? "_blank" : undefined} rel={ig !== '#' ? "noopener noreferrer" : undefined} className="hover:text-meewa-red transition-colors" aria-label="Instagram">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                      </a>
+                      <a href={yt} target={yt !== '#' ? "_blank" : undefined} rel={yt !== '#' ? "noopener noreferrer" : undefined} className="hover:text-meewa-red transition-colors" aria-label="YouTube">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 7.17c.1-1.37 1.2-2.47 2.57-2.57 2.13-.16 4.96-.27 6.93-.27s4.8.11 6.93.27c1.37.1 2.47 1.2 2.57 2.57.17 2.24.27 4.54.27 4.83 0 .29-.1 2.59-.27 4.83-.1 1.37-1.2 2.47-2.57 2.57-2.13.16-4.96.27-6.93.27s-4.8-.11-6.93-.27c-1.37-.1-2.47-1.2-2.57-2.57-.17-2.24-.27-4.54-.27-4.83 0-.29.1-2.59.27-4.83z"/><polygon points="9.5 15.02 15.5 12 9.5 8.98 9.5 15.02"/></svg>
+                      </a>
+                    </>
+                  );
+                })()}
               </div>
             </div>
           </div>

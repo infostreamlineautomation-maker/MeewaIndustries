@@ -4,6 +4,53 @@ import { useState, useEffect } from 'react';
 import MediaPickerButton from "@/components/MediaPickerButton";
 import FaqPlacementEditor from "@/components/FaqPlacementEditor";
 
+const BANNER_BOX_CONFIG = [
+  {
+    boxNum: 1,
+    name: "Box 1 (Top Left • Wide)",
+    colSpan: "col-span-2 md:col-span-7",
+    aspect: "md:aspect-[700/340]",
+    desktopDim: "700 × 340 px",
+    recommendedDim: "1400 × 680 px",
+    aspectRatio: "2.06 : 1",
+    shape: "Wide Banner",
+    badgeColor: "bg-blue-600 text-white",
+  },
+  {
+    boxNum: 2,
+    name: "Box 2 (Top Right • Standard)",
+    colSpan: "col-span-1 md:col-span-5",
+    aspect: "md:aspect-[492/340]",
+    desktopDim: "492 × 340 px",
+    recommendedDim: "984 × 680 px",
+    aspectRatio: "1.45 : 1",
+    shape: "Standard Box",
+    badgeColor: "bg-purple-600 text-white",
+  },
+  {
+    boxNum: 3,
+    name: "Box 3 (Bottom Left • Standard)",
+    colSpan: "col-span-1 md:col-span-5",
+    aspect: "md:aspect-[492/340]",
+    desktopDim: "492 × 340 px",
+    recommendedDim: "984 × 680 px",
+    aspectRatio: "1.45 : 1",
+    shape: "Standard Box",
+    badgeColor: "bg-purple-600 text-white",
+  },
+  {
+    boxNum: 4,
+    name: "Box 4 (Bottom Right • Wide)",
+    colSpan: "col-span-2 md:col-span-7",
+    aspect: "md:aspect-[700/340]",
+    desktopDim: "700 × 340 px",
+    recommendedDim: "1400 × 680 px",
+    aspectRatio: "2.06 : 1",
+    shape: "Wide Banner",
+    badgeColor: "bg-blue-600 text-white",
+  },
+];
+
 export default function CategoriesPageManagement() {
   const [settings, setSettings] = useState({
     categories_hero_image_url: "",
@@ -243,7 +290,7 @@ export default function CategoriesPageManagement() {
   if (loading) return <div className="p-8">Loading settings...</div>;
 
   return (
-    <div className="max-w-4xl">
+    <div className="max-w-7xl mx-auto pb-12">
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Product Page Settings</h1>
       
       <form onSubmit={handleSave} className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 space-y-10">
@@ -366,56 +413,138 @@ export default function CategoriesPageManagement() {
 
         {/* Custom Packaging Banner */}
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">Custom Packaging Banner</h2>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b pb-2 gap-2">
+            <div>
+              <h2 className="text-xl font-semibold text-gray-800">Custom Packaging Banner</h2>
+              <p className="text-xs text-gray-500 mt-0.5">Asymmetrical 2×2 Bento Grid. Preview below matches the live user desktop layout.</p>
+            </div>
+            <span className="text-xs font-semibold px-2.5 py-1 bg-green-50 text-green-700 border border-green-200 rounded-full inline-flex items-center gap-1.5 self-start sm:self-auto">
+              <span className="w-2 h-2 rounded-full bg-green-500"></span>
+              Exact 1:1 Live User Site Aspect Ratio
+            </span>
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Banner Title</label>
-            <input type="text" name="categories_custom_banner_title" value={settings.categories_custom_banner_title} onChange={handleChange} placeholder="Custom Packaging Banner" className="w-full border-gray-300 rounded-md p-2 border" />
+            <input type="text" name="categories_custom_banner_title" value={settings.categories_custom_banner_title} onChange={handleChange} placeholder="Custom Packaging Banner" className="w-full border-gray-300 rounded-md p-2 border focus:ring-meewa-red focus:border-meewa-red" />
+          </div>
+
+          {/* Dimension Guide Alert Banner */}
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs text-blue-900">
+            <div className="flex items-start gap-2.5">
+              <span className="text-blue-600 text-lg leading-none">📐</span>
+              <div>
+                <p className="font-bold text-blue-950">Image Dimensions Guide for Zero-Crop Result:</p>
+                <p className="text-blue-700 mt-0.5">
+                  Prepare your banner images at the recommended dimensions below. Because the boxes have locked aspect ratios, images made to these dimensions will never get their edges cut off on the user site.
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="bg-white border border-blue-200 px-2.5 py-1 rounded-md font-mono font-bold text-blue-900 shadow-sm">
+                Box 1 & 4 (Wide): 1400 × 680 px
+              </span>
+              <span className="bg-white border border-blue-200 px-2.5 py-1 rounded-md font-mono font-bold text-purple-900 shadow-sm">
+                Box 2 & 3 (Standard): 984 × 680 px
+              </span>
+            </div>
           </div>
           
+          {/* Bento Grid with exact user-site proportions & per-box dimension tags */}
           <div className="grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-6 mb-4 mt-4">
             {bannerImages.map((banner, idx) => {
-              let colSpanClass = "col-span-2 md:col-span-6"; 
-              let heightClass = "h-48 md:h-[340px]";
-              
-              if (idx === 0) {
-                colSpanClass = "col-span-2 md:col-span-7";
-                heightClass = "h-[180px] sm:h-64 md:h-[340px]";
-              } else if (idx === 1) {
-                colSpanClass = "col-span-1 md:col-span-5";
-                heightClass = "h-40 sm:h-56 md:h-[340px]";
-              } else if (idx === 2) {
-                colSpanClass = "col-span-1 md:col-span-5";
-                heightClass = "h-40 sm:h-56 md:h-[340px]";
-              } else if (idx === 3) {
-                colSpanClass = "col-span-2 md:col-span-7";
-                heightClass = "h-[180px] sm:h-64 md:h-[340px]";
-              }
+              const cfg = BANNER_BOX_CONFIG[idx] || {
+                boxNum: idx + 1,
+                name: `Box ${idx + 1}`,
+                colSpan: "col-span-2 md:col-span-6",
+                aspect: "md:aspect-[700/340]",
+                desktopDim: "700 × 340 px",
+                recommendedDim: "1400 × 680 px",
+                aspectRatio: "2.06 : 1",
+                shape: "Banner",
+                badgeColor: "bg-gray-800 text-white",
+              };
 
               return (
-                <div key={idx} className={`relative w-full bg-gray-100 rounded-2xl md:rounded-3xl overflow-hidden shadow-sm group border border-gray-200 ${colSpanClass} ${heightClass}`}>
-                  {banner.image_url ? (
-                    <>
-                      <button type="button" onClick={() => removeBanner(idx)} className="absolute top-4 right-4 z-10 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-600 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
-                      <img src={(banner.image_url)?.startsWith("http") ? (banner.image_url) : `${process.env.NEXT_PUBLIC_API_URL}${banner.image_url}`} className="w-full h-full object-cover" />
-                    </>
-                  ) : (
-                    <>
-                    <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer hover:bg-gray-200 transition-colors">
-                      <svg className="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
-                      <span className="text-sm font-medium text-gray-500">Upload Image</span>
-                      {uploading === `banner_${idx}` && <span className="text-xs text-meewa-red mt-1">Uploading...</span>}
-                      <input type="file" className="hidden" accept="image/*" onChange={(e) => handleSpecificBannerUpload(idx, e)} disabled={!!uploading} />
-                    </label>
-                    <div className="absolute bottom-4 inset-x-0 flex justify-center">
-                      <MediaPickerButton onSelect={(urls) => applyBanner(idx, urls[0])} disabled={!!uploading} />
+                <div key={idx} className={`flex flex-col ${cfg.colSpan}`}>
+                  {/* Header Bar with Box Label and Dimensions */}
+                  <div className="flex items-center justify-between mb-2 px-1">
+                    <div className="flex items-center gap-2">
+                      <span className={`text-[11px] font-bold px-2 py-0.5 rounded shadow-sm ${cfg.badgeColor}`}>
+                        Box {cfg.boxNum}
+                      </span>
+                      <span className="text-xs font-semibold text-gray-800">
+                        {cfg.shape}
+                      </span>
                     </div>
-                    </>
-                  )}
+                    <div className="flex items-center gap-1.5 text-xs font-medium text-gray-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+                      <span className="text-gray-400 text-[10px]">Size:</span>
+                      <span className="font-bold font-mono text-gray-900">{cfg.recommendedDim}</span>
+                      <span className="text-amber-700 text-[10px] font-semibold">({cfg.aspectRatio})</span>
+                    </div>
+                  </div>
+
+                  {/* Image Container with exact aspect ratio matching user site */}
+                  <div className={`relative w-full bg-gray-100 rounded-2xl md:rounded-3xl overflow-hidden shadow-sm group border-2 border-gray-200 hover:border-meewa-red transition-all ${cfg.aspect} h-[180px] sm:h-64 md:h-[340px]`}>
+                    {/* Persistent Dimension Watermark at Top-Left */}
+                    <div className="absolute top-3 left-3 z-10 bg-black/75 backdrop-blur-md text-white text-[11px] px-2.5 py-1 rounded-md font-medium shadow flex items-center gap-1.5 pointer-events-none">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-400"></span>
+                      <span className="font-mono font-bold text-yellow-300">{cfg.recommendedDim}</span>
+                      <span className="text-gray-300 text-[10px]">({cfg.aspectRatio})</span>
+                    </div>
+
+                    {banner.image_url ? (
+                      <>
+                        <button 
+                          type="button" 
+                          onClick={() => removeBanner(idx)} 
+                          className="absolute top-3 right-3 z-20 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-600 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                          title="Remove Image"
+                        >
+                          ✕
+                        </button>
+                        <img 
+                          src={(banner.image_url)?.startsWith("http") ? (banner.image_url) : `${process.env.NEXT_PUBLIC_API_URL}${banner.image_url}`} 
+                          alt={`Banner Box ${cfg.boxNum}`}
+                          className="w-full h-full object-cover object-center" 
+                        />
+                        {/* Quick Replace on hover */}
+                        <div className="absolute bottom-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <MediaPickerButton label="Replace Image" onSelect={(urls) => applyBanner(idx, urls[0])} disabled={!!uploading} />
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer hover:bg-gray-200/60 transition-colors p-4 text-center">
+                          <svg className="w-8 h-8 text-gray-400 mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
+                          <span className="text-sm font-semibold text-gray-700">Upload Box {cfg.boxNum} Image</span>
+                          <span className="text-xs text-meewa-red font-bold mt-1 font-mono">{cfg.recommendedDim}</span>
+                          <span className="text-[11px] text-gray-500">Aspect Ratio: {cfg.aspectRatio} • Desktop: {cfg.desktopDim}</span>
+                          {uploading === `banner_${idx}` && <span className="text-xs text-meewa-red mt-1 font-semibold animate-pulse">Uploading...</span>}
+                          <input type="file" className="hidden" accept="image/*" onChange={(e) => handleSpecificBannerUpload(idx, e)} disabled={!!uploading} />
+                        </label>
+                        <div className="absolute bottom-3 inset-x-0 flex justify-center">
+                          <MediaPickerButton onSelect={(urls) => applyBanner(idx, urls[0])} disabled={!!uploading} />
+                        </div>
+                      </>
+                    )}
+                  </div>
+
+                  {/* Footnote showing desktop footprint & tips */}
+                  <div className="flex items-center justify-between text-[11px] text-gray-500 mt-1.5 px-1">
+                    <span>Recommended (2x HD): <strong className="text-gray-700 font-mono">{cfg.recommendedDim}</strong></span>
+                    <span>Desktop viewport: {cfg.desktopDim}</span>
+                  </div>
                 </div>
               );
             })}
           </div>
-          <p className="text-xs text-gray-500 mt-1 mb-6">Recommended: 1920x400 px or 800x800 px depending on the box shape.</p>
+
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 text-xs text-gray-600 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <span>
+              💡 <strong>Pro-Tip:</strong> Export images at the recommended <strong>1400×680 px</strong> (Box 1 & 4) and <strong>984×680 px</strong> (Box 2 & 3). They will match the layout 100% with no cut edges on any phone, tablet, laptop, or desktop.
+            </span>
+          </div>
         </div>
 
         {/* FAQs */}

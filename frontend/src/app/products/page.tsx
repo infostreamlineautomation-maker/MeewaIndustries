@@ -88,22 +88,22 @@ export default async function ProductsPage() {
               
               if (idx === 0) {
                 colSpanClass = "col-span-2 md:col-span-7";
-                heightClass = "h-[180px] sm:h-64 md:h-[340px]";
+                heightClass = "h-[180px] sm:h-64 md:h-[340px] md:aspect-[700/340]";
               } else if (idx === 1) {
                 colSpanClass = "col-span-1 md:col-span-5";
-                heightClass = "h-40 sm:h-56 md:h-[340px]";
+                heightClass = "h-40 sm:h-56 md:h-[340px] md:aspect-[492/340]";
               } else if (idx === 2) {
                 colSpanClass = "col-span-1 md:col-span-5";
-                heightClass = "h-40 sm:h-56 md:h-[340px]";
+                heightClass = "h-40 sm:h-56 md:h-[340px] md:aspect-[492/340]";
               } else if (idx === 3) {
                 colSpanClass = "col-span-2 md:col-span-7";
-                heightClass = "h-[180px] sm:h-64 md:h-[340px]";
+                heightClass = "h-[180px] sm:h-64 md:h-[340px] md:aspect-[700/340]";
               }
 
               return (
                 <div key={idx} className={`w-full bg-gray-100 rounded-2xl md:rounded-3xl overflow-hidden shadow-sm ${colSpanClass} ${heightClass}`}>
                   {banner.image_url ? (
-                    <img src={`${banner.image_url?.startsWith('http') ? banner.image_url : process.env.NEXT_PUBLIC_API_URL + banner.image_url}`} alt="Custom Banner" className="w-full h-full object-cover" />
+                    <img src={`${banner.image_url?.startsWith('http') ? banner.image_url : process.env.NEXT_PUBLIC_API_URL + banner.image_url}`} alt="Custom Banner" className="w-full h-full object-cover object-center" />
                   ) : (
                     <div className="w-full h-full bg-gray-200"></div>
                   )}

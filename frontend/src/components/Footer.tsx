@@ -115,27 +115,59 @@ export default async function Footer() {
               </ul>
             
               <div className="flex gap-2.5 md:gap-4 mt-4 md:mt-8">
-                {settings.footer_socials && Array.isArray(settings.footer_socials) ? (
-                  settings.footer_socials.map((link: any, idx: number) => (
-                    <a key={idx} href={link.href} target="_blank" rel="noopener noreferrer" className="w-5 h-5 md:w-10 md:h-10 flex items-center justify-center md:border md:border-white/50 md:rounded hover:opacity-80 md:hover:bg-white/10 transition-all cursor-pointer group">
+                {(() => {
+                  const formatUrl = (url?: string | null) => {
+                    if (!url || url === '#') return '#';
+                    const trimmed = url.trim();
+                    if (!trimmed || trimmed === '#') return '#';
+                    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+                    return `https://${trimmed}`;
+                  };
+
+                  const getFallbackUrl = (label: string) => {
+                    const l = (label || '').toLowerCase();
+                    if (l === 'linkedin') return settings.social_linkedin;
+                    if (l === 'facebook') return settings.social_facebook;
+                    if (l === 'instagram') return settings.social_instagram;
+                    if (l === 'youtube') return settings.social_youtube;
+                    if (l === 'twitter' || l === 'x') return settings.social_twitter || settings.social_x;
+                    return null;
+                  };
+
+                  let links: any[] = [];
+                  if (settings.footer_socials && Array.isArray(settings.footer_socials) && settings.footer_socials.length > 0) {
+                    links = settings.footer_socials.map((link: any) => {
+                      let href = link.href;
+                      if (!href || href === '#') {
+                        const fallback = getFallbackUrl(link.label);
+                        if (fallback) href = fallback;
+                      }
+                      return { ...link, href: formatUrl(href) };
+                    });
+                  } else {
+                    links = [
+                      { label: 'Instagram', href: formatUrl(settings.social_instagram) },
+                      { label: 'Facebook', href: formatUrl(settings.social_facebook) },
+                      { label: 'LinkedIn', href: formatUrl(settings.social_linkedin) },
+                      { label: 'YouTube', href: formatUrl(settings.social_youtube) },
+                    ];
+                  }
+
+                  return links.map((link: any, idx: number) => (
+                    <a 
+                      key={idx} 
+                      href={link.href} 
+                      target={link.href !== '#' ? "_blank" : undefined} 
+                      rel={link.href !== '#' ? "noopener noreferrer" : undefined} 
+                      className="w-5 h-5 md:w-10 md:h-10 flex items-center justify-center md:border md:border-white/50 md:rounded hover:opacity-80 md:hover:bg-white/10 transition-all cursor-pointer group"
+                      aria-label={link.label}
+                    >
                       <div className="bg-white rounded-[4px] md:rounded-sm w-full h-full md:w-7 md:h-7 flex items-center justify-center overflow-hidden">
                          <SocialIcon type={link.label} />
                       </div>
                     </a>
-                  ))
-                ) : (
-                  <>
-                    <div className="w-5 h-5 md:w-10 md:h-10 flex items-center justify-center md:border md:border-white/50 md:rounded hover:opacity-80 md:hover:bg-white/10 transition-all cursor-pointer group">
-                      <div className="bg-white rounded-[4px] md:rounded-sm w-full h-full md:w-7 md:h-7 flex items-center justify-center overflow-hidden"><SocialIcon type="Instagram" /></div>
-                    </div>
-                    <div className="w-5 h-5 md:w-10 md:h-10 flex items-center justify-center md:border md:border-white/50 md:rounded hover:opacity-80 md:hover:bg-white/10 transition-all cursor-pointer group">
-                      <div className="bg-white rounded-[4px] md:rounded-sm w-full h-full md:w-7 md:h-7 flex items-center justify-center overflow-hidden"><SocialIcon type="Facebook" /></div>
-                    </div>
-                    <div className="w-5 h-5 md:w-10 md:h-10 flex items-center justify-center md:border md:border-white/50 md:rounded hover:opacity-80 md:hover:bg-white/10 transition-all cursor-pointer group">
-                      <div className="bg-white rounded-[4px] md:rounded-sm w-full h-full md:w-7 md:h-7 flex items-center justify-center overflow-hidden"><SocialIcon type="LinkedIn" /></div>
-                    </div>
-                  </>
-                )}
+                  ));
+                })()}
               </div>
             </div>
           </div>
