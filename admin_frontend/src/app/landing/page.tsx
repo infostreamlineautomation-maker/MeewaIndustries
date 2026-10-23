@@ -4,6 +4,69 @@ import { useState, useEffect } from 'react';
 import MediaPickerButton from "@/components/MediaPickerButton";
 import FaqPlacementEditor from "@/components/FaqPlacementEditor";
 
+const INDUSTRY_COLLAGE_CONFIG = [
+  {
+    key: "industries_image_1",
+    num: 1,
+    title: "Cafe / Restaurant",
+    col: 1,
+    shape: "Square",
+    aspectRatio: "1 : 1",
+    desktopDim: "200 × 200 px",
+    recommendedDim: "600 × 600 px",
+    aspectClass: "aspect-square w-full",
+    badgeColor: "bg-blue-600 text-white",
+  },
+  {
+    key: "industries_image_2",
+    num: 2,
+    title: "Wholesale / Warehouse",
+    col: 1,
+    shape: "Square",
+    aspectRatio: "1 : 1",
+    desktopDim: "200 × 200 px",
+    recommendedDim: "600 × 600 px",
+    aspectClass: "aspect-square w-full",
+    badgeColor: "bg-blue-600 text-white",
+  },
+  {
+    key: "industries_image_3",
+    num: 3,
+    title: "Hotel (Tall)",
+    col: 2,
+    shape: "Tall Portrait",
+    aspectRatio: "1 : 2 (~0.49:1)",
+    desktopDim: "200 × 408 px",
+    recommendedDim: "600 × 1220 px",
+    aspectClass: "h-full w-full",
+    badgeColor: "bg-purple-600 text-white",
+  },
+  {
+    key: "industries_image_4",
+    num: 4,
+    title: "Supermarket",
+    col: 3,
+    shape: "Landscape",
+    aspectRatio: "4 : 3 (1.33:1)",
+    desktopDim: "200 × 150 px",
+    recommendedDim: "600 × 450 px",
+    aspectClass: "aspect-[4/3] w-full",
+    badgeColor: "bg-emerald-600 text-white",
+  },
+  {
+    key: "industries_image_5",
+    num: 5,
+    title: "Coffee Chain / Bags",
+    col: 3,
+    shape: "Portrait",
+    aspectRatio: "4 : 5 (0.8:1)",
+    desktopDim: "200 × 250 px",
+    recommendedDim: "600 × 750 px",
+    aspectClass: "flex-grow w-full min-h-[140px]",
+    badgeColor: "bg-amber-600 text-white",
+  },
+];
+
 export default function LandingPageManagement() {
   const [settings, setSettings] = useState({
     hero_title: "",
@@ -367,6 +430,10 @@ export default function LandingPageManagement() {
 
   // Featured Products Handlers
   const addFeaturedProduct = (productId: number) => {
+    if (settings.landing_featured_products.length >= 7) {
+      alert("A maximum of 7 products can be featured on the landing page (to fit the 8-card grid alongside the 'Request a Quote' card).");
+      return;
+    }
     if (!settings.landing_featured_products.includes(productId)) {
       setSettings({ ...settings, landing_featured_products: [...settings.landing_featured_products, productId] });
     }
@@ -387,10 +454,107 @@ export default function LandingPageManagement() {
       setSettings({ ...settings, landing_featured_products: newList });
     }
   };
+  const renderIndustrySlot = (cfg: typeof INDUSTRY_COLLAGE_CONFIG[0]) => {
+    const imageUrl = (settings as any)[cfg.key] || "";
+    const isUploading = uploading === cfg.key;
+
+    return (
+      <div
+        key={cfg.key}
+        className={`relative rounded-xl md:rounded-2xl overflow-hidden shadow-sm group border-2 border-gray-300 hover:border-meewa-red bg-gray-200 transition-all ${cfg.aspectClass}`}
+      >
+        {/* Dimension & Name Watermark (Top Left) */}
+        <div className="absolute top-2 left-2 z-20 bg-black/80 backdrop-blur-md text-white text-[10px] px-2 py-0.5 rounded-md font-medium shadow flex items-center gap-1.5 pointer-events-none">
+          <span className={`w-1.5 h-1.5 rounded-full ${imageUrl ? 'bg-green-400' : 'bg-amber-400 animate-pulse'}`}></span>
+          <span className="font-bold">{cfg.num}. {cfg.title}</span>
+          <span className="font-mono text-yellow-300 font-bold hidden sm:inline">{cfg.recommendedDim}</span>
+          <span className="text-gray-300 text-[9px]">({cfg.aspectRatio})</span>
+        </div>
+
+        {imageUrl ? (
+          <>
+            {/* Remove button */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                applyFieldUrl(cfg.key, "");
+              }}
+              className="absolute top-2 right-2 z-30 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 shadow-md opacity-0 group-hover:opacity-100 transition-opacity text-xs"
+              title="Remove Image"
+            >
+              ✕
+            </button>
+
+            {/* Live Cropped Image Preview */}
+            <img
+              src={imageUrl.startsWith("http") ? imageUrl : `${process.env.NEXT_PUBLIC_API_URL}${imageUrl}`}
+              alt={cfg.title}
+              className="w-full h-full object-cover absolute inset-0"
+            />
+
+            {/* Hover Action Overlay */}
+            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-1.5 p-2 z-20">
+              <span className="text-white text-xs font-bold drop-shadow">{cfg.title}</span>
+              <span className="text-yellow-300 font-mono text-[11px] font-bold drop-shadow">{cfg.recommendedDim}</span>
+              <span className="text-gray-200 text-[10px] drop-shadow">{cfg.shape} • {cfg.aspectRatio}</span>
+              <div className="flex items-center gap-1.5 mt-1">
+                <label className="bg-white text-gray-800 text-[10px] font-bold px-2.5 py-1.5 rounded cursor-pointer hover:bg-gray-100 shadow">
+                  Upload
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => handleFileUpload(e, cfg.key)}
+                    disabled={isUploading}
+                  />
+                </label>
+                <MediaPickerButton
+                  label="Library"
+                  onSelect={(urls) => applyFieldUrl(cfg.key, urls[0])}
+                  disabled={isUploading}
+                />
+              </div>
+              {isUploading && <span className="text-white text-[10px] animate-pulse">Uploading...</span>}
+            </div>
+          </>
+        ) : (
+          <div className="w-full h-full flex flex-col items-center justify-center p-3 text-center min-h-[140px] absolute inset-0">
+            <svg className="w-6 h-6 text-gray-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            <span className="text-xs font-bold text-gray-700">{cfg.num}. {cfg.title}</span>
+            <span className="text-xs font-mono font-bold text-meewa-red mt-0.5">{cfg.recommendedDim}</span>
+            <span className="text-[10px] text-gray-500">{cfg.shape} ({cfg.aspectRatio})</span>
+            
+            <div className="flex items-center gap-1.5 mt-2 z-10">
+              <label className="bg-white border border-gray-300 text-gray-700 text-[10px] font-semibold px-2 py-1 rounded cursor-pointer hover:bg-gray-50 shadow-sm">
+                Upload
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => handleFileUpload(e, cfg.key)}
+                  disabled={isUploading}
+                />
+              </label>
+              <MediaPickerButton
+                label="Library"
+                onSelect={(urls) => applyFieldUrl(cfg.key, urls[0])}
+                disabled={isUploading}
+              />
+            </div>
+            {isUploading && <span className="text-xs text-meewa-red mt-1 font-semibold animate-pulse">Uploading...</span>}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   if (loading) return <div className="p-8">Loading settings...</div>;
 
   return (
-    <div className="max-w-4xl">
+    <div className="max-w-7xl mx-auto pb-12">
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Landing Page Management</h1>
       
       <form onSubmit={handleSave} className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 space-y-10">
@@ -511,22 +675,39 @@ export default function LandingPageManagement() {
 
           {/* Featured Products Selection */}
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">Featured Products</h2>
-            <p className="text-sm text-gray-500">Select which products to display on the landing page and arrange their order. If none are selected, the first 5 active products will be shown automatically.</p>
+            <div className="flex justify-between items-center border-b pb-2">
+              <h2 className="text-xl font-semibold text-gray-800">Featured Products</h2>
+              <span className={`text-xs font-bold px-2.5 py-1 rounded-full border ${
+                settings.landing_featured_products.length >= 7 
+                  ? 'bg-amber-50 text-amber-700 border-amber-300' 
+                  : 'bg-gray-100 text-gray-700 border-gray-200'
+              }`}>
+                {settings.landing_featured_products.length} / 7 Selected {settings.landing_featured_products.length >= 7 ? '(Max)' : ''}
+              </span>
+            </div>
+            <p className="text-sm text-gray-500">
+              Select up to <strong>7 products</strong> to display on the landing page and arrange their order. On desktop, 7 products plus the &quot;Request a Quote&quot; card perfectly fill 2 complete rows (8 cards in a 4-column grid). If none are selected, the first 7 active products will be shown automatically.
+            </p>
             
             <div className="flex gap-4">
               <select 
                 id="product-select"
-                className="flex-1 border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white"
+                disabled={settings.landing_featured_products.length >= 7}
+                className="flex-1 border-gray-300 rounded-md shadow-sm p-2 border text-gray-900 bg-white disabled:bg-gray-100 disabled:text-gray-400"
                 defaultValue=""
               >
-                <option value="" disabled>Select a product to feature...</option>
+                <option value="" disabled>
+                  {settings.landing_featured_products.length >= 7 
+                    ? "Maximum 7 featured products reached" 
+                    : "Select a product to feature..."}
+                </option>
                 {products.filter(p => !settings.landing_featured_products.includes(p.id)).map(p => (
                   <option key={p.id} value={p.id}>{p.name}</option>
                 ))}
               </select>
               <button 
                 type="button" 
+                disabled={settings.landing_featured_products.length >= 7}
                 onClick={() => {
                   const select = document.getElementById('product-select') as HTMLSelectElement;
                   if (select && select.value) {
@@ -534,7 +715,7 @@ export default function LandingPageManagement() {
                     select.value = "";
                   }
                 }}
-                className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700"
+                className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Add
               </button>
@@ -616,73 +797,132 @@ export default function LandingPageManagement() {
             </div>
 
 
-            <div className="mt-6 border-t pt-4">
-              <h3 className="text-lg font-medium text-gray-800 mb-4">Industry Images (Collage)</h3>
-              <p className="text-sm text-gray-500 mb-4">Upload images in the same masonry layout as they appear on the homepage.</p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl bg-gray-50 p-6 rounded-xl border border-gray-200">
-                {/* Col 1 */}
-                <div className="flex flex-col gap-4">
-                  {[1, 2].map((num) => {
-                    const key = `industries_image_${num}` as keyof typeof settings;
-                    const labelMap = { 1: "Cafe/Restaurant", 2: "Wholesale/Warehouse" } as any;
-                    return (
-                      <div key={num} className="border border-gray-300 p-4 rounded-lg bg-white shadow-sm flex flex-col">
-                        <label className="block text-sm font-medium text-gray-700 mb-3">{labelMap[num]}</label>
-                        <div className="mb-4 bg-gray-100 rounded-md border border-dashed flex items-center justify-center overflow-hidden aspect-square relative">
-                          {settings[key] ? (
-                            <img src={(settings[key] as string)?.startsWith("http") ? (settings[key] as string) : `${process.env.NEXT_PUBLIC_API_URL}${settings[key]}`} alt={`${labelMap[num]} Preview`} className="w-full h-full object-cover absolute inset-0" onError={(e) => { e.currentTarget.style.display = 'none' }} />
-                          ) : (
-                            <span className="text-gray-400 text-xs">No image</span>
-                          )}
-                        </div>
-                        <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, key)} disabled={uploading === key} className="block w-full text-[10px] text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red cursor-pointer" />
-                        <div className="mt-2"><MediaPickerButton onSelect={(urls) => applyFieldUrl(key, urls[0])} /></div>
-                        <p className="text-[10px] text-gray-500 mt-1">Min: 800x600 px, Max: 1920x1080 px</p>
-                        {uploading === key && <p className="text-[10px] text-meewa-red mt-2">Uploading...</p>}
-                      </div>
-                    );
-                  })}
+            {/* Industry Images (Collage) */}
+            <div className="mt-8 border-t pt-6 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b pb-2">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-800">Industry Images (Collage)</h3>
+                  <p className="text-xs text-gray-500 mt-0.5">Live 1:1 preview matching the homepage layout. The 3 columns are mathematically harmonized.</p>
                 </div>
+                <span className="text-xs font-semibold px-2.5 py-1 bg-green-50 text-green-700 border border-green-200 rounded-full inline-flex items-center gap-1.5 self-start sm:self-auto">
+                  <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                  Exact 1:1 Live Site Masonry
+                </span>
+              </div>
 
-                {/* Col 2 */}
-                <div className="flex flex-col">
-                  <div className="border border-gray-300 p-4 rounded-lg bg-white shadow-sm flex flex-col h-full">
-                    <label className="block text-sm font-medium text-gray-700 mb-3">Hotel (Tall)</label>
-                    <div className="mb-4 bg-gray-100 rounded-md border border-dashed flex items-center justify-center overflow-hidden flex-grow relative min-h-[200px]">
-                      {settings.industries_image_3 ? (
-                        <img src={(settings.industries_image_3 as string)?.startsWith("http") ? (settings.industries_image_3 as string) : `${process.env.NEXT_PUBLIC_API_URL}${settings.industries_image_3}`} alt="Hotel Preview" className="w-full h-full object-cover absolute inset-0" onError={(e) => { e.currentTarget.style.display = 'none' }} />
-                      ) : (
-                        <span className="text-gray-400 text-xs">No image</span>
-                      )}
-                    </div>
-                    <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, "industries_image_3")} disabled={uploading === "industries_image_3"} className="block w-full text-[10px] text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red cursor-pointer" />
-                    <div className="mt-2"><MediaPickerButton onSelect={(urls) => applyFieldUrl("industries_image_3", urls[0])} /></div>
-                    <p className="text-[10px] text-gray-500 mt-1">Min: 800x600 px, Max: 1920x1080 px</p>
-                    {uploading === "industries_image_3" && <p className="text-[10px] text-meewa-red mt-2">Uploading...</p>}
+              {/* Dimension Guide Alert Banner */}
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs text-blue-900">
+                <div className="flex items-start gap-2.5">
+                  <span className="text-blue-600 text-lg leading-none">📐</span>
+                  <div>
+                    <p className="font-bold text-blue-950">Recommended Image Dimensions for Zero-Crop Result:</p>
+                    <p className="text-blue-700 mt-0.5">
+                      Upload your images according to each slot&apos;s exact aspect ratio below so that no edges are cut off on the live homepage.
+                    </p>
                   </div>
                 </div>
+                <div className="flex flex-wrap items-center gap-1.5 font-mono text-[11px] font-bold">
+                  <span className="bg-white border border-blue-200 px-2 py-0.5 rounded text-blue-900">
+                    Box 1 &amp; 2 (Square): 600×600 px (1:1)
+                  </span>
+                  <span className="bg-white border border-purple-200 px-2 py-0.5 rounded text-purple-900">
+                    Box 3 (Tall): 600×1220 px (1:2)
+                  </span>
+                  <span className="bg-white border border-emerald-200 px-2 py-0.5 rounded text-emerald-900">
+                    Box 4 (Landscape): 600×450 px (4:3)
+                  </span>
+                  <span className="bg-white border border-amber-200 px-2 py-0.5 rounded text-amber-900">
+                    Box 5 (Portrait): 600×750 px (4:5)
+                  </span>
+                </div>
+              </div>
 
-                {/* Col 3 */}
-                <div className="flex flex-col gap-4">
-                  {[4, 5].map((num) => {
-                    const key = `industries_image_${num}` as keyof typeof settings;
-                    const labelMap = { 4: "Supermarket", 5: "Coffee Chain / Bags" } as any;
-                    const aspectMap = { 4: "aspect-[4/3]", 5: "flex-grow min-h-[150px]" } as any;
+              {/* Live Collage Layout (Exact matching Frontend grid structure) */}
+              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 md:p-6">
+                <div className="grid grid-cols-3 gap-2 md:gap-3 max-w-2xl mx-auto">
+                  {/* Col 1 */}
+                  <div className="flex flex-col gap-2 md:gap-3">
+                    {renderIndustrySlot(INDUSTRY_COLLAGE_CONFIG[0])}
+                    {renderIndustrySlot(INDUSTRY_COLLAGE_CONFIG[1])}
+                  </div>
+
+                  {/* Col 2 */}
+                  <div className="h-full flex flex-col">
+                    {renderIndustrySlot(INDUSTRY_COLLAGE_CONFIG[2])}
+                  </div>
+
+                  {/* Col 3 */}
+                  <div className="flex flex-col gap-2 md:gap-3 h-full">
+                    {renderIndustrySlot(INDUSTRY_COLLAGE_CONFIG[3])}
+                    {renderIndustrySlot(INDUSTRY_COLLAGE_CONFIG[4])}
+                  </div>
+                </div>
+              </div>
+
+              {/* Spec Sheet & Quick Upload Actions List below */}
+              <div className="bg-white border border-gray-200 rounded-xl overflow-hidden mt-6 shadow-sm">
+                <div className="bg-gray-100 px-4 py-2.5 border-b border-gray-200 flex items-center justify-between">
+                  <span className="text-xs font-bold text-gray-700 uppercase tracking-wider">Collage Box Specifications &amp; Quick Uploader</span>
+                  <span className="text-[11px] text-gray-500 font-medium">2x HD Resolution Specs</span>
+                </div>
+                <div className="divide-y divide-gray-100">
+                  {INDUSTRY_COLLAGE_CONFIG.map((cfg) => {
+                    const imgUrl = (settings as any)[cfg.key] as string;
+                    const isUploading = uploading === cfg.key;
                     return (
-                      <div key={num} className={`border border-gray-300 p-4 rounded-lg bg-white shadow-sm flex flex-col ${num === 5 ? 'flex-grow' : ''}`}>
-                        <label className="block text-sm font-medium text-gray-700 mb-3">{labelMap[num]}</label>
-                        <div className={`mb-4 bg-gray-100 rounded-md border border-dashed flex items-center justify-center overflow-hidden relative ${aspectMap[num]}`}>
-                          {settings[key] ? (
-                            <img src={(settings[key] as string)?.startsWith("http") ? (settings[key] as string) : `${process.env.NEXT_PUBLIC_API_URL}${settings[key]}`} alt={`${labelMap[num]} Preview`} className="w-full h-full object-cover absolute inset-0" onError={(e) => { e.currentTarget.style.display = 'none' }} />
-                          ) : (
-                            <span className="text-gray-400 text-xs">No image</span>
-                          )}
+                      <div key={cfg.key} className="p-3 sm:px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-gray-50/60 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${cfg.badgeColor}`}>
+                            {cfg.num}
+                          </span>
+                          <div className="w-12 h-12 rounded-lg bg-gray-100 border overflow-hidden flex-shrink-0 relative">
+                            {imgUrl ? (
+                              <img src={imgUrl.startsWith("http") ? imgUrl : `${process.env.NEXT_PUBLIC_API_URL}${imgUrl}`} alt="" className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-gray-300 text-[10px]">Empty</div>
+                            )}
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-bold text-gray-900">{cfg.title}</span>
+                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-gray-100 text-gray-600 border border-gray-200">{cfg.shape}</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
+                              <span>Recommended: <strong className="font-mono text-gray-800">{cfg.recommendedDim}</strong></span>
+                              <span>•</span>
+                              <span>Ratio: <strong className="font-mono text-gray-700">{cfg.aspectRatio}</strong></span>
+                              <span>•</span>
+                              <span>Viewport: <span className="font-mono text-gray-600">{cfg.desktopDim}</span></span>
+                            </div>
+                          </div>
                         </div>
-                        <input type="file" accept="image/*" onChange={(e) => handleFileUpload(e, key)} disabled={uploading === key} className="block w-full text-[10px] text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-red-50 file:text-meewa-red cursor-pointer" />
-                        <div className="mt-2"><MediaPickerButton onSelect={(urls) => applyFieldUrl(key, urls[0])} /></div>
-                        <p className="text-[10px] text-gray-500 mt-1">Min: 800x600 px, Max: 1920x1080 px</p>
-                        {uploading === key && <p className="text-[10px] text-meewa-red mt-2">Uploading...</p>}
+
+                        <div className="flex items-center gap-2 self-end sm:self-auto">
+                          {imgUrl && (
+                            <button
+                              type="button"
+                              onClick={() => applyFieldUrl(cfg.key, "")}
+                              className="text-xs text-red-600 hover:text-red-700 px-2 py-1 font-semibold"
+                            >
+                              Remove
+                            </button>
+                          )}
+                          <label className="text-xs bg-white border border-gray-300 text-gray-700 px-3 py-1.5 rounded-md hover:bg-gray-50 cursor-pointer shadow-sm font-medium">
+                            {isUploading ? "Uploading..." : "Upload File"}
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={(e) => handleFileUpload(e, cfg.key)}
+                              disabled={isUploading}
+                            />
+                          </label>
+                          <MediaPickerButton
+                            label="Library"
+                            onSelect={(urls) => applyFieldUrl(cfg.key, urls[0])}
+                            disabled={isUploading}
+                          />
+                        </div>
                       </div>
                     );
                   })}

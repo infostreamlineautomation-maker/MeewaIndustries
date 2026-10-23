@@ -22,14 +22,15 @@ export default async function FeaturedProducts() {
     console.error("Could not fetch data for FeaturedProducts:", e);
   }
 
-  // Filter and order based on settings, or fallback to first 5 products
+  // Filter and order based on settings (max 7 products), or fallback to first 7 products
   let displayProducts = [];
   if (featuredProductIds.length > 0) {
     displayProducts = featuredProductIds
       .map(id => products.find(p => p.id === id))
-      .filter(p => p !== undefined);
+      .filter((p): p is any => p !== undefined)
+      .slice(0, 7);
   } else {
-    displayProducts = products.slice(0, 6);
+    displayProducts = products.slice(0, 7);
   }
 
   return (
@@ -53,7 +54,7 @@ export default async function FeaturedProducts() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 gap-y-6 md:gap-x-8 md:gap-y-12 mb-8 lg:mb-0">
 
           {displayProducts.map((prod, idx) => (
-            <Link href={`/products/${prod.slug}`} key={idx} className={`group block ${idx === 5 ? 'lg:hidden' : ''} flex flex-col cursor-pointer`}>
+            <Link href={`/products/${prod.slug}`} key={idx} className="group block flex flex-col cursor-pointer">
               <div className="w-full aspect-[4/5] bg-gray-100 rounded-lg md:rounded-3xl overflow-hidden mb-2 md:mb-4 shadow-sm group-hover:shadow-lg transition-shadow border border-gray-200 relative">
                 <div
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
